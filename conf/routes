@@ -4,6 +4,7 @@
 # Note: @controllers syntax signifies the actual controller instance, retrieved via GlobalSettings.getController().
 # ~~~~
 
+# DEFAULT TEMPLATE CODE
 # Single endpoint for serving AngularJS
 GET     /                           @controllers.Application.index
 GET     /randomUUID                 @controllers.Application.randomUUID
@@ -14,3 +15,6 @@ POST    /user                       @controllers.Users.createUser
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# OWN CODE STARTS HERE
+GET     /user/:id                   @controllers.Users.returnUser(id: Integer)

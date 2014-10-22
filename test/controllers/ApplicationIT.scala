@@ -13,17 +13,12 @@ class ApplicationIT extends Specification {
 
   "Application" should {
 
-    "send 404 on a bad request" in {
+    "database is up and running" in {
       running(FakeApplication()) {
-        route(FakeRequest(GET, "/boum")) must beNone
-      }
-    }
+        val testuser = route(FakeRequest(GET, "/user/1")).get
 
-    "render the index page" in {
-      running(FakeApplication()) {
-        val home = route(FakeRequest(GET, "/")).get
-        status(home) must equalTo(OK)
-        contentType(home) must beSome.which(_ == "text/html")
+        status(testuser) must equalTo(OK)
+        contentAsString(testuser) must contain("Joerg")
       }
     }
 
