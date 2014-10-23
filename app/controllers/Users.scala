@@ -1,5 +1,12 @@
 package controllers
 
+import play.api.libs.concurrent.Execution.Implicits._
+import play.modules.reactivemongo.MongoController
+import play.modules.reactivemongo.json.collection.JSONCollection
+import reactivemongo.core.commands.Drop
+import reactivemongo.api.collections.default.BSONCollection
+import play.modules.reactivemongo.json.BSONFormats._
+import reactivemongo.bson.BSONDocument
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.concurrent.Future
@@ -84,23 +91,18 @@ class Users extends Controller with MongoController {
    * Own methods starts here
    */
   def returnUser(id: Int) = Action.async {
-    // let's do our query
-    val cursor: Cursor[User] = collection.
-      // find all
-      find(Json.obj("id" -> id)).
-      // sort them by creation date
-      sort(Json.obj("created" -> -1)).
-      // perform the query and get a cursor of JsObject
-      cursor[User]
+    val query = BSONDocument("id" -> id)
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[User]] = cursor.collect[List]()
+    val peopleWithID =
+      collection.
+        find(query).
+        cursor[BSONDocument].
+        collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { users =>
+    val futurePersonsJsonArray: Future[JsArray] = peopleWithID.map { users =>
       Json.arr(users)
     }
-    // everything's ok! Let's reply with the array
+
     futurePersonsJsonArray.map {
       users =>
         Ok(users(0))

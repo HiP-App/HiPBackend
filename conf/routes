@@ -18,3 +18,6 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # OWN CODE STARTS HERE
 GET     /user/:id                   @controllers.Users.returnUser(id: Integer)
+
+GET     /add                        @controllers.TestDriver.addTestData
+GET     /drop                       @controllers.TestDriver.dropAllTables
