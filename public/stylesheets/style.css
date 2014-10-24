@@ -52,8 +52,22 @@ body{
 	background-color: #ffffff;
 }
 
-#upperBox{
-/* outline: 2px solid grey; */
+.menuEntry{
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.menuEntry:hover{
+    color: #f37e00;
+    background-color: #172b72;
+}
+
+.menuLeft{
+    float:left;
+}
+
+.menuRight{
+    float:right;
 }
 /* ===================
 * Head

@@ -1,7 +1,20 @@
 <div ng-controller="GroupCtrl as gc">
     <div id="groups" class="panel panel-default">
-        <div class="panel-heading"> Groups </div>
-        <div class="panel-body"> bla </div>
+        <div class="panel-heading">
+            <div class="menuLeft">Groups</div>
+            <div class="menuRight"> <a ng-click="gc.getGroups()">
+                <span class='glyphicon  glyphicon-refresh'></span> </a>
+            </div>
+            <div class="float-clear"></div>
+        </div> <!-- alt: class="boxHeader" -->
+
+        <div class="panel-body">
+            <div class="menuEntry" ng-repeat="grp in gc.groups">
+                <div class="menuLeft">{{ grp.name }}</div>
+                <div class="menuRight"> [<span class="glyphicon glyphicon-trash">]</span></div>
+                <div class="float-clear"></div>
+            </div>
+        </div>
 
         <div class="float-clear"></div>
     </div>
@@ -12,7 +25,8 @@
 
 
             <div class="panel-body">
-                <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form" ng-submit="gc.createGroup()">
+                <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
+                      ng-submit="gc.createGroup()">
                     <h4>Basic Information</h4>
 
                     <div class="form-group">
