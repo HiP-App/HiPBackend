@@ -34,7 +34,7 @@ body{
 .upperNavigation ul li a:hover,
 .upperNavigation ul li a:focus{
 	color: #cc1511;
-	background-color: white;
+	background-color: #f37e00;
 }
 
 .boxHeader{
@@ -91,14 +91,16 @@ body{
 nav {
 	margin: 15px;
 	margin-right: 0px;
-	background-color: #f37e00;
+
+    background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%);
+    background-repeat: repeat-x;
+
 	float: right;
 
     border-radius: 5px;
 
 	min-width: 600px;
 }
-
 /* ===================
 * content: Supervisor
 * =================== */
