@@ -13,6 +13,9 @@ GET     /randomUUID                 @controllers.Application.randomUUID
 GET     /users                      @controllers.Users.findUsers
 POST    /user                       @controllers.Users.createUser
 
+GET     /admin/groups               @controllers.Groups.getGroups
+POST    /admin/group                @controllers.Groups.createGroup
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 

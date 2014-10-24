@@ -1,8 +1,14 @@
 <!-- Content -->
-<div>
-    <div id="groups" class="panel panel-default">
-        <div class="panel-heading"> Groups </div> <!-- alt: class="boxHeader" -->
-        <div class="panel-body"> bla </div> <!-- alt: class="boxContent" -->
+<div ng-controller="GroupCtrl as gc">
+    <div id="groups" class="panel panel-default" >
+        <div class="panel-heading">  Groups  </div> <!-- alt: class="boxHeader" -->
+        <div class="panel-body">
+            <ul ng-repeat="grp in gc.groups">
+                <li>
+                    {{ grp.name }}
+                </li>
+            </ul>
+        </div> <!-- alt: class="boxContent" -->
 
         <div class="float-clear"></div>
     </div>
