@@ -6,11 +6,11 @@ body{
 	width: 1400px;
 	margin: auto;
 }
-
 #mainSingleBox{
     float: left;
-    width: 740px;
-    margin: 20px;
+    width: 940px;
+
+    margin-top: 15px;
 }
 
 .upperNavigation ul{
@@ -53,7 +53,7 @@ body{
 }
 
 #upperBox{
-	outline: 2px solid grey;
+/* outline: 2px solid grey; */
 }
 /* ===================
 * Head
@@ -80,6 +80,8 @@ nav {
 	background-color: #f37e00;
 	float: right;
 
+    border-radius: 5px;
+
 	min-width: 600px;
 }
 
@@ -94,9 +96,9 @@ nav {
 
 	width: 180px;
 
-	min-height: 400px;
+	min-height: 430px;
 
-	outline: 2px solid grey;
+    /* outline: 2px solid grey; */
 }
 
 #mainBox{
@@ -104,13 +106,12 @@ nav {
 	width: 940px;
 }
 
-#welcomeBox{
-	margin-top: 15px;
-	min-height: 25px;
+#welcomePanel{
+    margin-top: 15px;
+}
 
-	padding: 5px;
-	color: #f1f1f1;
-	background-color: #172b72;
+#welcomeBox{
+	min-height: 25px;
 }
 
 #dataReview{
@@ -125,7 +126,7 @@ nav {
 #templates{
 	min-height: 325px;
 
-	outline: 2px solid grey;
+    /* outline: 2px solid grey; */
 }
 
 #supervisorNavigation{
@@ -158,6 +159,8 @@ nav {
 	min-height: 30px;
 
 	background-color: #172b72;
+
+    border-radius: 5px;
 }
 
 #footer-left{
