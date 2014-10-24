@@ -11,7 +11,7 @@
         <div class="panel-body">
             <div class="menuEntry" ng-repeat="grp in gc.groups">
                 <div class="menuLeft">{{ grp.name }}</div>
-                <div class="menuRight"> [<span class="glyphicon glyphicon-trash">]</span></div>
+                <div class="menuRight"> [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span></div>
                 <div class="float-clear"></div>
             </div>
         </div>

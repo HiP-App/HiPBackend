@@ -78,6 +78,14 @@ class Groups extends Controller with MongoController {
         Ok(groups(0))
     }
   }
+
+  def deleteGroup(id : String) = Action.async {
+    collection.remove(Json.obj("uID" -> id)).map {
+      lastError =>
+        logger.debug(s"Successfully inserted with LastError: $lastError")
+        Created(s"Group Created")
+    }
+  }
 }
 
 

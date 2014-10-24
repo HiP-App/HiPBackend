@@ -1,6 +1,8 @@
 controllersModule.controller('GroupCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
+    this.groups = [];
+
     this.currentGroup = {name: this.groupName,
                          member: this.groupMember,
                          createdBy: "dummy",
@@ -22,7 +24,12 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', function($scope,$ht
     };
 
     this.createGroup = function(){
-        that.getGroups();
+        //FIXME: GET SHA1 up and running
+        //var hash = SHA1.hash(currentGroup.name + Math.floor((Math.random() * 100) + 1));
+        //console.log("hash: " + hash);
+
+        this.currentGroup.uID = this.currentGroup.name + Math.floor((Math.random() * 1000) + 1);
+        this.groups.push(this.currentGroup);
 
         $http.post('/admin/group', this.currentGroup).
             success(function(data, status, headers, config) {
@@ -33,5 +40,21 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', function($scope,$ht
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
+
+
+    };
+
+    this.deleteGroup = function(id){
+        $http.delete('/admin/group/'+id, this.currentGroup).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+
+        that.getGroups();
     };
 }]);
