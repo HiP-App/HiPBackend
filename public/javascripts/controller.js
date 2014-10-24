@@ -1,11 +1,6 @@
 controllersModule.controller('GroupCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
-    this.groups = [
-        {name:"123"},
-        {name:"345"}
-    ];
-
     this.currentGroup = {name: this.groupName,
                          member: this.groupMember,
                          createdBy: "dummy",
