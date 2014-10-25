@@ -1,42 +1,31 @@
 package controllers
 
-import play.api.libs.concurrent.Execution.Implicits._
-import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
-import reactivemongo.core.commands.Drop
-import reactivemongo.api.collections.default.BSONCollection
-import play.modules.reactivemongo.json.BSONFormats._
-import reactivemongo.bson.BSONDocument
-import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
-import scala.concurrent.Future
-import reactivemongo.api.Cursor
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import org.slf4j.{LoggerFactory, Logger}
 import javax.inject.Singleton
-import play.api.mvc._
+
+import org.slf4j.{Logger, LoggerFactory}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
+import play.api.mvc._
+import play.modules.reactivemongo.MongoController
+import play.modules.reactivemongo.json.collection.JSONCollection
+import reactivemongo.api.Cursor
+
+import scala.concurrent.Future
 
 @Singleton
 class Groups extends Controller with MongoController {
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Groups])
 
-  /*
-   * Get a JSONCollection (a Collection implementation that is designed to work
-   * with JsObject, Reads and Writes.)
-   * Note that the `collection` is not a `val`, but a `def`. We do _not_ store
-   * the collection reference to avoid potential problems in development with
-   * Play hot-reloading.
-   */
   def collection: JSONCollection = db.collection[JSONCollection]("groups")
 
-  // ------------------------------------------ //
-  // Using case classes + Json Writes and Reads //
-  // ------------------------------------------ //
-
-  import models._
   import models.JsonFormats._
+  import models._
 
+  /**
+   * Creates a group from the given JSON data within the request.body
+   *
+   * @return
+   */
   def createGroup = Action.async(parse.json) {
     request =>
       /*
@@ -57,11 +46,16 @@ class Groups extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  /**
+   * Returns every group in the db
+   *
+   * @return a list that contains every group as a JSON object
+   */
   def getGroups = Action.async {
     // let's do our query
     val cursor: Cursor[Group] = collection.
       // find all
-      find(Json.obj("createdBy" -> "dummy")).
+      find(Json.obj()).
       // perform the query and get a cursor of JsObject
       cursor[Group]
 
@@ -79,11 +73,17 @@ class Groups extends Controller with MongoController {
     }
   }
 
+  /**
+   * Deletes the group with the given id
+   *
+   * @param id of the group that should be deleted
+   * @return
+   */
   def deleteGroup(id : String) = Action.async {
+    /* delete from DB */
     collection.remove(Json.obj("uID" -> id)).map {
       lastError =>
-        logger.debug(s"Successfully inserted with LastError: $lastError")
-        Created(s"Group Created")
+        Created(s"Item removed")
     }
   }
 }

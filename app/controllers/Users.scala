@@ -1,21 +1,18 @@
 package controllers
 
-import play.api.libs.concurrent.Execution.Implicits._
-import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
-import reactivemongo.core.commands.Drop
-import reactivemongo.api.collections.default.BSONCollection
-import play.modules.reactivemongo.json.BSONFormats._
-import reactivemongo.bson.BSONDocument
-import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
-import scala.concurrent.Future
-import reactivemongo.api.Cursor
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import org.slf4j.{LoggerFactory, Logger}
 import javax.inject.Singleton
-import play.api.mvc._
+
+import org.slf4j.{Logger, LoggerFactory}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
+import play.api.mvc._
+import play.modules.reactivemongo.MongoController
+import play.modules.reactivemongo.json.BSONFormats._
+import play.modules.reactivemongo.json.collection.JSONCollection
+import reactivemongo.api.Cursor
+import reactivemongo.bson.BSONDocument
+
+import scala.concurrent.Future
 
 /**
  * The Users controllers encapsulates the Rest endpoints and the interaction with the MongoDB, via ReactiveMongo
@@ -40,8 +37,8 @@ class Users extends Controller with MongoController {
   // Using case classes + Json Writes and Reads //
   // ------------------------------------------ //
 
-  import models._
   import models.JsonFormats._
+  import models._
 
   def createUser = Action.async(parse.json) {
     request =>
