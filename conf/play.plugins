@@ -5,5 +5,7 @@
 9996:securesocial.core.providers.utils.DefaultPasswordValidator
 9997:securesocial.controllers.DefaultTemplatesPlugin
 
+9998:services.MyUserService
+
 9999:securesocial.core.providers.utils.BCryptPasswordHasher
 10004:securesocial.core.providers.UsernamePasswordProvider

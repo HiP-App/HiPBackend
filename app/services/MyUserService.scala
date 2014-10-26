@@ -108,6 +108,3 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
     // implement me
   }
 }
-
-// a simple User class that can have multiple identities
-case class DemoUser(main: Identity, identities: List[Identity])

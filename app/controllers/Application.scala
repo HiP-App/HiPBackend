@@ -4,7 +4,6 @@ import javax.inject.{Inject, Singleton}
 
 import org.slf4j.{Logger, LoggerFactory}
 import play.api.mvc._
-import services.UUIDGenerator
 
 @Singleton
 class Application extends Controller{
