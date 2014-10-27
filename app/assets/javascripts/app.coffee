@@ -21,8 +21,8 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/create', {
                 templateUrl: '/assets/partials/createGroup.html'
             })
-            .when('/demo', {
-                templateUrl: '/assets/partials/create.html'
+            .when('/group/view/:uID', {
+                templateUrl: '/assets/partials/groupview.html'
             })
             .otherwise({redirectTo: '/'})
 

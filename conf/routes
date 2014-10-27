@@ -12,9 +12,10 @@ GET     /                           @controllers.Application.index
 GET     /users                      @controllers.Users.findUsers
 POST    /user                       @controllers.Users.createUser
 
+GET     /admin/group/:uID           @controllers.Groups.getGroup(uID: String)
 GET     /admin/groups               @controllers.Groups.getGroups
 POST    /admin/group                @controllers.Groups.createGroup
-DELETE  /admin/group/:id            @controllers.Groups.deleteGroup(id: String)
+DELETE  /admin/group/:uID            @controllers.Groups.deleteGroup(uID: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
@@ -23,8 +24,12 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 # OWN CODE STARTS HERE
 GET     /user/:id                   @controllers.Users.returnUser(id: Integer)
 
-# SECURE SOCIAL
 
+
+
+
+
+# SECURE SOCIAL
 # Login page
 GET     /login                      securesocial.controllers.LoginPage.login
 GET     /logout                     securesocial.controllers.LoginPage.logout

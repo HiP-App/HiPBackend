@@ -1,6 +1,6 @@
 <!-- Content -->
 <div ng-controller="GroupCtrl as gc">
-    <div id="groups" class="panel panel-default" >
+    <div id="groups" class="panel panel-default">
 
         <div class="panel-heading">
             <div class="menuLeft">Groups</div>
@@ -31,17 +31,16 @@
         <div class="float-clear"></div>
 
         <div id="welcomePanel" class="panel panel-success">
-            <div id="welcomeBox" class="panel-heading"> Welcome </div>
-            <div class="panel-footer"> Data review </div> <!-- alt: id="dataReview" -->
+            <div id="welcomeBox" class="panel-heading"> Welcome to group: {{gc.bufferedGroup.name}}</div>
+            <div class="panel-footer"> Member of the group: {{gc.bufferedGroup.member}}</div> <!-- alt: id="dataReview" -->
         </div>
 
         <div id="contentBox">
             <div id="supervisorNavigation" class="panel panel-default">
-                <div class="panel-heading"> Supervisor Navigation </div>
+                <div class="panel-heading"> Group Navigation </div>
                 <div class="panel-body">
                     <ul>
                         <li> <a href="#"> ... </a> </li>
-                        <li> <a href="/#/group/create"> Add Group </a> </li>
                         <li> <a href="#"> ... </a> </li>
                     </ul>
                 </div>
@@ -49,11 +48,17 @@
 
             <div id="groupNotification" class="panel panel-default">
                 <div class="panel-heading"> Group Notification </div>
-                <div class="panel-body"> bla </div>
+                <div class="panel-body">
+                    <ul>
+                        <li ng-repeat="message in gc.bufferedGroup.notifications">
+                            {{message}}
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <div id="templates" class="panel panel-default">
-                <div class="panel-heading"> Templates </div>
+                <div class="panel-heading"> Group Chat </div>
                 <div class="panel-body"> bla </div>
             </div>
 

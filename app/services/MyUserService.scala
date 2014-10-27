@@ -67,6 +67,8 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
 
     def save(user: Identity): Identity = {
 
+      println("UserService: Saving user data");
+
       val email = user.email match {
         case Some(email) => email
         case _ => "N/A"
@@ -99,6 +101,8 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
     }
 
     def save(token: Token) {
+      println("UserService: Saving token");
+
       val tokentosave = Json.obj(
         "uuid" -> token.uuid,
         "email" -> token.email,

@@ -47,6 +47,34 @@ class Groups extends Controller with MongoController {
   }
 
   /**
+   * Returns a group given by its uID
+   *
+   * @return a list that contains every group as a JSON object
+   */
+  def getGroup(uID : String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[Group] = collection.
+      // find all
+      find(Json.obj("uID" -> uID)).
+      // perform the query and get a cursor of JsObject
+      cursor[Group]
+
+    // gather all the JsObjects in a list
+    val futureUsersList: Future[List[Group]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>
+      Json.arr(groups)
+    }
+
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      groups =>
+        Ok(groups(0))
+    }
+  }
+
+  /**
    * Returns every group in the db
    *
    * @return a list that contains every group as a JSON object
@@ -79,9 +107,9 @@ class Groups extends Controller with MongoController {
    * @param id of the group that should be deleted
    * @return
    */
-  def deleteGroup(id : String) = Action.async {
+  def deleteGroup(uID : String) = Action.async {
     /* delete from DB */
-    collection.remove(Json.obj("uID" -> id)).map {
+    collection.remove(Json.obj("uID" -> uID)).map {
       lastError =>
         Created(s"Item removed")
     }

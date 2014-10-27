@@ -1,12 +1,31 @@
-controllersModule.controller('GroupCtrl', ['$scope','$http', function($scope,$http) {
+controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
-    this.groups = [];
+    this.groups = ["initMe"];
 
     this.currentGroup = {name: this.groupName,
                          member: this.groupMember,
                          createdBy: "dummy",
-                         notifications: ["the group #name# has been created by an supervisor"]};
+                         notifications: ["the group has been created by dummy"]};
+
+    this.bufferedGroup = {uID: "toSet"};
+
+    /* functions */
+    this.getGroupByUID = function(uID){
+        $http.get('/admin/group/'+uID).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+
+                that.bufferedGroup = data[0];
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+
+                that.bufferedGroup.name = "Error: Connection error";
+            });
+    };
 
     this.getGroups = function(){
         $http.get('/admin/groups').
@@ -57,4 +76,13 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', function($scope,$ht
 
         that.getGroups();
     };
+
+    /* update parameter if needed */
+    if($routeParams.uID != undefined){
+        that.getGroupByUID($routeParams.uID);
+    }
+
+    if(that.groups[0] = "initMe"){
+        that.getGroups();
+    }
 }]);

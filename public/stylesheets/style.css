@@ -52,6 +52,10 @@ body{
 	background-color: #ffffff;
 }
 
+.panel-body a:hover{
+    color: #f37e00;
+}
+
 .menuEntry{
     padding: 5px;
     border-radius: 5px;
