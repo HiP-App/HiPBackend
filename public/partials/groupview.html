@@ -61,16 +61,20 @@
                 <div class="panel-heading"> Group Chat {{cc.chat.name}} </div>
                 <div class="panel-body">
                     <div id="chatContent">
-                        <ul>
-                            <li ng-repeat="message in cc.chat.message">
-                                {{message}}
-                            </li>
-                        </ul>
+                        <div  class="alert alert-info" role="alert" ng-repeat="message in cc.messagesJSON" ng-hide='message.content == ""'>
+                            {{message.content}} <br> <p align="right">  by {{message.sender}} </p>
+                        </div>
                     </div>
 
+                    <br>
+
                     <div id="chatControls">
-                        <input id="message" type="text" size="15" ng-model="cc.currentMessage">
-                        <button type="button" ng-click="cc.postMessage(false)"> Send </button>
+                        <div id="chatTextfield">
+                            <input id="message" type="text" size="10" ng-model="cc.currentMessage" class="form-control">
+                        </div>
+                       <div id="chatSendButton">
+                           <button type="button" ng-click="cc.postMessage(false)" class="btn btn-default"> Send </button>
+                       </div>
                     </div>
 
                 </div>

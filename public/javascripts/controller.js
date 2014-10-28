@@ -93,6 +93,12 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
 controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
+    this.errorObject = {
+        content:"Connection Error",
+        sender:"System"
+    };
+
+    this.messagesJSON = [that.errorObject];
     this.chat = { };
 
     /* functions */
@@ -130,11 +136,39 @@ controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', func
             success(function(data, status, headers, config) {
                 that.chat.message.push(that.currentMessage);
                 that.chat.sender.push("unknown");
+
+                // prepare the JSON formatting
+                that.prepareChatMessages();
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
+    };
+
+    this.prepareChatMessages = function(){
+        if( that.chat.message != undefined ){
+            /* clear old array - efficient solution according to Stackoverflow.com*/
+            while(that.messagesJSON.length > 0) {
+                that.messagesJSON.pop();
+            }
+
+            /* set new JSON */
+            var amountOfMessages = that.chat.message.length;
+
+            var messagesTemp = that.chat.message.slice().reverse();
+            var senderTemp   = that.chat.sender.slice().reverse();
+
+            for(var i = 0; i < amountOfMessages; i++){
+                that.messagesJSON.push({
+                    content : messagesTemp[i],
+                    sender : senderTemp[i]
+                })
+            }
+
+            return that.messagesJSON;
+        }else
+            return [errorObject]
     };
 
     this.getChatByGroupUID = function(uID){
@@ -147,6 +181,9 @@ controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', func
                     /* create an empty chat */
                     that.postMessage("true");
                 }
+
+                // prepare the JSON formatting
+                that.prepareChatMessages();
 
             }).
             error(function(data, status, headers, config) {

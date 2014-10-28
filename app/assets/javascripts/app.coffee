@@ -13,7 +13,8 @@ dependencies = [
 app = angular.module('myApp', dependencies)
 
 angular.module('myApp.routeConfig', ['ngRoute'])
-    .config ($routeProvider) ->
+    .config ($routeProvider, $locationProvider) ->
+        #$locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
                 templateUrl: '/assets/partials/hipsupervisor.html'
