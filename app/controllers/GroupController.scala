@@ -13,8 +13,8 @@ import reactivemongo.api.Cursor
 import scala.concurrent.Future
 
 @Singleton
-class Groups extends Controller with MongoController {
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Groups])
+class GroupController extends Controller with MongoController {
+  private final val logger: Logger = LoggerFactory.getLogger(classOf[GroupController])
 
   def collection: JSONCollection = db.collection[JSONCollection]("groups")
 
@@ -35,7 +35,7 @@ class Groups extends Controller with MongoController {
        * (insert() takes a JsObject as parameter, or anything that can be
        * turned into a JsObject using a Writes.)
        */
-      request.body.validate[Group].map {
+      request.body.validate[GroupModel].map {
         group =>
           // `user` is an instance of the case class `models.User`
           collection.insert(group).map {
@@ -53,14 +53,14 @@ class Groups extends Controller with MongoController {
    */
   def getGroup(uID : String) = Action.async {
     // let's do our query
-    val cursor: Cursor[Group] = collection.
+    val cursor: Cursor[GroupModel] = collection.
       // find all
       find(Json.obj("uID" -> uID)).
       // perform the query and get a cursor of JsObject
-      cursor[Group]
+      cursor[GroupModel]
 
     // gather all the JsObjects in a list
-    val futureUsersList: Future[List[Group]] = cursor.collect[List]()
+    val futureUsersList: Future[List[GroupModel]] = cursor.collect[List]()
 
     // transform the list into a JsArray
     val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>
@@ -81,14 +81,14 @@ class Groups extends Controller with MongoController {
    */
   def getGroups = Action.async {
     // let's do our query
-    val cursor: Cursor[Group] = collection.
+    val cursor: Cursor[GroupModel] = collection.
       // find all
       find(Json.obj()).
       // perform the query and get a cursor of JsObject
-      cursor[Group]
+      cursor[GroupModel]
 
     // gather all the JsObjects in a list
-    val futureUsersList: Future[List[Group]] = cursor.collect[List]()
+    val futureUsersList: Future[List[GroupModel]] = cursor.collect[List]()
 
     // transform the list into a JsArray
     val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>

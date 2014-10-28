@@ -57,9 +57,23 @@
                 </div>
             </div>
 
-            <div id="templates" class="panel panel-default">
-                <div class="panel-heading"> Group Chat </div>
-                <div class="panel-body"> bla </div>
+            <div id="templates" class="panel panel-default" ng-controller="ChatCtrl as cc">
+                <div class="panel-heading"> Group Chat {{cc.chat.name}} </div>
+                <div class="panel-body">
+                    <div id="chatContent">
+                        <ul>
+                            <li ng-repeat="message in cc.chat.message">
+                                {{message}}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="chatControls">
+                        <input id="message" type="text" size="15" ng-model="cc.currentMessage">
+                        <button type="button" ng-click="cc.postMessage(false)"> Send </button>
+                    </div>
+
+                </div>
             </div>
 
             <div class="float-clear"></div>

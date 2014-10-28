@@ -1,6 +1,6 @@
 package models
 
-case class User( age: Int,
+case class UserModel( age: Int,
                  firstName: String,
                  lastName: String,
                  active: Boolean)

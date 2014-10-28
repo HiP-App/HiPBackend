@@ -8,21 +8,24 @@
 # Single endpoint for serving AngularJS
 GET     /                           @controllers.Application.index
 
-# User management API
-GET     /users                      @controllers.Users.findUsers
-POST    /user                       @controllers.Users.createUser
+GET     /admin/chat/:uID            @controllers.ChatController.getChat(uID: String)
+POST    /admin/chat/:newChat        @controllers.ChatController.postChat(newChat : String)
+DELETE  /admin/chat/:uID            @controllers.ChatController.deleteChat(uID: String)
 
-GET     /admin/group/:uID           @controllers.Groups.getGroup(uID: String)
-GET     /admin/groups               @controllers.Groups.getGroups
-POST    /admin/group                @controllers.Groups.createGroup
-DELETE  /admin/group/:uID            @controllers.Groups.deleteGroup(uID: String)
+GET     /users                      @controllers.UserController.findUsers
+POST    /user                       @controllers.UserController.createUser
+
+GET     /admin/group/:uID           @controllers.GroupController.getGroup(uID: String)
+GET     /admin/groups               @controllers.GroupController.getGroups
+POST    /admin/group                @controllers.GroupController.createGroup
+DELETE  /admin/group/:uID           @controllers.GroupController.deleteGroup(uID: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # OWN CODE STARTS HERE
-GET     /user/:id                   @controllers.Users.returnUser(id: Integer)
+GET     /user/:id                   @controllers.UserController.returnUser(id: Integer)
 
 
 

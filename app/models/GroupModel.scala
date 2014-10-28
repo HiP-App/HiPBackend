@@ -1,6 +1,6 @@
 package models
 
-case class Group(uID: String,
+case class GroupModel(uID: String,
                  name: String,
                  member: String,
                  createdBy: String,
