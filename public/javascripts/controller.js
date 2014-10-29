@@ -31,6 +31,20 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
     }
 
     /**
+     * This function creates a correct notification from notification data
+     *
+     * @param data - of the structure: [system_call, optional data like username, etc.]
+     * @returns {*} - The correct notification
+     */
+    this.getNotification = function (data) {
+        var res = data.split(",");
+
+        var notiMessage = that.getTerm(res[0]);
+
+        return notiMessage + " " + res[1];
+    }
+
+    /**
      * Sends a new term to the server
      */
     this.createTerm = function(){
