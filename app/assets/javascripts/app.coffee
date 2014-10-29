@@ -25,6 +25,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/view/:uID', {
                 templateUrl: '/assets/partials/groupview.html'
             })
+            .when('/language/create', {
+              templateUrl: '/assets/partials/createLangTerm.html'
+            })
             .otherwise({redirectTo: '/'})
 
 @commonModule = angular.module('myApp.common', [])

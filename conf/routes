@@ -15,6 +15,9 @@ DELETE  /admin/chat/:uID            @controllers.ChatController.deleteChat(uID: 
 GET     /users                      @controllers.UserController.findUsers
 POST    /user                       @controllers.UserController.createUser
 
+GET     /admin/languages/:lang      @controllers.LanguageController.getLanguageDataForClient(lang: String)
+POST    /admin/languages            @controllers.LanguageController.postTerm
+
 GET     /admin/group/:uID           @controllers.GroupController.getGroup(uID: String)
 GET     /admin/groups               @controllers.GroupController.getGroups
 POST    /admin/group                @controllers.GroupController.createGroup

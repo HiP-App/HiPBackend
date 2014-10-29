@@ -13,7 +13,7 @@
     <script src='@routes.Assets.at("javascripts/sha1.js")' type="text/javascript"></script>
 </head>
 <body>
-<div class="container-fluid col-md-10 col-md-offset-1">
+<div class="container-fluid col-md-10 col-md-offset-1"  ng-controller="LangCtrl as lc">
 
     <!-- Header -->
     <div id="header">
@@ -22,11 +22,21 @@
         </div>
 
         <nav> <!-- class="upperNavigation" -->
-            <ul class="nav nav-pills">
-                <li class="inner-nav"> <a href="#"> Home </a> </li>
-                <li class="inner-nav"> <a href="#"> MyHiP </a> </li>
-                <li class="inner-nav"> <a href="#"> Contact </a> </li>
-            </ul>
+            <div class="navbar-left">
+                <ul class="nav nav-pills">
+                    <li class="inner-nav"> <a href="#"> Home </a> </li>
+                    <li class="inner-nav"> <a href="#"> MyHiP </a> </li>
+                    <li class="inner-nav"> <a href="#"> {{lc.getTerm('system_navi_contact')}} </a> </li>
+                </ul>
+            </div>
+
+            <div class="navbar-right">
+                <ul class="nav nav-pills">
+                    <li class="inner-nav"> <a href="/#/language/create"> {{lc.getTerm('system_lang_edit')}} </a> </li>
+                    <li class="inner-nav"> <a ng-click="lc.getLanguage('eng')">   <img src='assets/images/eng.png' alt="english" width="16"> </a> </li>
+                    <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/de.png' alt="german" width="16"> </a> </li>
+                </ul>
+            </div>
         </nav>
 
         <div class="float-clear"></div>

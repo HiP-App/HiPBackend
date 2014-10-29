@@ -3,7 +3,7 @@
     <div id="groups" class="panel panel-default" >
 
         <div class="panel-heading">
-            <div class="menuLeft">Groups</div>
+            <div class="menuLeft">{{lc.getTerm('system_groups')}}</div>
             <div class="menuRight"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
                 <span class='glyphicon  glyphicon-refresh'></span> </a>
             </div>
@@ -31,29 +31,29 @@
         <div class="float-clear"></div>
 
         <div id="welcomePanel" class="panel panel-success">
-            <div id="welcomeBox" class="panel-heading"> Welcome </div>
-            <div class="panel-footer"> Data review </div> <!-- alt: id="dataReview" -->
+            <div id="welcomeBox" class="panel-heading"> {{lc.getTerm('system_supervisor_welcome')}} </div>
+            <div class="panel-footer"> {{lc.getTerm('system_supervisor_datareview')}} </div> <!-- alt: id="dataReview" -->
         </div>
 
         <div id="contentBox">
             <div id="supervisorNavigation" class="panel panel-default">
-                <div class="panel-heading"> Supervisor Navigation </div>
+                <div class="panel-heading"> {{lc.getTerm('system_supervisor_navigation')}} </div>
                 <div class="panel-body">
                     <ul>
                         <li> <a href="#"> ... </a> </li>
-                        <li> <a href="/#/group/create"> Add Group </a> </li>
+                        <li> <a href="/#/group/create"> {{lc.getTerm('system_supervisor_navigation_addGroup')}} </a> </li>
                         <li> <a href="#"> ... </a> </li>
                     </ul>
                 </div>
             </div>
 
             <div id="groupNotification" class="panel panel-default">
-                <div class="panel-heading"> Group Notification </div>
+                <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
                 <div class="panel-body"> bla </div>
             </div>
 
             <div id="templates" class="panel panel-default">
-                <div class="panel-heading"> Templates </div>
+                <div class="panel-heading"> {{lc.getTerm('system_supervisor_templates')}} </div>
                 <div class="panel-body"> bla </div>
             </div>
 
