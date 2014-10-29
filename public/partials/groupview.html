@@ -49,11 +49,9 @@
             <div id="groupNotification" class="panel panel-default">
                 <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
                 <div class="panel-body">
-                    <ul>
-                        <li ng-repeat="message in gc.bufferedGroup.notifications">
+                        <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.notifications">
                             {{message}}
-                        </li>
-                    </ul>
+                        </div>
                 </div>
             </div>
 

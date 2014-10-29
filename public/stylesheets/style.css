@@ -87,6 +87,10 @@ body{
 
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 #chatContent{
     overflow-y: auto;
     overflow-x: auto;
