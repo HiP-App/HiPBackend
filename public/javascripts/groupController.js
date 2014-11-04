@@ -7,10 +7,11 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
 
     this.groups = ["initMe"];
 
+    this.createdByTemp = "dummy";
     this.currentGroup = {name: this.groupName,
         member: this.groupMember,
-        createdBy: "dummy",
-        notifications: ["the group has been created by dummy"]};
+        createdBy: that.createdByTemp,
+        notifications: ["system_notification_groupCreated,"+that.createdByTemp]};
 
     this.bufferedGroup = {uID: "toSet"};
 
