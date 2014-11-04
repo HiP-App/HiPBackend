@@ -27,44 +27,41 @@
     </div>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="LangCtrl as lc">
-        <div class="panel-heading"> Create Term </div>
+        <div class="panel-heading"> {{lc.getTerm('system_messages_head')}} </div>
         <div >
-
-
             <div class="panel-body">
                 <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
                       ng-submit="lc.createTerm()">
-                    <h4>Term Information</h4>
+                    <h4>{{lc.getTerm('system_messages_yourMessages')}}</h4>
 
                     <div class="form-group">
+                        <!----
                         <div class="col-sm-offset-1 col-sm-8 input-group">
                             <span class="input-group-addon">Language</span>
                             <input type="text" class="form-control" name="language" id="language" placeholder=""
                                    ng-model="lc.currentTerm.language">
                         </div>
-                    </div>
+                        --->
 
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-8 input-group">
-                            <span class="input-group-addon">Language_Key</span>
-                            <input type="text" class="form-control" name="langKey" id="langKey" placeholder=""
-                                   ng-model="lc.currentTerm.key">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-8 input-group">
-                            <span class="input-group-addon">Language_Value</span>
-                            <input type="text" class="form-control" name="langValue" id="langValue" placeholder=""
-                                   ng-model="lc.currentTerm.value">
-                        </div>
+                        <table data-toggle="table" data-height="299">
+                            <thead>
+                                <tr>
+                                    <th>{{lc.getTerm('system_messages_sender')}}</th>
+                                    <th>{{lc.getTerm('system_messages_messageName')}}</th>
+                                    <th>{{lc.getTerm('system_messages_options')}}</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>AAAAAAAAAAAAAAA&ouml;h</td>
+                                <td>BBBBBBBBBBBBBBBBBBBB</td>
+                                <td>CCCCCCCCCCCCCCCCCCCCCC</td>
+                            </tr>
+                        </table>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6 text-right">
-                            <a ng-href="/#/" id="btn_cancel" class="btn btn-warning">Cancel</a>
-
-                            <button type="submit" class="btn btn-success" id="btn_create">Create term</button>
+                            <button type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_messages_write')}} {{cc.chat.name}}</button>
                         </div>
                     </div>
 

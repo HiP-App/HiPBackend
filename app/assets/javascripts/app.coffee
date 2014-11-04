@@ -28,6 +28,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/language/create', {
               templateUrl: '/assets/partials/createLangTerm.html'
             })
+            .when('/messages', {
+             templateUrl: '/assets/partials/messages.html'
+            })
             .otherwise({redirectTo: '/'})
 
 @commonModule = angular.module('myApp.common', [])
