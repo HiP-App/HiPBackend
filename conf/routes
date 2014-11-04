@@ -8,6 +8,8 @@
 # Single endpoint for serving AngularJS
 GET     /                           @controllers.Application.index
 
+GET     /admin/messages/:recName    @controllers.MessageController.getMessages(recName: String)
+
 GET     /admin/chat/:uID            @controllers.ChatController.getChat(uID: String)
 POST    /admin/chat/:newChat        @controllers.ChatController.postChat(newChat : String)
 DELETE  /admin/chat/:uID            @controllers.ChatController.deleteChat(uID: String)
