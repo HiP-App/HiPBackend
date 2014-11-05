@@ -28,7 +28,7 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/language/create', {
               templateUrl: '/assets/partials/createLangTerm.html'
             })
-            .when('/messages', {
+            .when('/messages/:recName', {
              templateUrl: '/assets/partials/messages.html'
             })
             .otherwise({redirectTo: '/'})

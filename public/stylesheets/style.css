@@ -37,6 +37,9 @@ body{
 	background-color: #f37e00;
 }
 
+.td-small { min-width: 100px; }
+.td-big   { min-width: 200px; }
+
 .boxHeader{
 	min-height: 25px;
 
