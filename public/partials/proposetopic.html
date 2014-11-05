@@ -1,0 +1,64 @@
+<div ng-controller="GroupCtrl as gc">
+    <div id="groups" class="panel panel-default">
+        <div class="panel-heading">
+            <div class="menuLeft">{{lc.getTerm('system_groups')}}</div>
+            <div class="menuRight"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
+                <span class='glyphicon  glyphicon-refresh'></span> </a>
+            </div>
+            <div class="float-clear"></div>
+        </div> <!-- alt: class="boxHeader" -->
+
+        <div class="panel-body">
+            <div class="menuEntry" ng-repeat="grp in gc.groups">
+                <div class="menuLeft">  <a ng-href="/#/group/view/{{ grp.uID }}">{{ grp.name }}</a></div>
+                <div class="menuRight"> [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span></div>
+                <div class="float-clear"></div>
+            </div>
+        </div>
+
+        <div class="float-clear"></div>
+    </div>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="ProposeCtrl as pc">
+        <div class="panel-heading"> {{lc.getTerm('system_propose_header')}} </div>
+        <div >
+
+            <div class="panel-body">
+                <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
+                      ng-submit="pc.proposeTopic()">
+                    <h4> {{lc.getTerm('system_propose_information')}}</h4>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <span class="input-group-addon">{{lc.getTerm('system_propose_name')}}</span>
+                            <input type="text" class="form-control" name="proposeName" id="proposeName" placeholder=""
+                                   ng-model="pc.propose.name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <span class="input-group-addon">{{lc.getTerm('system_propose_desc')}}</span>
+                            <input type="text" class="form-control" name="proposeMember" id="proposeMember" placeholder=""
+                                   ng-model="pc.propose.content">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-6 text-right">
+                            <a ng-href="/#/" id="btn_cancel" class="btn btn-warning">{{lc.getTerm('system_propose_form_cancel')}}</a>
+
+                            <button type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_propose_form_create')}}</button>
+                        </div>
+                    </div>
+
+                    <h4>Debug preview</h4>
+                    <pre>{{ gc.currentGroup | json }}</pre>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

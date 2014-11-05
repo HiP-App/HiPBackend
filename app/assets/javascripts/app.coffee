@@ -22,6 +22,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/create', {
                 templateUrl: '/assets/partials/createGroup.html'
             })
+            .when('/group/propose', {
+              templateUrl: '/assets/partials/proposetopic.html'
+            })
             .when('/group/view/:uID', {
                 templateUrl: '/assets/partials/groupview.html'
             })
