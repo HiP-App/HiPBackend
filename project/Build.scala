@@ -1,3 +1,4 @@
+import sbt.Keys._
 import sbt._
 
 object ApplicationBuild extends Build {
@@ -15,9 +16,8 @@ object ApplicationBuild extends Build {
     "ws.securesocial" %% "securesocial" % "2.1.4"
   )
 
-
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here
+    resolvers += Resolver.sonatypeRepo("releases")
   )
 
 }

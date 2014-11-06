@@ -4,8 +4,6 @@
 # Note: @controllers syntax signifies the actual controller instance, retrieved via GlobalSettings.getController().
 # ~~~~
 
-# DEFAULT TEMPLATE CODE
-# Single endpoint for serving AngularJS
 GET     /                           @controllers.Application.index
 
 GET     /admin/messages/:recName    @controllers.MessageController.getMessages(recName: String)
@@ -13,9 +11,6 @@ GET     /admin/messages/:recName    @controllers.MessageController.getMessages(r
 GET     /admin/chat/:uID            @controllers.ChatController.getChat(uID: String)
 POST    /admin/chat/:newChat        @controllers.ChatController.postChat(newChat : String)
 DELETE  /admin/chat/:uID            @controllers.ChatController.deleteChat(uID: String)
-
-GET     /users                      @controllers.UserController.findUsers
-POST    /user                       @controllers.UserController.createUser
 
 GET     /admin/languages/:lang      @controllers.LanguageController.getLanguageDataForClient(lang: String)
 POST    /admin/languages            @controllers.LanguageController.postTerm
@@ -25,24 +20,12 @@ GET     /admin/groups               @controllers.GroupController.getGroups
 POST    /admin/group                @controllers.GroupController.createGroup
 DELETE  /admin/group/:uID           @controllers.GroupController.deleteGroup(uID: String)
 
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
-# OWN CODE STARTS HERE
-GET     /user/:id                   @controllers.UserController.returnUser(id: Integer)
-
-
-
-
-
-
 # SECURE SOCIAL
 # Login page
 GET     /login                      securesocial.controllers.LoginPage.login
 GET     /logout                     securesocial.controllers.LoginPage.logout
 
-# User Registration and password handling (only needed if you are using UsernamePasswordProvider)
+# User Registration and password handling
 GET     /signup                     securesocial.controllers.Registration.startSignUp
 POST    /signup                     securesocial.controllers.Registration.handleStartSignUp
 GET     /signup/:token              securesocial.controllers.Registration.signUp(token)
@@ -54,8 +37,10 @@ POST    /reset/:token               securesocial.controllers.Registration.handle
 GET     /password                   securesocial.controllers.PasswordChange.page
 POST    /password                   securesocial.controllers.PasswordChange.handlePasswordChange
 
-
 # Providers entry points
 GET     /authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
 POST    /authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
 GET     /not-authorized             securesocial.controllers.ProviderController.notAuthorized
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

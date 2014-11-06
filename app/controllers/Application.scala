@@ -11,7 +11,6 @@ class Application extends Controller  with SecureSocial{
 
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
 
-   /*
   def index = SecuredAction { implicit  request =>
 
     println(" USER ---- ::: ")
@@ -19,12 +18,12 @@ class Application extends Controller  with SecureSocial{
     println(" USER ---- ::: ")
 
     Ok(views.html.index())
-  }*/
+  }
 
-
+  /*
   def index = Action {
     logger.info("Serving index page...")
     Ok(views.html.index())
-  }
+  }*/
 
 }
