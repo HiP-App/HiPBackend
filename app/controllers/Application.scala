@@ -25,10 +25,4 @@ class Application extends Controller  with SecureSocial{
     Ok(views.html.index(secureOption(request.user.email,"ERROR: No email address specified")))
   }
 
-  /*
-  def index = Action {
-    logger.info("Serving index page...")
-    Ok(views.html.index())
-  }*/
-
 }
