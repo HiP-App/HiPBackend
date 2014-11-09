@@ -6,7 +6,8 @@
 
 GET     /                           @controllers.Application.index
 
-GET     /admin/messages/:recName    @controllers.MessageController.getMessages(recName: String)
+GET     /admin/messages/all/:recName        @controllers.MessageController.getMessages(recName: String)
+GET     /admin/messages/view/:recID         @controllers.MessageController.getDetails(recID: String)
 
 GET     /admin/chat/:uID            @controllers.ChatController.getChat(uID: String)
 POST    /admin/chat/:newChat        @controllers.ChatController.postChat(newChat : String)

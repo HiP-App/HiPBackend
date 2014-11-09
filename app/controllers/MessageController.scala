@@ -51,6 +51,34 @@ class MessageController extends Controller with MongoController {
         Ok(messages(0))
     }
   }
+
+  /**
+   * Returns a concrete messages given its id
+   *
+   * @return a list that contains the messages as a JSON object
+   */
+  def getDetails(recID : String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[MessageModel] = collection.
+      // find all
+      find(Json.obj("id" -> recID)).
+      // perform the query and get a cursor of JsObject
+      cursor[MessageModel]
+
+    // gather all the JsObjects in a list
+    val futureUsersList: Future[List[MessageModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { messages =>
+      Json.arr(messages)
+    }
+
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      messages =>
+        Ok(messages(0))
+    }
+  }
 }
 
 

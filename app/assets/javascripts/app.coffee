@@ -31,8 +31,11 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/language/create', {
               templateUrl: '/assets/partials/createLangTerm.html'
             })
-            .when('/messages/:recName', {
+            .when('/messages/all/:recName', {
              templateUrl: '/assets/partials/messages.html'
+            })
+            .when('/messages/view/:messageID', {
+              templateUrl: '/assets/partials/messagesdetails.html'
             })
             .otherwise({redirectTo: '/'})
 
