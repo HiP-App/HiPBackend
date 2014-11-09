@@ -22,7 +22,7 @@ class Application extends Controller  with SecureSocial{
     println(request.user)
     println(" USER ---- ::: ")
 
-    Ok(views.html.index(secureOption(request.user.email,"ERROR: No email address specified")))
+    Ok(views.html.index(secureOption(request.user.email,"ERROR: No email address specified"), request.user.firstName))
   }
 
 }
