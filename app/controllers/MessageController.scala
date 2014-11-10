@@ -25,6 +25,31 @@ class MessageController extends Controller with MongoController {
   import models._
 
   /**
+   * Sends a message with the given JSON data within the request.body
+   *
+   * @return
+   */
+  def sendMessage = Action.async(parse.json) {
+    request =>
+      /*
+       * request.body is a JsValue.
+       * There is an implicit Writes that turns this JsValue as a JsObject,
+       * so you can call insert() with this JsValue.
+       * (insert() takes a JsObject as parameter, or anything that can be
+       * turned into a JsObject using a Writes.)
+       */
+      request.body.validate[MessageModel].map {
+        message =>
+          // `user` is an instance of the case class `models.User`
+          collection.insert(message).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Message send")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  /**
    * Returns a list of messages given its receiver name
    *
    * @return a list that contains the messages as a JSON object

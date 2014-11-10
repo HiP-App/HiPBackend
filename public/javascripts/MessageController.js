@@ -55,6 +55,9 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
 
     /* update parameter if needed */
     if($routeParams.recName != undefined){
+        if(this.debug)
+            console.log("info MessageCtrl: fetching messages for user " + $routeParams.recName);
+
         that.getMessagesByReceiverName($routeParams.recName);
     }
 
