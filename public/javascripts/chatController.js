@@ -14,7 +14,7 @@ controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', func
     this.chat = { };
 
     /* functions */
-    this.postMessage = function(newChat){
+    this.postMessage = function(newChat, user){
         if(that.chat == undefined){
             that.chat = {};
             that.chat.uID = $routeParams.uID;
@@ -41,13 +41,13 @@ controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', func
             }
 
             toSend.message.push(this.currentMessage);
-            toSend.sender.push("unknown");
+            toSend.sender.push(user);
         }
 
         $http.post('/admin/chat/'+newChat, toSend).
             success(function(data, status, headers, config) {
                 that.chat.message.push(that.currentMessage);
-                that.chat.sender.push("unknown");
+                that.chat.sender.push(user);
 
                 // prepare the JSON formatting
                 that.prepareChatMessages();
