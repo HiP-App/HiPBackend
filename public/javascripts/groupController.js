@@ -5,7 +5,7 @@
 controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
-    this.debug = true;
+    this.debug = false;
 
     this.groups = ["initMe"];
 
@@ -74,6 +74,10 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
                 // when the response is available
 
                 that.bufferedGroup = data[0];
+
+                // revert the order of the notifications
+                var revertedNotifications = that.bufferedGroup.notifications.slice().reverse();
+                that.bufferedGroup.revertedNotifications = revertedNotifications;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs

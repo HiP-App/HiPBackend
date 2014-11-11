@@ -34,7 +34,6 @@
 
                 <div class="navbar-right">
                     <ul class="nav nav-pills">
-                        <li class="inner-nav"> <a href="/#/language/create"> {{lc.getTerm('system_lang_edit')}} </a> </li>
                         <li class="inner-nav"> <a ng-click="lc.getLanguage('eng')">   <img src='assets/images/eng.png' alt="english" width="16"> </a> </li>
                         <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/de.png' alt="german" width="16"> </a> </li>
                     </ul>
@@ -52,7 +51,7 @@
                 <span>HiP 2014</span>
             </div>
             <div id="footer-content">
-                ABC
+                <li class="inner-nav"> <a href="/#/language/create"> {{lc.getTerm('system_lang_edit')}} </a> </li>
             </div>
         </div>
     </div>
