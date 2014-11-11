@@ -5,17 +5,68 @@
 controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
+    this.debug = true;
+
     this.groups = ["initMe"];
 
     this.createdByTemp = "dummy";
     this.currentGroup = {name: this.groupName,
         member: this.groupMember,
         createdBy: that.createdByTemp,
-        notifications: ["system_notification_groupCreated,"+that.createdByTemp]};
+        topic: ""
+    };
 
     this.bufferedGroup = {uID: "toSet"};
 
     /* functions */
+
+    /*
+     * ----------------------
+     * + HELPER FUNCTIONS   +
+     * ----------------------
+     */
+    var createNotification = function(keyOfTheNotification, arrayOfValues){
+        if(keyOfTheNotification == "system_notification_groupCreated"){
+            return "system_notification_groupCreated" + "," + arrayOfValues[0]
+        }
+
+        if(keyOfTheNotification == "system_notification_groupTopicChanged"){
+            return "system_notification_groupTopicChanged" + "," + arrayOfValues[0]
+        }
+    }
+
+    /*
+     * ----------------------
+     * + CONTROLLER FUNCTIONS   +
+     * ----------------------
+     */
+
+    this.createNotificationAtGroup = function(groupid, keyOfTheNotification, arrayOfValues){
+        var notification = createNotification(keyOfTheNotification, arrayOfValues);
+
+        var grpNotification = {
+            groupID : groupid,
+            notification : notification
+        }
+
+        if(that.debug){
+            console.log("info GrpCtrl: Posting notification with groupID " + grpNotification.groupID + " and notification " +
+                grpNotification.notification);
+
+            console.log(grpNotification);
+        }
+
+        $http.post('/admin/notification', grpNotification).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+    }
+
     this.getGroupByUID = function(uID){
         $http.get('/admin/group/'+uID).
             success(function(data, status, headers, config) {
@@ -47,13 +98,20 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
-    this.createGroup = function(){
+    this.createGroup = function(creator, firstname){
         //FIXME: GET SHA1 up and running
         //var hash = SHA1.hash(currentGroup.name + Math.floor((Math.random() * 100) + 1));
         //console.log("hash: " + hash);
 
         this.currentGroup.uID = this.currentGroup.name + Math.floor((Math.random() * 1000) + 1);
         this.groups.push(this.currentGroup);
+
+        // set creator id of this group
+        this.currentGroup.createdBy = creator;
+
+        // create current notification
+        this.currentGroup.notifications = [];
+        this.currentGroup.notifications.push(createNotification("system_notification_groupCreated",[firstname]));
 
         $http.post('/admin/group', this.currentGroup).
             success(function(data, status, headers, config) {

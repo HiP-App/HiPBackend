@@ -47,6 +47,28 @@ class GroupController extends Controller with MongoController {
   }
 
   /**
+   * Adds a notification to a group.
+   * The needed information (groupID and notification) is contained in the
+   * HTTP-POST.
+   *
+   * @return
+   */
+  def addNotification = Action.async(parse.json) {
+    request =>
+      request.body.validate[NotificationModel].map {
+        notification =>
+          // `notification` is an instance of the case class `models.NotificationModel`
+          val modifier    =   Json.obj("$push" -> Json.obj("notifications" -> notification.notification))
+
+          collection.update(Json.obj("uID" -> notification.groupID), modifier).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Notification has been added")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  /**
    * Returns a group given by its uID
    *
    * @return a list that contains every group as a JSON object

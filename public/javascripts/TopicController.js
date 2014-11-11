@@ -25,7 +25,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         }
 
         if(that.debug)
-            console.log("posting topic with name: " + topic.name)
+            console.log("info TopicController: posting topic with name: " + topic.name)
 
         // post
         $http.post('/admin/topic', topic).
@@ -37,5 +37,19 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
+
+        // adding topic to group
+        // FIXME
+
+        // adding notification
+        if(that.currentTopic.groupID != "" || that.currentTopic.groupID != "undefined" ){
+            if(that.debug){
+                console.log("info TopicController: posting notification to grp: " + that.currentTopic.groupID);
+                console.log("info TopicController: with name " + that.currentTopic.name);
+            }
+
+            $scope.gc.createNotificationAtGroup(that.currentTopic.groupID,"system_notification_groupTopicChanged",
+                [that.currentTopic.name])
+        }
     }
 }]);

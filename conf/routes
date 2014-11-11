@@ -19,6 +19,8 @@ POST    /admin/languages            @controllers.LanguageController.postTerm
 
 POST    /admin/topic                @controllers.TopicController.createTopic
 
+POST    /admin/notification         @controllers.GroupController.addNotification
+
 GET     /admin/group/:uID           @controllers.GroupController.getGroup(uID: String)
 GET     /admin/groups               @controllers.GroupController.getGroups
 POST    /admin/group                @controllers.GroupController.createGroup

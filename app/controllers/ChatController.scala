@@ -56,7 +56,6 @@ class ChatController extends Controller with MongoController {
             request.body.validate[ChatModel].map {
               chat =>
                 // `chat` is an instance of the case class `models.Chat`
-
                 val modifier = Json.obj(  "$set" -> Json.obj("message" -> chat.message),
                                           "$set" -> Json.obj("sender" -> chat.sender))
 
