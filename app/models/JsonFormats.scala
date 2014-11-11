@@ -12,4 +12,5 @@ object JsonFormats {
   implicit val chatFormat = Json.format[ChatModel]
   implicit val languageFormat = Json.format[LanguageModel]
   implicit val MessageFormat = Json.format[MessageModel]
+  implicit val TopicFormat = Json.format[TopicModel]
 }

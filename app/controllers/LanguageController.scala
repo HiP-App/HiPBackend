@@ -72,7 +72,6 @@ class LanguageController extends Controller with MongoController {
    */
   def postTerm() = Action.async(parse.json) {
     request =>
-      printf("Hallo Welt")
       /*
        * request.body is a JsValue.
        * There is an implicit Writes that turns this JsValue as a JsObject,

@@ -8,7 +8,7 @@
                 <span class='glyphicon  glyphicon-refresh'></span> </a>
             </div>
             <div class="float-clear"></div>
-        </div> <!-- alt: class="boxHeader" -->
+        </div>
 
         <div class="panel-body">
             <div class="menuEntry" ng-repeat="grp in gc.groups">
@@ -22,7 +22,7 @@
 
                 <div class="float-clear"></div>
             </div>
-        </div> <!-- alt: class="boxContent" -->
+        </div>
 
         <div class="float-clear"></div>
     </div>
@@ -41,6 +41,7 @@
                 <div class="panel-body">
                     <ul>
                         <li> <a href="#"> ... </a> </li>
+                        <li> <a href="/#/topic/create"> {{lc.getTerm('system_supervisor_navigation_addTopic')}} </a> </li>
                         <li> <a href="/#/group/create"> {{lc.getTerm('system_supervisor_navigation_addGroup')}} </a> </li>
                         <li> <a href="#"> ... </a> </li>
                     </ul>
