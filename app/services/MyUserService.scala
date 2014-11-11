@@ -26,6 +26,7 @@ import org.joda.time.format.{DateTimeFormatter, DateTimeFormat}
  * @param application
  */
 class MyUserService(application: Application) extends UserServicePlugin(application) with Controller with MongoController{
+    def addCollection: JSONCollection = db.collection[JSONCollection]("usersAdd")
     def collection: JSONCollection = db.collection[JSONCollection]("users")
     def tokens: JSONCollection = db.collection[JSONCollection]("tokens")
     val outPutUser = (__ \ "id").json.prune
@@ -93,6 +94,14 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
       )
       println(Json.toJson(savejson))
       collection.insert(savejson)
+
+      val role = "student";
+      val saveadd = Json.obj(
+        "userid" -> user.identityId.userId,
+        "email" -> email,
+        "role" -> role
+      )
+      addCollection.insert(saveadd)
       user
     }
 
