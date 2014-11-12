@@ -18,14 +18,4 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$routeParams', '$at
     if(that.debug)
         console.log("info UserCtrl: init with email " + this.email);
 
-    /*
-    $scope.initUserCtrl = function(email, firstname)
-    {
-        that.email      = email;
-        that.firstname  = firstname;
-
-        if(that.debug)
-            console.log("info UserCtrl: init with email " + that.email);
-    };*/
-
 }]);
