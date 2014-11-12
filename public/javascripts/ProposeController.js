@@ -15,8 +15,7 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', '$routeParams', f
     this.propose = {};
 
     this.proposeTopic = function(receiver,sender,proposeString){
-        //FIXME: GET SHA1 up and running
-        var currentPropID = that.propose.name + Math.floor((Math.random() * 1000) + 1);
+        var currentPropID = Sha1.hash(that.propose.name + Math.floor((Math.random() * 100000) + 1));
 
         var proposement = {
             id : currentPropID,

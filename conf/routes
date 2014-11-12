@@ -23,8 +23,12 @@ POST    /admin/notification         @controllers.GroupController.addNotification
 
 GET     /admin/group/:uID           @controllers.GroupController.getGroup(uID: String)
 GET     /admin/groups               @controllers.GroupController.getGroups
+
 POST    /admin/group                @controllers.GroupController.createGroup
 DELETE  /admin/group/:uID           @controllers.GroupController.deleteGroup(uID: String)
+
+POST    /admin/modify/group         @controllers.GroupController.modifyGroup
+
 
 # SECURE SOCIAL
 # Login page

@@ -15,13 +15,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.currentTopic = {};
 
     this.createTopic = function(){
-        //FIXME: GET SHA1 up and running
-        var currentTopicID = that.currentTopic.name + Math.floor((Math.random() * 1000) + 1);
+        var currentTopicID = Sha1.hash(that.currentTopic.name + Math.floor((Math.random() * 100000) + 1));
 
         var topic = {
             id : currentTopicID,
             name : that.currentTopic.name,
-            group  : that.currentTopic.groupID
+            group  : that.currentTopic.groupID,
+            createdBy: $scope.uc.email
         }
 
         if(that.debug)
@@ -38,14 +38,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 // or server returns response with an error status.
             });
 
-        // adding topic to group
-        // FIXME
-
-        // adding notification
         if(that.currentTopic.groupID != "" || that.currentTopic.groupID != "undefined" ){
+            // adding topic to group
+            $scope.gc.setTopicAtGroup(that.currentTopic.groupID,currentTopicID);
+
+            // adding notification
             if(that.debug){
-                console.log("info TopicController: posting notification to grp: " + that.currentTopic.groupID);
-                console.log("info TopicController: with name " + that.currentTopic.name);
+                console.log("info TopicController: posting notification to group with ID " + that.currentTopic.groupID);
             }
 
             $scope.gc.createNotificationAtGroup(that.currentTopic.groupID,"system_notification_groupTopicChanged",

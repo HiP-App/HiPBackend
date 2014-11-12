@@ -18,7 +18,7 @@ controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', func
         if(that.chat == undefined){
             that.chat = {};
             that.chat.uID = $routeParams.uID;
-            that.chat.name = $routeParams.uID;
+            that.chat.name = $scope.gc.bufferedGroup.name;
         }
 
         var toSend = {"uID" : that.chat.uID,

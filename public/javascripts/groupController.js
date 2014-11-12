@@ -5,20 +5,26 @@
 controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
+    /*
+     * -----------------------------
+     * + CONFIGURATION VARIABLES   +
+     * -----------------------------
+     */
     this.debug = false;
 
+    /*
+     * -----------------------------
+     * + CONTROLLER VARIABLES   +
+     * -----------------------------
+     */
     this.groups = ["initMe"];
-
     this.createdByTemp = "dummy";
     this.currentGroup = {name: this.groupName,
         member: this.groupMember,
         createdBy: that.createdByTemp,
         topic: ""
     };
-
     this.bufferedGroup = {uID: "toSet"};
-
-    /* functions */
 
     /*
      * ----------------------
@@ -40,6 +46,30 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
      * + CONTROLLER FUNCTIONS   +
      * ----------------------
      */
+    this.setTopicAtGroup = function(groupID,currentTopicID){
+        // get group that should be changed
+        $http.get('/admin/group/'+groupID).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+
+                var changeGroup = data[0];
+                changeGroup.topic = currentTopicID;
+
+                // send data back to the server
+                $http.post('/admin/modify/group', changeGroup).
+                    success(function(data, status, headers, config) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            }).
+            error(function(data, status, headers, config) {
+            });
+    }
 
     this.createNotificationAtGroup = function(groupid, keyOfTheNotification, arrayOfValues){
         var notification = createNotification(keyOfTheNotification, arrayOfValues);
@@ -103,11 +133,7 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     this.createGroup = function(creator, firstname){
-        //FIXME: GET SHA1 up and running
-        //var hash = SHA1.hash(currentGroup.name + Math.floor((Math.random() * 100) + 1));
-        //console.log("hash: " + hash);
-
-        this.currentGroup.uID = this.currentGroup.name + Math.floor((Math.random() * 1000) + 1);
+        this.currentGroup.uID = Sha1.hash(this.currentGroup.name + Math.floor((Math.random() * 100000) + 1));
         this.groups.push(this.currentGroup);
 
         // set creator id of this group
@@ -127,8 +153,7 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
                 // or server returns response with an error status.
             });
 
-        /* create corresponding chat system */
-        // FIXME
+        /* FIXME create corresponding chat system */
     };
 
     this.deleteGroup = function(id){
@@ -144,7 +169,16 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
 
         that.getGroups();
 
-        // FIXME: remove corresponding chat system
+        // remove corresponding chat system
+        $http.delete('/admin/chat/'+id).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
     };
 
     /* update parameter if needed */

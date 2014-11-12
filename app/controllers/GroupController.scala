@@ -124,6 +124,30 @@ class GroupController extends Controller with MongoController {
   }
 
   /**
+   * Modifies/Stores the posted group
+   *
+   * @return
+   */
+  def modifyGroup = Action.async(parse.json){
+    request =>
+      request.body.validate[GroupModel].map {
+        grp =>
+          // `notification` is an instance of the case class `models.NotificationModel`
+          val modifier    =   Json.obj( "$set" -> Json.obj("topic" -> grp.topic),
+                                        "$set" -> Json.obj("createdBy" -> grp.createdBy),
+                                        "$set" -> Json.obj("name" -> grp.name),
+                                        "$set" -> Json.obj("member" -> grp.member),
+                                        "$set" -> Json.obj("notifications" -> grp.notifications))
+
+          collection.update(Json.obj("uID" -> grp.uID), modifier).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Group has been added")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  /**
    * Deletes the group with the given id
    *
    * @param id of the group that should be deleted

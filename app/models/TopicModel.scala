@@ -5,4 +5,5 @@ package models
  */
 case class TopicModel(id: String,
                       name: String,
-                      group: String)
+                      group: String,
+                      createdBy: String)
