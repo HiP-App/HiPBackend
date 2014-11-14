@@ -17,7 +17,13 @@ angular.module('myApp.routeConfig', ['ngRoute'])
         #$locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
+                templateUrl: '/assets/partials/start.html'
+            })
+            .when('/myhip', {
                 templateUrl: '/assets/partials/hipsupervisor.html'
+            })
+            .when('/contact', {
+                templateUrl: '/assets/partials/contact.html'
             })
             .when('/group/create', {
                 templateUrl: '/assets/partials/createGroup.html'

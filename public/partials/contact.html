@@ -1,0 +1,32 @@
+<div ng-controller="GroupCtrl as gc">
+    <!---
+    <div id="groups" class="panel panel-default">
+
+        <div class="panel-heading">
+            <div>{{lc.getTerm('system_start_whatis')}}</div>
+        </div>
+
+        <div class="panel-body">
+            {{lc.getTerm('system_start_whatistext')}}
+        </div>
+
+        <div class="float-clear"></div>
+    </div>!---->
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="MessageCtrl as mc">
+        <div class="panel-heading"> {{lc.getTerm('system_contact_head')}} </div>
+        <div>
+            <div class="panel-body">
+                <h4>{{lc.getTerm('system_contact_subheader')}}</h4>
+
+                <br>
+
+                {{lc.getTerm('system_contact_infotext')}}
+
+                <div class="float-clear"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>
