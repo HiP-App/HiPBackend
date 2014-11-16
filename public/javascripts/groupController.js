@@ -32,12 +32,14 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
      * ----------------------
      */
     var createNotification = function(keyOfTheNotification, arrayOfValues){
+        var now = new Date();
+
         if(keyOfTheNotification == "system_notification_groupCreated"){
-            return "system_notification_groupCreated" + "," + arrayOfValues[0]
+            return "system_notification_groupCreated" + "," + arrayOfValues[0] + " ("+now.toLocaleString()+")"
         }
 
         if(keyOfTheNotification == "system_notification_groupTopicChanged"){
-            return "system_notification_groupTopicChanged" + "," + arrayOfValues[0]
+            return "system_notification_groupTopicChanged" + "," + arrayOfValues[0] + " ("+now.toLocaleString()+")"
         }
     }
 
