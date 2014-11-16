@@ -18,7 +18,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         var currentTopicID = Sha1.hash(that.currentTopic.name + Math.floor((Math.random() * 100000) + 1));
 
         var topic = {
-            id : currentTopicID,
+            uID : currentTopicID,
             name : that.currentTopic.name,
             group  : that.currentTopic.groupID,
             createdBy: $scope.uc.email

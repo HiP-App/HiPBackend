@@ -88,12 +88,14 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
 
         $http.post('/admin/notification', grpNotification).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
+                if(that.debug){
+                    console.log("info GrpCtrl: Posting completed");
+                }
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+                if(that.debug) {
+                    console.log("error GrpCtrl: Error while posting");
+                }
             });
     }
 

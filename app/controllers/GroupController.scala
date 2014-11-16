@@ -60,6 +60,8 @@ class GroupController extends Controller with MongoController {
           // `notification` is an instance of the case class `models.NotificationModel`
           val modifier    =   Json.obj("$push" -> Json.obj("notifications" -> notification.notification))
 
+          println("updating uID " + notification.groupID + " with message " + notification.notification)
+
           collection.update(Json.obj("uID" -> notification.groupID), modifier).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
@@ -150,7 +152,7 @@ class GroupController extends Controller with MongoController {
   /**
    * Deletes the group with the given id
    *
-   * @param id of the group that should be deleted
+   * @param uID of the group that should be deleted
    * @return
    */
   def deleteGroup(uID : String) = Action.async {
