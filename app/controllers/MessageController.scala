@@ -77,6 +77,21 @@ class MessageController extends Controller with MongoController {
     }
   }
 
+
+  /**
+   * Deletes the message with the given uID
+   *
+   * @param uID of the message that should be deleted
+   * @return
+   */
+  def deleteMessage(uID : String) = Action.async {
+    /* delete from DB */
+    collection.remove(Json.obj("uID" -> uID)).map {
+      lastError =>
+        Created(s"Item removed")
+    }
+  }
+
   /**
    * Returns a concrete messages given its id
    *
@@ -86,7 +101,7 @@ class MessageController extends Controller with MongoController {
     // let's do our query
     val cursor: Cursor[MessageModel] = collection.
       // find all
-      find(Json.obj("id" -> recID)).
+      find(Json.obj("uID" -> recID)).
       // perform the query and get a cursor of JsObject
       cursor[MessageModel]
 

@@ -9,6 +9,7 @@ GET     /                           @controllers.Application.index
 GET     /admin/messages/all/:recName        @controllers.MessageController.getMessages(recName: String)
 GET     /admin/messages/view/:recID         @controllers.MessageController.getDetails(recID: String)
 POST    /admin/messages                     @controllers.MessageController.sendMessage
+DELETE  /admin/messages/:uID                @controllers.MessageController.deleteMessage(uID:String)
 
 GET     /admin/chat/:uID            @controllers.ChatController.getChat(uID: String)
 POST    /admin/chat/:newChat        @controllers.ChatController.postChat(newChat : String)

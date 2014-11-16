@@ -53,6 +53,39 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
             });
     };
 
+    this.deleteMessage = function(messageID){
+        /* remove from backend */
+        if(that.debug == true){
+            console.log("info MessageCtrl: message with id " + messageID + " will be deleted ");
+        }
+
+        $http.delete('/admin/messages/'+messageID).
+            success(function(data, status, headers, config) {
+                if(that.debug == true){
+                    console.log("info MessageCtrl: message with id " + messageID + " has been deleted ");
+                }
+
+                /* remove from frontend, too */
+                var newValues = [];
+                for(var i=0; i < that.messages.length; i++){
+                    if(that.messages[i].uID != messageID){
+                        newValues.push(that.messages[i]);
+                    }
+                }
+
+                that.messages = newValues;
+
+            }).
+            error(function(data, status, headers, config) {
+
+                that.messages  = that.errorObject;
+
+                if(that.debug == true){
+                    console.log("error MessageCtrl: message with id " + messageID + " has NOT been deleted ");
+                }
+            });
+    }
+
     /* update parameter if needed */
     if($routeParams.recName != undefined){
         if(this.debug)

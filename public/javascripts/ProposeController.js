@@ -18,7 +18,7 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', '$routeParams', f
         var currentPropID = Sha1.hash(that.propose.name + Math.floor((Math.random() * 100000) + 1));
 
         var proposement = {
-            id : currentPropID,
+            uID : currentPropID,
             receiver : receiver,
             sender  : sender,
             title : proposeString + " " + that.propose.name,

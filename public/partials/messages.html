@@ -46,9 +46,13 @@
                             <tr ng-repeat="m in mc.messages">
                                 <td class="td-small"> {{ m.sender }} </td>
                                 <td class="td-big">
-                                    <a ng-href="/#/messages/view/{{m.id}}">  {{ m.title }} </a>
+                                    <a ng-href="/#/messages/view/{{m.uID}}">  {{ m.title }} </a>
                                 </td>
-                                <td class="td-small"> FIXME: Options </td>
+                                <td class="td-big">
+                                    [<span ng-click="mc.deleteMessage(m.uID)" class="glyphicon glyphicon-trash">]
+                                    FIXME: More Options
+                                    </span>
+                                </td>
                             </tr>
                         </table>
                     </div>
