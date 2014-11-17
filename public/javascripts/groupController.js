@@ -18,12 +18,15 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
      * -----------------------------
      */
     this.groups = ["initMe"];
+    this.groupsCreatedByThisUser = [];
+
     this.createdByTemp = "dummy";
     this.currentGroup = {name: this.groupName,
         member: this.groupMember,
         createdBy: that.createdByTemp,
         topic: ""
     };
+
     this.bufferedGroup = {uID: "toSet"};
 
     /*
@@ -104,9 +107,6 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     this.getGroupByUID = function(uID){
         $http.get('/admin/group/'+uID).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
-
                 that.bufferedGroup = data[0];
 
                 // revert the order of the notifications
@@ -114,24 +114,29 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
                 that.bufferedGroup.revertedNotifications = revertedNotifications;
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-
                 that.bufferedGroup.name = "Error: Connection error";
             });
     };
 
-    this.getGroups = function(){
+    this.getGroups = function(userid){
         $http.get('/admin/groups').
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
                 that.groups = data;
+
+                // Separate groups that have been created by this user
+                if(userid != undefined){
+                    // clear array
+                    that.groupsCreatedByThisUser = [];
+
+                    // fill array
+                    data.forEach(function(group){
+                        if(group.createdBy == userid){
+                            that.groupsCreatedByThisUser.push(group);
+                        }
+                    });
+                }
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-
                 that.groups = "Error: Connection error";
             });
     };
@@ -149,12 +154,8 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
 
         $http.post('/admin/group', this.currentGroup).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
             });
 
         /* FIXME create corresponding chat system */
@@ -191,6 +192,7 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     }
 
     if(that.groups[0] = "initMe"){
-        that.getGroups();
+        //FIXME don't use the scope
+        that.getGroups($scope.uc.email);
     }
 }]);

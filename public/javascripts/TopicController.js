@@ -51,4 +51,19 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 [that.currentTopic.name])
         }
     }
+
+    this.setCurrentTopicGroupID = function(grpid){
+        if(that.debug){
+            console.log("info TopicController: Topic will be added to group " + grpid);
+        }
+
+        that.currentTopic.groupID = grpid;
+    }
+
+    this.currentTopicGroupIdIsSet = function(){
+        if(that.currentTopic.groupID != undefined && that.currentTopic.groupID != "")
+            return true;
+        else
+            return false;
+    }
 }]);
