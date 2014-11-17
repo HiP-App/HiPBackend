@@ -17,34 +17,34 @@ angular.module('myApp.routeConfig', ['ngRoute'])
         #$locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                templateUrl: '/assets/partials/start.html'
+                templateUrl: '/assets/partials/index.html'
             })
             .when('/myhip', {
-                templateUrl: '/assets/partials/hipsupervisor.html'
+                templateUrl: '/assets/partials/basic_supervisorView.html'
             })
             .when('/contact', {
-                templateUrl: '/assets/partials/contact.html'
+                templateUrl: '/assets/partials/basic_contact.html'
             })
             .when('/group/create', {
-                templateUrl: '/assets/partials/createGroup.html'
+                templateUrl: '/assets/partials/myhip_createGroup.html'
             })
             .when('/topic/create', {
-                templateUrl: '/assets/partials/createTopic.html'
+                templateUrl: '/assets/partials/myhip_createTopic.html'
             })
             .when('/group/propose', {
-              templateUrl: '/assets/partials/proposetopic.html'
+              templateUrl: '/assets/partials/group_proposeTopic.html'
             })
             .when('/group/view/:uID', {
-                templateUrl: '/assets/partials/groupview.html'
+                templateUrl: '/assets/partials/basic_groupView.html'
             })
             .when('/language/create', {
-              templateUrl: '/assets/partials/createLangTerm.html'
+              templateUrl: '/assets/partials/admin_createLangTerm.html'
             })
             .when('/messages/all/:recName', {
-             templateUrl: '/assets/partials/messages.html'
+             templateUrl: '/assets/partials/basic_messages.html'
             })
             .when('/messages/view/:messageID', {
-              templateUrl: '/assets/partials/messagesdetails.html'
+              templateUrl: '/assets/partials/basic_messagesDetails.html'
             })
             .otherwise({redirectTo: '/'})
 
