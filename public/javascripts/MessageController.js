@@ -12,6 +12,8 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
         sender:"System"
     };
 
+    this.messageThatGetsCurrentlyCreated = {};
+
     this.messages = [{ }];
 
     this.detailMessage = {
@@ -52,6 +54,29 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
                 that.messages  = that.errorObject;
             });
     };
+
+    this.sendMessage = function(emailOfTheSender){
+        var tempMessage = {
+            uID: Sha1.hash(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
+                that.messageThatGetsCurrentlyCreated.content + Math.floor((Math.random() * 100000) + 1)),
+            receiver:   that.messageThatGetsCurrentlyCreated.receiver,
+            sender:     emailOfTheSender,
+            title:      that.messageThatGetsCurrentlyCreated.title,
+            content:    that.messageThatGetsCurrentlyCreated.content
+        };
+
+        $http.post('/admin/messages', tempMessage).
+            success(function(data, status, headers, config) {
+                if(that.debug){
+                    console.log("info MessageCtrl: Message sending completed");
+                }
+            }).
+            error(function(data, status, headers, config) {
+                if(that.debug) {
+                    console.log("error MessageCtrl: Error while sending message");
+                }
+            });
+    }
 
     this.deleteMessage = function(messageID){
         /* remove from backend */

@@ -41,7 +41,10 @@ angular.module('myApp.routeConfig', ['ngRoute'])
               templateUrl: '/assets/partials/admin_createLangTerm.html'
             })
             .when('/messages/all/:recName', {
-             templateUrl: '/assets/partials/basic_messages.html'
+              templateUrl: '/assets/partials/basic_messages.html'
+            })
+            .when('/messages/send', {
+              templateUrl: '/assets/partials/basic_sendMessage.html'
             })
             .when('/messages/view/:messageID', {
               templateUrl: '/assets/partials/basic_messagesDetails.html'
