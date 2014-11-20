@@ -106,19 +106,25 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
 
       // insert only if it is not there
       /*val cursor  = collection.find(Json.obj("userid"->user.identityId.userId)).cursor[JsObject]
-      val futureuser = cursor.headOption.map{
+      val futureuser = cursor.headOption.map {
         case Some(user) => {
-          true
+          user
         }
-      */  //case None => {
-
-      //FIXME: proper way of solving this
-      collection.remove(Json.obj("userid" -> user.identityId.userId))
-      addCollection.remove(Json.obj("userid" -> user.identityId.userId))
-
-      // inserting
+        case None => {
           collection.insert(savejson)
           addCollection.insert(saveadd)
+
+          user
+        }
+      }*/
+
+      //FIXME: proper way of solving this
+      // inserting
+      collection.insert(savejson)
+
+      //collection.update(Json.obj("userid"->user.identityId.userId),savejson,upsert = true);
+      addCollection.update(Json.obj("userid"->user.identityId.userId),saveadd,upsert = true);
+
       //  }
       //}
 
