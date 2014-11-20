@@ -134,7 +134,6 @@ class GroupController extends Controller with MongoController {
     request =>
       request.body.validate[GroupModel].map {
         grp =>
-          // `notification` is an instance of the case class `models.NotificationModel`
           val modifier    =   Json.obj( "$set" -> Json.obj("topic" -> grp.topic),
                                         "$set" -> Json.obj("createdBy" -> grp.createdBy),
                                         "$set" -> Json.obj("name" -> grp.name),

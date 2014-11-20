@@ -9,6 +9,9 @@ GET     /                                   @controllers.Application.index
 GET     /admin/users                        @controllers.UserController.getAllUsers
 GET     /admin/users/:email                 @controllers.UserController.getUserByEmail(email: String)
 
+GET     /admin/roles                        @controllers.RoleController.getRoles
+PUT     /admin/roles                        @controllers.RoleController.updateRole
+
 GET     /admin/messages/all/:recName        @controllers.MessageController.getMessages(recName: String)
 GET     /admin/messages/view/:recID         @controllers.MessageController.getDetails(recID: String)
 POST    /admin/messages                     @controllers.MessageController.sendMessage

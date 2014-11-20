@@ -8,6 +8,7 @@ object JsonFormats {
 
   // Generates Writes and Reads for Feed and User thanks to Json Macros
   implicit val userFormat = Json.format[UserModel]
+  implicit val userAddFormat = Json.format[UserAddModel]
   implicit val groupFormat = Json.format[GroupModel]
   implicit val chatFormat = Json.format[ChatModel]
   implicit val languageFormat = Json.format[LanguageModel]
