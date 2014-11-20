@@ -93,7 +93,9 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
         "updated_at" -> Json.obj("$date" -> new Date())
       )
       println(Json.toJson(savejson))
-      collection.insert(savejson)
+
+      //val upsert = Json.obj("upsert"->"true");
+      //collection.update(Json.obj("userid"->user.identityId.userId),savejson,upsert);
 
       val role = "student";
       val saveadd = Json.obj(
@@ -101,7 +103,25 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
         "email" -> email,
         "role" -> role
       )
-      addCollection.insert(saveadd)
+
+      // insert only if it is not there
+      /*val cursor  = collection.find(Json.obj("userid"->user.identityId.userId)).cursor[JsObject]
+      val futureuser = cursor.headOption.map{
+        case Some(user) => {
+          true
+        }
+      */  //case None => {
+
+      //FIXME: proper way of solving this
+      collection.remove(Json.obj("userid" -> user.identityId.userId))
+      addCollection.remove(Json.obj("userid" -> user.identityId.userId))
+
+      // inserting
+          collection.insert(savejson)
+          addCollection.insert(saveadd)
+      //  }
+      //}
+
       user
     }
 
