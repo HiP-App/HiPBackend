@@ -16,13 +16,22 @@ class Application extends Controller  with SecureSocial{
     case None => error
   }
 
-  def index = SecuredAction { implicit  request =>
+  def index = UserAwareAction { implicit  request =>
 
-    println(" USER ---- ::: ")
-    println(request.user)
-    println(" USER ---- ::: ")
+    request.user match {
+      case Some(user) => {
+        println(" ::: ---- USER ---- ::: ")
+        println(request.user)
+        println(" ::: ---- USER ---- ::: ")
 
-    Ok(views.html.index(secureOption(request.user.email,"ERROR: No email address specified"), request.user.firstName))
+        Ok(views.html.index(secureOption(request.user.get.email,"ERROR: No email address specified"),
+          request.user.get.firstName))
+      }
+      case _ => {
+        Ok(views.html.loginplease())
+      }
+    }
+
   }
 
 }
