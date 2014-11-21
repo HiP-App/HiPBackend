@@ -221,3 +221,9 @@ nav {
 	float: right;
 	color: #f1f1f1;
 }
+
+#footer-content ul li {
+    float: right;
+    margin-left: 15px;
+    list-style-type: none;
+}
