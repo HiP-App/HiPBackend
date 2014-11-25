@@ -1,0 +1,80 @@
+<div ng-controller="GroupCtrl as gc">
+    <div id="groups" class="panel panel-default">
+        <div class="panel-heading">
+            <div class="menuLeft">{{lc.getTerm('system_groups')}}</div>
+            <div class="menuRight"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
+                <span class='glyphicon  glyphicon-refresh'></span> </a>
+            </div>
+            <div class="float-clear"></div>
+        </div> <!-- alt: class="boxHeader" -->
+
+        <div class="panel-body">
+            <div class="menuEntry" ng-repeat="grp in gc.groups">
+                <div class="menuLeft">  <a ng-href="/#/group/view/{{ grp.uID }}">{{ grp.name }}</a></div>
+                <div class="menuRight"> [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span></div>
+                <div class="float-clear"></div>
+            </div>
+        </div>
+
+        <div class="float-clear"></div>
+    </div>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
+        <div class="panel-heading"> {{lc.getTerm('system_topic_modify_header')}} </div>
+        <div >
+            <div class="panel-body">
+                <form id="CreateTopicForm" name="CreateTopicForm" class="form-horizontal" role="form"
+                      ng-submit="tc.createTopic()">
+                    <h4>{{lc.getTerm('system_topic_modify_information')}}</h4>
+
+                    <div class="form-group">
+                        <div class="input-group col-sm-offset-1 col-sm-8">
+                            <div class="input-group-btn">
+                                <button type="button"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{lc.getTerm('system_topic_modify_form_topic')}}  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="top in tc.currentUserTopics">
+                                        <a ng-click="tc.doSomethingWithTopic(top.uID, top.name)">{{top.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" name="groupID" id="groupID" placeholder=""
+                                   ng-model="tc.modifyTopicName">
+                        </div>
+                    </div>
+
+                    <h4>{{lc.getTerm('system_topic_modify_information2')}}</h4>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <span class="input-group-addon">{{lc.getTerm('system_topic_modify_form_topicid')}}</span>
+                            <input type="text" class="form-control" name="topicContent" id="topicContent" placeholder=""
+                                   ng-model="tc.modifyTopicID">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <span class="input-group-addon">{{lc.getTerm('system_topic_modify_form_topicname')}}</span>
+                            <input type="text" class="form-control" name="topicContent" id="topicContent" placeholder=""
+                                   ng-model="tc.modifyTopicName">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-6 text-right">
+                            <a ng-href="/#/myhip" id="btn_delete" class="btn btn-info">{{lc.getTerm('system_topic_form_modify_delete')}}</a>
+
+                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning">{{lc.getTerm('system_topic_form_modify_cancel')}}</a>
+
+                            <button type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_topic_form_modify_create')}}</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

@@ -25,6 +25,7 @@ GET     /admin/languages/:lang              @controllers.LanguageController.getL
 POST    /admin/languages                    @controllers.LanguageController.postTerm
 
 GET     /admin/topic/:uID                   @controllers.TopicController.getTopic(uID: String)
+GET     /admin/topicbyuser/:uID             @controllers.TopicController.getTopicByUser(uID: String)
 POST    /admin/topic                        @controllers.TopicController.createTopic
 
 POST    /admin/notification                 @controllers.GroupController.addNotification

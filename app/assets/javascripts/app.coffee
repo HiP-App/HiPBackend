@@ -34,6 +34,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/topic/create', {
                 templateUrl: '/assets/partials/myhip_createTopic.html'
             })
+            .when('/topic/modify/:userID', {
+                templateUrl: '/assets/partials/myhip_modifyTopic.html'
+            })
             .when('/group/propose', {
               templateUrl: '/assets/partials/group_proposeTopic.html'
             })

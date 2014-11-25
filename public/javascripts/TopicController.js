@@ -14,6 +14,16 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.currentTopic = {};
 
+    this.currentUserTopics = [];
+
+    this.modifyTopicID = "";
+    this.modifyTopicName = "";
+
+    this.doSomethingWithTopic = function(topicID, topicName){
+         that.modifyTopicID = topicID;
+         that.modifyTopicName = topicName;
+    };
+
     this.createTopic = function(){
         var currentTopicID = Sha1.hash(that.currentTopic.name + Math.floor((Math.random() * 100000) + 1));
 
@@ -68,7 +78,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return false;
     }
 
-    this.getTopicByUID = function(uID){
+    this.getTopicByTopicID = function(uID){
         $http.get('/admin/topic/'+uID).
             success(function(data, status, headers, config) {
                 that.currentTopic = data[0];
@@ -78,8 +88,22 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    this.getTopicsByUserID = function(uID){
+        $http.get('/admin/topicbyuser/'+uID).
+            success(function(data, status, headers, config) {
+                that.currentUserTopics = data;
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Topic cannot get pulled");
+            });
+    };
+
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
-        that.getTopicByUID($routeParams.topicID);
+        that.getTopicByTopicID($routeParams.topicID);
+    }
+
+    if($routeParams.userID != undefined){
+        that.getTopicsByUserID($routeParams.userID);
     }
 }]);
