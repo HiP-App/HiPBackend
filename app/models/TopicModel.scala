@@ -6,4 +6,5 @@ package models
 case class TopicModel(uID: String,
                       name: String,
                       group: String,
-                      createdBy: String)
+                      createdBy: String,
+                      content: String)

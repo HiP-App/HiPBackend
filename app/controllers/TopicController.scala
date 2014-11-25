@@ -59,4 +59,32 @@ class TopicController extends Controller with MongoController {
           }
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
+
+  /**
+   * Returns a topic given by its uID
+   *
+   * @return a list that contains every topic as a JSON object
+   */
+  def getTopic(uID : String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[TopicModel] = collection.
+      // find all
+      find(Json.obj("uID" -> uID)).
+      // perform the query and get a cursor of JsObject
+      cursor[TopicModel]
+
+    // gather all the JsObjects in a list
+    val futureTopicList: Future[List[TopicModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
+      Json.arr(topics)
+    }
+
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      topics =>
+        Ok(topics(0))
+    }
+  }
 }

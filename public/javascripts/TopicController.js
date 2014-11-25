@@ -5,7 +5,7 @@
 controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
-    this.debug = false;
+    this.debug = true;
 
     this.errorObject = {
         content:"Connection Error",
@@ -21,7 +21,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             uID : currentTopicID,
             name : that.currentTopic.name,
             group  : that.currentTopic.groupID,
-            createdBy: $scope.uc.email
+            createdBy: $scope.uc.email,
+            content: ""
         }
 
         if(that.debug)
@@ -65,5 +66,20 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return true;
         else
             return false;
+    }
+
+    this.getTopicByUID = function(uID){
+        $http.get('/admin/topic/'+uID).
+            success(function(data, status, headers, config) {
+                that.currentTopic = data[0];
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Topic cannot get pulled");
+            });
+    };
+
+    /* update parameter if needed */
+    if($routeParams.topicID != undefined){
+        that.getTopicByUID($routeParams.topicID);
     }
 }]);

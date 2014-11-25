@@ -25,6 +25,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/contact', {
                 templateUrl: '/assets/partials/basic_contact.html'
             })
+            .when('/edit/:topicID', {
+              templateUrl: '/assets/partials/group_editContent.html'
+            })
             .when('/group/create', {
                 templateUrl: '/assets/partials/myhip_createGroup.html'
             })

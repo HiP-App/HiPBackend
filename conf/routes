@@ -24,6 +24,7 @@ DELETE  /admin/chat/:uID                    @controllers.ChatController.deleteCh
 GET     /admin/languages/:lang              @controllers.LanguageController.getLanguageDataForClient(lang: String)
 POST    /admin/languages                    @controllers.LanguageController.postTerm
 
+GET     /admin/topic/:uID                   @controllers.TopicController.getTopic(uID: String)
 POST    /admin/topic                        @controllers.TopicController.createTopic
 
 POST    /admin/notification                 @controllers.GroupController.addNotification
