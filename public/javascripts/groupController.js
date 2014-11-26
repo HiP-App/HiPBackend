@@ -20,6 +20,8 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     this.groups = ["initMe"];
     this.groupsCreatedByThisUser = [];
 
+    this.groupsCreatedByThisUserOrUserIsMemberOfGroup = [];
+
     this.createdByTemp = "dummy";
     this.currentGroup = {name: this.groupName,
         member: this.groupMember,
@@ -47,9 +49,9 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     }
 
     /*
-     * ----------------------
+     * --------------------------
      * + CONTROLLER FUNCTIONS   +
-     * ----------------------
+     * --------------------------
      */
     this.setTopicAtGroup = function(groupID,currentTopicID){
         // get group that should be changed
@@ -132,6 +134,9 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
                     data.forEach(function(group){
                         if(group.createdBy == userid){
                             that.groupsCreatedByThisUser.push(group);
+                            that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(group);
+                        }else if(group.member.indexOf($scope.uc.email) > -1){
+                            that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(group);
                         }
                     });
                 }
@@ -164,12 +169,8 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     this.deleteGroup = function(id){
         $http.delete('/admin/group/'+id, this.currentGroup).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
             });
 
         that.getGroups();
@@ -177,12 +178,8 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
         // remove corresponding chat system
         $http.delete('/admin/chat/'+id).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
             });
     };
 

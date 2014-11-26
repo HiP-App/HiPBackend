@@ -10,7 +10,7 @@
         </div>
 
         <div class="panel-body">
-            <div class="menuEntry" ng-repeat="grp in gc.groups">
+            <div class="menuEntry" ng-repeat="grp in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
                 <div class="menuLeft">
                     <a ng-href="/#/group/view/{{ grp.uID }}">{{ grp.name }}</a>
                 </div>
