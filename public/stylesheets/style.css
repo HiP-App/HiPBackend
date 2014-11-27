@@ -7,6 +7,24 @@ body{
 	margin: auto;
 }
 
+.hip-button-yellow {
+    background: #eb9316;
+    color: ghostwhite;
+    text-transform: none;
+}
+
+.hip-button-green {
+    background: #419641;
+    color: ghostwhite;
+    text-transform: none;
+}
+
+.hip-button-red {
+    background: #c12e2a;
+    color: ghostwhite;
+    text-transform: none;
+}
+
 #mainSingleBox{
     float: left;
     width: 940px;
