@@ -27,6 +27,7 @@ POST    /admin/languages                    @controllers.LanguageController.post
 GET     /admin/topic/:uID                   @controllers.TopicController.getTopic(uID: String)
 GET     /admin/topicbyuser/:uID             @controllers.TopicController.getTopicByUser(uID: String)
 POST    /admin/topic                        @controllers.TopicController.createTopic
+DELETE  /admin/topic/:uID                   @controllers.TopicController.deleteTopic(uID: String)
 
 POST    /admin/notification                 @controllers.GroupController.addNotification
 

@@ -115,4 +115,18 @@ class TopicController extends Controller with MongoController {
         Ok(topics(0))
     }
   }
+
+  def deleteTopic(uID: String) = Action.async {
+    /* delete every sub-topic */
+    collection.remove(Json.obj("createdBy" -> uID)).map {
+      lastError =>
+        Created(s"Item removed")
+    }
+
+    /* delete main topic from DB */
+    collection.remove(Json.obj("uID" -> uID)).map {
+      lastError =>
+        Created(s"Item removed")
+    }
+  }
 }

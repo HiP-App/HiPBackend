@@ -12,6 +12,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         sender:"System"
     };
 
+    this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
+
     this.currentTopic = {};
 
     this.currentUserTopics = [];
@@ -27,6 +29,27 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.createTopic = function(){
         var currentTopicID = Sha1.hash(that.currentTopic.name + Math.floor((Math.random() * 100000) + 1));
 
+        /* create all sub-topics */
+        var subtopics = that.currentTopicSubTopicsAsString.split(',');
+        subtopics.forEach(function(subTopic){
+            var currentSubTopicID = Sha1.hash(subTopic + Math.floor((Math.random() * 100000) + 1));
+
+            var subTopicJSON = {
+                uID : currentSubTopicID,
+                name : subTopic,
+                group  : that.currentTopic.groupID,
+                createdBy: currentTopicID,
+                content: ""
+            }
+
+            $http.post('/admin/topic', subTopicJSON).
+                success(function(data, status, headers, config) {
+                }).
+                error(function(data, status, headers, config) {
+                });
+        });
+
+        /* create actual main topic */
         var topic = {
             uID : currentTopicID,
             name : that.currentTopic.name,
@@ -97,6 +120,15 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 console.log("error TopicController: Topic cannot get pulled");
             });
     };
+
+    this.deleteCurrentTopic = function(){
+        $http.delete('/admin/topic/'+that.modifyTopicID).
+            success(function(data, status, headers, config) {
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Topic cannot get removed");
+            });
+    }
 
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
