@@ -30,7 +30,9 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     this.bufferedGroup = {uID: "toSet"};
-
+    this.bufferedTopic = {
+        name: "NaN"
+    }
     /*
      * ----------------------
      * + HELPER FUNCTIONS   +
@@ -110,6 +112,15 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
         $http.get('/admin/group/'+uID).
             success(function(data, status, headers, config) {
                 that.bufferedGroup = data[0];
+
+                // get more information about the topic
+                $http.get('/admin/topic/'+that.bufferedGroup.topic).
+                    success(function(data, status, headers, config) {
+                        that.bufferedTopic = data[0];
+                    }).
+                    error(function(data, status, headers, config) {
+                        console.log("error GroupController: Topic cannot get pulled");
+                    });
 
                 // revert the order of the notifications
                 var revertedNotifications = that.bufferedGroup.notifications.slice().reverse();

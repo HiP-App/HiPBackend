@@ -6,11 +6,20 @@ body{
 	width: 1400px;
 	margin: auto;
 }
+
 #mainSingleBox{
     float: left;
     width: 940px;
 
     margin-top: 15px;
+}
+
+.shift-left{
+    float: left;
+}
+
+.shift-right{
+    float: right;
 }
 
 .upperNavigation ul{
