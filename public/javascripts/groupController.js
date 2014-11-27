@@ -10,7 +10,7 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
      * + CONFIGURATION VARIABLES   +
      * -----------------------------
      */
-    this.debug = false;
+    this.debug = true;
 
     /*
      * -----------------------------
@@ -158,15 +158,19 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     this.createGroup = function(creator, firstname){
-        this.currentGroup.uID = Sha1.hash(this.currentGroup.name + Math.floor((Math.random() * 100000) + 1));
-        this.groups.push(this.currentGroup);
+        console.log("creating group");
+
+        that.currentGroup.uID = Sha1.hash(this.currentGroup.name + Math.floor((Math.random() * 100000) + 1));
+        that.groups.push(this.currentGroup);
+        that.groupsCreatedByThisUser.push(this.currentGroup);
+        that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(this.currentGroup);
 
         // set creator id of this group
-        this.currentGroup.createdBy = creator;
+        that.currentGroup.createdBy = creator;
 
         // create current notification
-        this.currentGroup.notifications = [];
-        this.currentGroup.notifications.push(createNotification("system_notification_groupCreated",[firstname]));
+        that.currentGroup.notifications = [];
+        that.currentGroup.notifications.push(createNotification("system_notification_groupCreated",[firstname]));
 
         $http.post('/admin/group', this.currentGroup).
             success(function(data, status, headers, config) {
