@@ -60,6 +60,23 @@ class TopicController extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  def updateTopic = Action.async(parse.json) {
+    request =>
+      request.body.validate[TopicModel].map {
+        topic =>
+          val modifier    =   Json.obj( "$set" -> Json.obj("group" -> topic.group),
+                                        "$set" -> Json.obj("name" -> topic.name),
+                                        "$set" -> Json.obj("createdBy" -> topic.createdBy),
+                                        "$set" -> Json.obj("content" -> topic.content))
+
+          collection.update(Json.obj("uID" -> topic.uID), modifier).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Topic has been updated")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
   /**
    * Returns a topic given by its uID
    *

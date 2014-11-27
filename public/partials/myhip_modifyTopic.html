@@ -24,7 +24,7 @@
         <div >
             <div class="panel-body">
                 <form id="CreateTopicForm" name="CreateTopicForm" class="form-horizontal" role="form"
-                      ng-submit="tc.createTopic()">
+                      ng-submit="tc.updateTopic()">
                     <h4>{{lc.getTerm('system_topic_modify_information')}}</h4>
 
                     <div class="form-group">
@@ -36,7 +36,9 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li ng-repeat="top in tc.currentUserTopics">
-                                        <a ng-click="tc.doSomethingWithTopic(top.uID, top.name)">{{top.name}}</a>
+                                        <a ng-click="tc.doSomethingWithTopic(top.uID, top.name, top.content, top.group)">
+                                            {{top.name}}
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

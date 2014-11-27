@@ -38,7 +38,8 @@
                     </span>
                 </div>
                 <div class="shift-right">
-                    {{lc.getTerm('system_group_topic_header')}} {{gc.bufferedTopic.name}}
+                    {{lc.getTerm('system_group_topic_header')}}
+                    <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">{{gc.bufferedTopic.name}}</a>
                     {{lc.getTerm('system_group_topic_header_ext')}}
                 </div>
                 <div class="float-clear"></div>

@@ -5,7 +5,7 @@
 controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
-    this.debug = true;
+    this.debug = false;
 
     this.errorObject = {
         content:"Connection Error",
@@ -20,10 +20,14 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.modifyTopicID = "";
     this.modifyTopicName = "";
+    this.modifyTopicContent = "";
+    this.modifyTopicGroup = "";
 
-    this.doSomethingWithTopic = function(topicID, topicName){
-         that.modifyTopicID = topicID;
-         that.modifyTopicName = topicName;
+    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup){
+        that.modifyTopicID      = topicID;
+        that.modifyTopicName    = topicName;
+        that.modifyTopicContent = topicContent;
+        that.modifyTopicGroup   = topicGroup;
     };
 
     this.createTopic = function(){
@@ -121,6 +125,25 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    this.updateTopic = function(){
+        var topic = {
+            uID : that.modifyTopicID,
+            name : that.modifyTopicName,
+            group  : that.modifyTopicGroup,
+            createdBy: $scope.uc.email,
+            content: that.modifyTopicContent
+        }
+
+        console.log(topic);
+
+        $http.put('/admin/topic', topic).
+            success(function(data, status, headers, config) {
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Topic cannot get updated");
+            });
+    };
+
     this.deleteCurrentTopic = function(){
         $http.delete('/admin/topic/'+that.modifyTopicID).
             success(function(data, status, headers, config) {
@@ -128,7 +151,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get removed");
             });
-    }
+    };
 
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
