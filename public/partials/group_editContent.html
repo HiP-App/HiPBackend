@@ -28,17 +28,27 @@
                       ng-submit="tc.updateTopic()">
                     <h4> {{lc.getTerm('system_edit_status')}}</h4>
 
-                    <div class="radio" ng-click="tc.updateStatus()">
+                    <div ng-repeat="alert in alerts" class="alert alert-dismissible"
+                         ng-class="{'alert-warning' : alert.type == 'warning',
+                         'alert-danger' : alert.type == 'danger',
+                         'alert-info' : alert.type == 'info',
+                         'alert-success' : alert.type == 'success'}"
+                         role="alert">{{alert.msg}}
+
+                            <button type="button" ng-click="ac.closeAlert($index)" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    </div>
+
+                    <div class="radio" ng-click="tc.updateStatus(ac,lc)">
                         <label>
                             <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
                         </label>
                     </div>
-                    <div class="radio" ng-click="tc.updateStatus()">
+                    <div class="radio" ng-click="tc.updateStatus(ac,lc)">
                         <label>
                             <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir" ng-click="tc.updateStatus()">{{lc.getTerm('system_ir')}}
                         </label>
                     </div>
-                    <div class="radio" ng-click="tc.updateStatus()">
+                    <div class="radio" ng-click="tc.updateStatus(ac,lc)">
                         <label>
                             <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done" ng-click="tc.updateStatus()">{{lc.getTerm('system_done')}}
                         </label>

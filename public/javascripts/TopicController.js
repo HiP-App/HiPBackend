@@ -54,7 +54,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return false;
     }
 
-    this.updateStatus = function(){
+    this.updateStatus = function(ac, lc){
         var topic = {
             uID : that.currentTopic.uID,
             name : that.currentTopic.name,
@@ -70,6 +70,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get updated");
             });
+
+        if(ac != undefined && lc != undefined){
+            ac.addAlert(lc.getTerm('notification_alert_changedStatus'),"info");
+        }
     }
 
     /**
