@@ -67,31 +67,3 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
 
 Tooling = {};
 
-Tooling.overlay = function(mode) {
-    if(mode == 'display') {
-        if(document.getElementById("overlay") === null) {
-            div = document.createElement("div");
-            div.setAttribute('id', 'overlay');
-            div.setAttribute('className', 'overlayBG');
-            div.setAttribute('class', 'overlayBG');
-
-
-            lightBox = document.createElement('div');
-            lightBox.setAttribute('id', 'lightBox');
-
-            span = document.createElement('span');
-            span.setAttribute('class', 'pointer');
-            span.setAttribute('className', 'pointer');
-            span.setAttribute('onclick', 'Tooling.overlay(\"none\")');
-            text = document.createTextNode('Hier klicken zum Schließen');
-            span.appendChild(text);
-            lightBox.appendChild(span);
-
-            document.getElementsByTagName("body")[0].appendChild(div);
-            document.getElementsByTagName("body")[0].appendChild(lightBox);
-        }
-    } else {
-        document.getElementsByTagName("body")[0].removeChild(document.getElementById("overlay"));
-        document.getElementsByTagName("body")[0].removeChild(document.getElementById("lightBox"));
-    }
-}

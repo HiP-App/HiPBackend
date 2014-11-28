@@ -296,15 +296,19 @@ nav {
     position:fixed;
     top:50%;
     left:50%;
-    margin-left:-100px;
-    margin-top:-100px;
+    margin-left:-300px;
+    margin-top:-300px;
     z-index:200;
-    width:200px;
-    height:200px;
+    width:500px;
+    min-height:500px;
     background-color:#fff;
-    text-align:center;
+    text-align:left;
 }
 * html #lightBox { /* ie6 hack */
     position: absolute;
     margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
+
+#contentOfLightBox{
+    margin: 15px;
 }

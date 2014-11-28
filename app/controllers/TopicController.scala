@@ -106,7 +106,8 @@ class TopicController extends Controller with MongoController {
   }
 
   /**
-   * Returns a topic given by its creators' uID
+   * Returns a topic given by its creators' uID. Can also be used to returns the subtopic
+   * given by its parents' uID
    *
    * @return a list that contains every topic as a JSON object
    */

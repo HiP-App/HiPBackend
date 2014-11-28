@@ -15,6 +15,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
 
+    that.subtopics = [];
+
     this.currentTopic = {};
 
     this.currentUserTopics = [];
@@ -51,13 +53,35 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return false;
     }
 
-    this.getTopicByTopicID = function(uID){
-        $http.get('/admin/topic/'+uID).
+    /**
+     * Requests the actual topic with the given uID as JSON object
+     * and stores it internally in that.currentTopic
+     *
+     * @param uIDOfTheTopic of the topic
+     */
+    this.getTopicByTopicID = function(uIDOfTheTopic){
+        $http.get('/admin/topic/'+uIDOfTheTopic).
             success(function(data, status, headers, config) {
                 that.currentTopic = data[0];
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get pulled");
+            });
+    };
+
+    /**
+     * Requests the actual sub-topic with the given uID of the parent topic as
+     * JSON objects and stores them internally in that.subtopics
+     *
+     * @param uIDOfTheParentObject of the parent topic
+     */
+    this.getSubTopicByTopicID = function(uIDOfTheParentObject){
+        $http.get('/admin/topicbyuser/'+uIDOfTheParentObject).
+            success(function(data, status, headers, config) {
+                that.subtopics = data;
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Subtopics cannot get pulled");
             });
     };
 
