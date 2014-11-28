@@ -19,12 +19,12 @@
 
     <!-- External js scripts-->
     <script src='@routes.Assets.at("javascripts/sha1.js")' type="text/javascript"></script>
-    <script src='@routes.Assets.at("javascripts/vendor/ng-polymer.js")' type="text/javascript"></script>
+    <!--<script src='@routes.Assets.at("javascripts/vendor/ng-polymer.js")' type="text/javascript"></script>-->
 </head>
 <body>
 <div class="container-fluid col-md-10 col-md-offset-1" ng-controller="LangCtrl as lc" >
-    <div ng-controller="UserCtrl as uc" mail='@email' firstname='@firstname'>
-        <!-- Header -->
+   <div ng-controller="UserCtrl as uc" mail='@email' firstname='@firstname'>
+       <!-- Header -->
         <div id="header">
             <div id="logo">
                 <img src='assets/images/icon.png' alt="logo of HiP" width="400">

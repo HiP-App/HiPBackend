@@ -1,6 +1,7 @@
 /**
  * Created by jorgamelunxen on 28.11.14.
  */
+    //FIXME put this into services
 var DEBUG = true;
 
 var Interface = {};
