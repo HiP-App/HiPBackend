@@ -29,6 +29,8 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
         topic: ""
     };
 
+    this.currentGroupTopic = {};
+
     this.bufferedGroup = {uID: "toSet"};
     this.bufferedTopic = {
         name: "NaN"
@@ -179,6 +181,10 @@ controllersModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', fun
             });
 
         /* FIXME create corresponding chat system */
+
+        /* create the fitting topics */
+        Interface.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
+            $scope.gc, $scope.uc.email, $http)
     };
 
     this.deleteGroup = function(id){
