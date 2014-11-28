@@ -67,7 +67,8 @@ class TopicController extends Controller with MongoController {
           val modifier    =   Json.obj( "$set" -> Json.obj("group" -> topic.group),
                                         "$set" -> Json.obj("name" -> topic.name),
                                         "$set" -> Json.obj("createdBy" -> topic.createdBy),
-                                        "$set" -> Json.obj("content" -> topic.content))
+                                        "$set" -> Json.obj("content" -> topic.content),
+                                        "$set" -> Json.obj("status" -> topic.status))
 
           collection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>

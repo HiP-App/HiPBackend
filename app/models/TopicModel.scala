@@ -7,4 +7,5 @@ case class TopicModel(uID: String,
                       name: String,
                       group: String,
                       createdBy: String,
-                      content: String)
+                      content: String,
+                      status: String)

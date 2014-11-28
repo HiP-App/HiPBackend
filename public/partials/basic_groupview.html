@@ -47,7 +47,21 @@
                         {{lc.getTerm('system_sub_topics')}}
                     </h4>
                     <ul>
-                        <li ng-repeat="topic in tc.subtopics"> <a ng-href="/#/edit/{{ topic.uID }}" >{{topic.name}}</a></li>
+                        <li ng-repeat="topic in tc.subtopics">
+                            <a ng-href="/#/edit/{{ topic.uID }}" >{{topic.name}}</a>
+                            <span class="glyphicon glyphicon-remove-circle" ng-show="{{ topic.status == 'wip' }}"
+                                  tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
+                                  tooltip-trigger="mouseenter" tooltip-placement="right">
+                            </span>
+                            <span class="glyphicon glyphicon-eye-open"      ng-show="{{ topic.status == 'ir' }}"
+                                  tooltip-html-unsafe="{{lc.getTerm('tooltip_ir')}}"
+                                  tooltip-trigger="mouseenter" tooltip-placement="right">
+                            </span>
+                            <span class="glyphicon glyphicon-ok-circle"     ng-show="{{ topic.status == 'done' }}"
+                                  tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
+                                  tooltip-trigger="mouseenter" tooltip-placement="right">
+                            </span>
+                        </li>
                     </ul>
                 </div>
 

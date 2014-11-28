@@ -19,7 +19,8 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
             name: subTopic,
             group: groupID,
             createdBy: currentTopicID,
-            content: ""
+            content: "",
+            status: "wip"
         }
 
         $http.post('/admin/topic', subTopicJSON).
@@ -35,7 +36,8 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
         name: topicname,
         group: groupID,
         createdBy: mainTopicCreatedBy,
-        content: ""
+        content: "",
+        status: "wip"
     }
 
     if (DEBUG)

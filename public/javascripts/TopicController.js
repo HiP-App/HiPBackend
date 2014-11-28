@@ -26,11 +26,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.modifyTopicContent = "";
     this.modifyTopicGroup = "";
 
-    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup){
+    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
         that.modifyTopicContent = topicContent;
         that.modifyTopicGroup   = topicGroup;
+        that.modifyTopicStatus  = topicStatus;
     };
 
     this.createTopic = function(){
@@ -51,6 +52,24 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return true;
         else
             return false;
+    }
+
+    this.updateStatus = function(){
+        var topic = {
+            uID : that.currentTopic.uID,
+            name : that.currentTopic.name,
+            group  : that.currentTopic.group,
+            createdBy: that.currentTopic.createdBy,
+            content: that.currentTopic.content,
+            status: that.currentTopic.status
+        }
+
+        $http.put('/admin/topic', topic).
+            success(function(data, status, headers, config) {
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Topic cannot get updated");
+            });
     }
 
     /**
@@ -101,10 +120,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             name : that.modifyTopicName,
             group  : that.modifyTopicGroup,
             createdBy: $scope.uc.email,
-            content: that.modifyTopicContent
+            content: that.modifyTopicContent,
+            status: that.modifyTopicStatus
         }
-
-        console.log(topic);
 
         $http.put('/admin/topic', topic).
             success(function(data, status, headers, config) {

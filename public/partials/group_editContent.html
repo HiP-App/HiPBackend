@@ -26,13 +26,32 @@
             <div class="panel-body">
                 <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
                       ng-submit="tc.updateTopic()">
+                    <h4> {{lc.getTerm('system_edit_status')}}</h4>
+
+                    <div class="radio" ng-click="tc.updateStatus()">
+                        <label>
+                            <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
+                        </label>
+                    </div>
+                    <div class="radio" ng-click="tc.updateStatus()">
+                        <label>
+                            <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir" ng-click="tc.updateStatus()">{{lc.getTerm('system_ir')}}
+                        </label>
+                    </div>
+                    <div class="radio" ng-click="tc.updateStatus()">
+                        <label>
+                            <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done" ng-click="tc.updateStatus()">{{lc.getTerm('system_done')}}
+                        </label>
+                    </div>
+                    <hr>
+
                     <h4> {{lc.getTerm('system_edit_information')}}</h4>
 
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-8 input-group">
                             <span class="input-group-addon">{{lc.getTerm('system_edit_content')}}</span>
-                            <input type="text" class="form-control" name="topicContent" id="topicContent" placeholder=""
-                                   ng-model="tc.currentTopic.content">
+                            <textarea type="text" class="form-control" name="topicContent" id="topicContent" placeholder=""
+                                   ng-model="tc.currentTopic.content" rows="10"></textarea>
                         </div>
                     </div>
 
