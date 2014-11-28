@@ -27,79 +27,87 @@
         <div class="float-clear"></div>
     </div>
 
-    <div id="mainBox">
-        <div class="float-clear"></div>
+    <div ng-controller="OverlayCtrl as oc">
+        <div id="overlay" classname="overlayBG" class="overlayBG" ng-show="oc.overlayIsShown"></div>
+        <div id="lightBox" ng-show="oc.overlayIsShown">
+            <span class="pointer" classname="pointer" ng-click="oc.toggleOverlay()">
+                Hier klicken zum Schließen
+            </span>
+        </div>
 
-        <div id="welcomePanel" class="panel panel-success">
-            <div id="welcomeBox" class="panel-heading">
-                <div class="shift-left">
-                    <span>
-                        {{lc.getTerm('system_group_welcome')}} {{gc.bufferedGroup.name}}
-                    </span>
+        <div id="mainBox">
+            <div class="float-clear"></div>
+
+            <div id="welcomePanel" class="panel panel-success">
+                <div id="welcomeBox" class="panel-heading">
+                    <div class="shift-left">
+                        <span>
+                            {{lc.getTerm('system_group_welcome')}} {{gc.bufferedGroup.name}}
+                        </span>
+                    </div>
+                    <div class="shift-right">
+                        {{lc.getTerm('system_group_topic_header')}}
+                        <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">{{gc.bufferedTopic.name}}</a>
+                        <a ng-click="oc.toggleOverlay()"> {{lc.getTerm('system_group_topic_header_ext')}} </a>
+                    </div>
+                    <div class="float-clear"></div>
                 </div>
-                <div class="shift-right">
-                    {{lc.getTerm('system_group_topic_header')}}
-                    <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">{{gc.bufferedTopic.name}}</a>
-                    {{lc.getTerm('system_group_topic_header_ext')}}
+                <div class="panel-footer"> {{lc.getTerm('system_group_member')}} {{gc.bufferedGroup.member}}</div>
+            </div>
+
+            <div id="contentBox">
+                <div id="supervisorNavigation" class="panel panel-default">
+                    <div class="panel-heading"> {{lc.getTerm('system_group_navigation')}} </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li> <a href="#"> ... </a> </li>
+                            <li> <a href="/#/group/propose"> {{lc.getTerm('system_group_navigation_proposeTopic')}} </a> </li>
+                            <li> <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">
+                                {{lc.getTerm('system_group_navigation_editContentOfTopic')}}
+                            </a> </li>
+                            <li> <a href="#"> ... </a> </li>
+                        </ul>
+                    </div>
                 </div>
+
+                <div id="groupNotification" class="panel panel-default">
+                    <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
+                    <div class="panel-body">
+                            <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications">
+                                {{lc.getNotification(message)}}
+                            </div>
+                    </div>
+                </div>
+
+                <div id="templates" class="panel panel-default" ng-controller="ChatCtrl as cc">
+                    <div class="panel-heading"> {{lc.getTerm('system_chat_head')}} {{cc.chat.name}} </div>
+                    <div class="panel-body">
+                        <div id="chatContent">
+                            <div role="alert" class="alert" ng-repeat="message in cc.messagesJSON" ng-hide='message.content == ""'
+                                 ng-class="{'alert-info': message.sender != uc.firstname, 'alert-success': message.sender == uc.firstname}">
+                                {{message.content}} <br> <p align="right">  {{lc.getTerm('system_chat_by')}} {{message.sender}} </p>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div id="chatControls">
+                            <div id="chatTextfield">
+                                <input id="message" type="text" size="10" ng-model="cc.currentMessage" class="form-control">
+                            </div>
+                           <div id="chatSendButton">
+                               <button type="button" ng-click="cc.postMessage(false,uc.firstname)" class="btn btn-default">
+                                   {{lc.getTerm('system_chat_send')}}
+                               </button>
+                           </div>
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="float-clear"></div>
             </div>
-            <div class="panel-footer"> {{lc.getTerm('system_group_member')}} {{gc.bufferedGroup.member}}</div>
-        </div>
-
-        <div id="contentBox">
-            <div id="supervisorNavigation" class="panel panel-default">
-                <div class="panel-heading"> {{lc.getTerm('system_group_navigation')}} </div>
-                <div class="panel-body">
-                    <ul>
-                        <li> <a href="#"> ... </a> </li>
-                        <li> <a href="/#/group/propose"> {{lc.getTerm('system_group_navigation_proposeTopic')}} </a> </li>
-                        <li> <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">
-                            {{lc.getTerm('system_group_navigation_editContentOfTopic')}}
-                        </a> </li>
-                        <li> <a href="#"> ... </a> </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div id="groupNotification" class="panel panel-default">
-                <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
-                <div class="panel-body">
-                        <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications">
-                            {{lc.getNotification(message)}}
-                        </div>
-                </div>
-            </div>
-
-            <div id="templates" class="panel panel-default" ng-controller="ChatCtrl as cc">
-                <div class="panel-heading"> {{lc.getTerm('system_chat_head')}} {{cc.chat.name}} </div>
-                <div class="panel-body">
-                    <div id="chatContent">
-                        <div role="alert" class="alert" ng-repeat="message in cc.messagesJSON" ng-hide='message.content == ""'
-                             ng-class="{'alert-info': message.sender != uc.firstname, 'alert-success': message.sender == uc.firstname}">
-                            {{message.content}} <br> <p align="right">  {{lc.getTerm('system_chat_by')}} {{message.sender}} </p>
-                        </div>
-                    </div>
-
-                    <br>
-
-                    <div id="chatControls">
-                        <div id="chatTextfield">
-                            <input id="message" type="text" size="10" ng-model="cc.currentMessage" class="form-control">
-                        </div>
-                       <div id="chatSendButton">
-                           <button type="button" ng-click="cc.postMessage(false,uc.firstname)" class="btn btn-default">
-                               {{lc.getTerm('system_chat_send')}}
-                           </button>
-                       </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="float-clear"></div>
         </div>
     </div>
-
     <div class="float-clear"></div>
 </div>

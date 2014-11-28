@@ -264,3 +264,47 @@ nav {
     margin-left: 15px;
     list-style-type: none;
 }
+
+/* ===================
+* Overlay:
+* =================== */
+
+#overlay {
+    position: fixed;
+    z-index:199;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+
+}
+
+* html #overlay { /* ie6 hack */
+    position: absolute;
+    height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+
+.overlayBG {
+    background-color:#000;
+    -ms-filter: "Alpha(Opacity=75)";
+    filter:alpha(opacity=75);
+    -moz-opacity: 0.75;
+    opacity: 0.75;
+}
+
+#lightBox {
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-left:-100px;
+    margin-top:-100px;
+    z-index:200;
+    width:200px;
+    height:200px;
+    background-color:#fff;
+    text-align:center;
+}
+* html #lightBox { /* ie6 hack */
+    position: absolute;
+    margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+}
