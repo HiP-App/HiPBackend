@@ -1,5 +1,5 @@
 <div ng-controller="GroupCtrl as gc">
-    <div group-box></div>
+    <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
         <div class="panel-heading"> {{lc.getTerm('system_groups_header')}} </div>
@@ -12,7 +12,7 @@
                     <h4>{{lc.getTerm('system_groups_information')}}</h4>
 
                     <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-8">
+                        <div class="col-sm-offset-1 col-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon">{{lc.getTerm('system_groups_form_name')}}</span>
                                 <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
@@ -40,17 +40,10 @@
                                        ng-model="gc.currentGroupTopic.subtopics" tooltip-html-unsafe="{{lc.getTerm('tooltip_createGroup_subTopic')}}"
                                        tooltip-trigger="focus" tooltip-placement="right">
                             </div>
-                        </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-1 text-right">
-                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning">{{lc.getTerm('system_groups_form_cancel')}}</a>
-                        </div>
-
-                        <div class="col-sm-offset-1 col-sm-6 text-right">
-                            <button type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_groups_form_create')}}</button>
+                            <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
+                                            submit="lc.getTerm('system_groups_form_create')">
+                            </cancel-submit>
                         </div>
                     </div>
 

@@ -1,5 +1,5 @@
 <div ng-controller="GroupCtrl as gc">
-    <div group-box></div>
+    <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="LangCtrl as lc">
         <div class="panel-heading"> Create Term </div>
@@ -34,11 +34,9 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-6 text-right">
-                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning">Cancel</a>
-
-                            <button type="submit" class="btn btn-success" id="btn_create">Create term</button>
-                        </div>
+                        <cancel-submit  cancel="lc.getTerm('system_cancel')"
+                                        submit="lc.getTerm('system_create')">
+                        </cancel-submit>
                     </div>
 
                     <h4>Debug preview</h4>
@@ -47,6 +45,7 @@
 
                 </form>
             </div>
+        </div>
     </div>
 </div>
 <div class="float-clear"></div>

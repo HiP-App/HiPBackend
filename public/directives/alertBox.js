@@ -4,6 +4,7 @@
 
 alertModule.directive('alertBox', function() {
         return {
+            restrict: 'E',
             templateUrl: '/assets/directives/alertBox.html'
         };
     });

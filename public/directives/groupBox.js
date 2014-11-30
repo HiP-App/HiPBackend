@@ -4,6 +4,7 @@
 
 groupModule.directive('groupBox', function() {
     return {
+        restrict: 'E',
         templateUrl: '/assets/directives/groupBox.html'
     };
 });

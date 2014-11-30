@@ -1,9 +1,7 @@
 <div ng-controller="GroupCtrl as gc">
     <div id="mainSingleBoxBig" class="panel panel-default" ng-controller="TopicCtrl as tc">
         <div class="panel-heading">
-            <a ng-href="/#/group/view/{{ tc.currentTopic.group }}">
-                <span class="glyphicon glyphicon-chevron-left"> </span>
-            </a>
+            <a ng-href="/#/group/view/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
             {{lc.getTerm('system_edit_header')}}: {{ tc.currentTopic.name }} </div>
         <div >
 
@@ -12,7 +10,7 @@
                       ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
                     <h4> {{lc.getTerm('system_edit_status')}}</h4>
 
-                    <div alert-box></div>
+                    <alert-box></alert-box>
 
                     <div class="radio" ng-click="tc.updateStatus(ac,lc)">
                         <label>
@@ -35,13 +33,9 @@
 
                     <div text-angular ng-model="tc.currentTopic.content"></div>
 
-                    <div class="shift-left">
-                        <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning">{{lc.getTerm('system_edit_form_cancel')}}</a>
-                    </div>
-
-                    <div class="shift-right">
-                        <button type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_edit_form_create')}}</button>
-                    </div>
+                    <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
+                                    submit="lc.getTerm('system_edit_form_create')">
+                    </cancel-submit>
 
                 </form>
             </div>

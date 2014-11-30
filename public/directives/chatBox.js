@@ -4,6 +4,7 @@
 
 chatModule.directive('chatBox', function() {
     return {
+        restrict: 'E',
         templateUrl: '/assets/directives/chatBox.html'
     };
 });

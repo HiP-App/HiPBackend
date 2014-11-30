@@ -1,5 +1,5 @@
 <div ng-controller="GroupCtrl as gc">
-    <div group-box></div>
+    <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="ProposeCtrl as pc">
         <div class="panel-heading"> {{lc.getTerm('system_propose_header')}} </div>
@@ -11,33 +11,28 @@
                     <h4> {{lc.getTerm('system_propose_information')}}</h4>
 
                     <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10 input-group">
-                            <span class="input-group-addon">{{lc.getTerm('system_propose_name')}}</span>
-                            <input type="text" class="form-control" name="proposeName" id="proposeName" placeholder=""
-                                   ng-model="pc.propose.name" ng-model="gc.currentGroupTopic.topic"
-                                   tooltip="{{lc.getTerm('tooltip_proposeTopic_name')}}"
-                                   tooltip-trigger="focus" tooltip-placement="right">
-                        </div>
+                        <div class="col-sm-offset-1 col-sm-10 ">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{lc.getTerm('system_propose_name')}}</span>
+                                <input type="text" class="form-control" name="proposeName" id="proposeName" placeholder=""
+                                       ng-model="pc.propose.name" ng-model="gc.currentGroupTopic.topic"
+                                       tooltip="{{lc.getTerm('tooltip_proposeTopic_name')}}"
+                                       tooltip-trigger="focus" tooltip-placement="right">
+                            </div>
 
-                        <div class="col-sm-offset-1 col-sm-10 input-group">
-                            <span class="input-group-addon">{{lc.getTerm('system_propose_desc')}}</span>
-                            <input type="text" class="form-control" name="proposeDesc" id="proposeDesc" placeholder=""
-                                   ng-model="pc.propose.content" ng-model="gc.currentGroupTopic.topic"
-                                   tooltip="{{lc.getTerm('tooltip_proposeTopic_desc')}}"
-                                   tooltip-trigger="focus" tooltip-placement="right">
-                        </div>
-                    </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">{{lc.getTerm('system_propose_desc')}}</span>
+                                <input type="text" class="form-control" name="proposeDesc" id="proposeDesc" placeholder=""
+                                       ng-model="pc.propose.content" ng-model="gc.currentGroupTopic.topic"
+                                       tooltip="{{lc.getTerm('tooltip_proposeTopic_desc')}}"
+                                       tooltip-trigger="focus" tooltip-placement="right">
+                            </div>
 
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-1 text-right">
-                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning">{{lc.getTerm('system_groups_form_cancel')}}</a>
-                        </div>
-
-                        <div class="col-sm-offset-3 col-sm-6 text-right">
-                            <button type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_groups_form_create')}}</button>
+                            <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
+                                            submit="lc.getTerm('system_groups_form_create')">
+                            </cancel-submit>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
