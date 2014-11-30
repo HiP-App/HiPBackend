@@ -1,23 +1,5 @@
 <div ng-controller="GroupCtrl as gc">
-    <div id="groups" class="panel panel-default">
-        <div class="panel-heading">
-            <div class="menuLeft">{{lc.getTerm('system_groups')}}</div>
-            <div class="menuRight"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
-                <span class='glyphicon  glyphicon-refresh'></span> </a>
-            </div>
-            <div class="float-clear"></div>
-        </div> <!-- alt: class="boxHeader" -->
-
-        <div class="panel-body">
-            <div class="menuEntry" ng-repeat="grp in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
-                <div class="menuLeft">  <a ng-href="/#/group/view/{{ grp.uID }}">{{ grp.name }}</a></div>
-                <div class="menuRight"> [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span></div>
-                <div class="float-clear"></div>
-            </div>
-        </div>
-
-        <div class="float-clear"></div>
-    </div>
+    <div group-box></div>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
         <div class="panel-heading">

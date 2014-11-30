@@ -5,6 +5,7 @@ dependencies = [
     'textAngular',
     'myApp.alerts',
     'myApp.chat',
+    'myApp.groups',
     'myApp.filters',
     'myApp.services',
     'myApp.controllers',
@@ -72,3 +73,4 @@ angular.module('myApp.routeConfig', ['ngRoute'])
 
 @alertModule = angular.module('myApp.alerts', [])
 @chatModule = angular.module('myApp.chat', [])
+@groupModule = angular.module('myApp.groups', [])
