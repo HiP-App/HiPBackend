@@ -6,7 +6,7 @@
  * Created by joerg on 29.10.2014.
  */
 
-controllersModule.controller('AlertCtrl', ['$scope',function($scope) {
+alertModule.controller('AlertCtrl', ['$scope',function($scope) {
     var that = this;
 
     $scope.alerts = [

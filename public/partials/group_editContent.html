@@ -33,15 +33,7 @@
                       ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
                     <h4> {{lc.getTerm('system_edit_status')}}</h4>
 
-                    <div ng-repeat="alert in alerts" class="alert alert-dismissible"
-                         ng-class="{'alert-warning' : alert.type == 'warning',
-                         'alert-danger' : alert.type == 'danger',
-                         'alert-info' : alert.type == 'info',
-                         'alert-success' : alert.type == 'success'}"
-                         role="alert">{{alert.msg}}
-
-                            <button type="button" ng-click="ac.closeAlert($index)" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    </div>
+                    <div alert-box></div>
 
                     <div class="radio" ng-click="tc.updateStatus(ac,lc)">
                         <label>

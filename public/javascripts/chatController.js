@@ -2,7 +2,7 @@
  * Created by joerg on 29.10.2014.
  */
 
-controllersModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
     this.errorObject = {

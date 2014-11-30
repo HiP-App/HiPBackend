@@ -3,6 +3,8 @@ dependencies = [
     'ngRoute',
     'ui.bootstrap',
     'textAngular',
+    'myApp.alerts',
+    'myApp.chat',
     'myApp.filters',
     'myApp.services',
     'myApp.controllers',
@@ -67,3 +69,6 @@ angular.module('myApp.routeConfig', ['ngRoute'])
 @modelsModule = angular.module('myApp.models', [])
 @directivesModule = angular.module('myApp.directives', [])
 @filtersModule = angular.module('myApp.filters', [])
+
+@alertModule = angular.module('myApp.alerts', [])
+@chatModule = angular.module('myApp.chat', [])
