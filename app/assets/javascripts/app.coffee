@@ -11,7 +11,8 @@ dependencies = [
     'myApp.controllers',
     'myApp.directives',
     'myApp.common',
-    'myApp.routeConfig'
+    'myApp.routeConfig',
+    'ngSanitize'
 ]
 
 app = angular.module('myApp', dependencies)

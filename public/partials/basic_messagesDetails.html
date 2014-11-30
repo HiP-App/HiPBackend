@@ -2,14 +2,17 @@
     <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="MessageCtrl as mc">
-        <div class="panel-heading"> {{lc.getTerm('system_messages_head')}} </div>
+        <div class="panel-heading">
+            <a ng-href="/#/messages/all/{{ uc.email }}"><back-arrow></back-arrow></a>
+            {{lc.getTerm('system_messages_head')}}
+        </div>
         <div>
             <div class="panel-body">
                 <h4>{{ mc.detailMessage.title }}</h4>
 
                 <br>
 
-                {{mc.detailMessage.content}}
+                <div ng-bind-html="mc.detailMessage.content"></div>
 
                 <br>
 
