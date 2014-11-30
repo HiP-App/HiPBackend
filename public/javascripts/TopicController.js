@@ -54,7 +54,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return false;
     }
 
-    this.updateStatus = function(ac, lc){
+    this.updateStatus = function(ac, lc, msg){
         var topic = {
             uID : that.currentTopic.uID,
             name : that.currentTopic.name,
@@ -72,7 +72,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
 
         if(ac != undefined && lc != undefined){
-            ac.addAlert(lc.getTerm('notification_alert_changedStatus'),"info");
+            if(msg == undefined || msg == null){
+                ac.addAlert(lc.getTerm('notification_alert_changedStatus'),"info");
+            }
+            else{
+                ac.addAlert(lc.getTerm(msg),"info");
+            }
         }
     }
 

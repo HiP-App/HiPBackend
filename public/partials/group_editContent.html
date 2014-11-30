@@ -29,7 +29,7 @@
 
             <div class="panel-body">
                 <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
-                      ng-submit="tc.updateStatus()">
+                      ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
                     <h4> {{lc.getTerm('system_edit_status')}}</h4>
 
                     <div ng-repeat="alert in alerts" class="alert alert-dismissible"
