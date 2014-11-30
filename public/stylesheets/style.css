@@ -42,6 +42,13 @@ body{
     margin-top: 15px;
 }
 
+#mainSingleBoxBig{
+    float: left;
+    width: 1140px;
+
+    margin-top: 15px;
+}
+
 .shift-left{
     float: left;
 }
