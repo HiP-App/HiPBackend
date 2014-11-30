@@ -19,7 +19,7 @@
                     </h3>
                        <ul>
                            <li>
-                               <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" >{{gc.bufferedGroup.name}}</a>
+                               <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" >{{gc.bufferedTopic.name}}</a>
                                <span class="glyphicon glyphicon-remove-circle"
                                      ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'done'}"
                                      tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
