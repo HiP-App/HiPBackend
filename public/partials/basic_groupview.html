@@ -42,7 +42,24 @@
                     <h3>
                         {{lc.getTerm('system_main_topic')}}
                     </h3>
-                        <blockquote> {{gc.bufferedGroup.name}} </blockquote>
+                       <ul>
+                           <li>
+                               <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" >{{gc.bufferedGroup.name}}</a>
+                               <span class="glyphicon glyphicon-remove-circle"
+                                     ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'done'}"
+                                     tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
+                                     tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
+                              <span class="glyphicon glyphicon-eye-open"
+                                    ng-class="{'ng-hide': gc.bufferedTopic.status == 'wip' || gc.bufferedTopic.status == 'done'}"
+                                    tooltip-html-unsafe="{{lc.getTerm('tooltip_ir')}}"
+                                    tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
+                              <span class="glyphicon glyphicon-ok-circle"
+                                    ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'wip'}"
+                                    tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
+                                    tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
+                           </li>
+                       </ul>
+
                     <h4>
                         {{lc.getTerm('system_sub_topics')}}
                     </h4>

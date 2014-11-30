@@ -20,12 +20,16 @@
     </div>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
-        <div class="panel-heading"> {{lc.getTerm('system_edit_header')}}: {{ tc.currentTopic.name }} </div>
+        <div class="panel-heading">
+            <a ng-href="/#/group/view/{{ tc.currentTopic.group }}">
+                <span class="glyphicon glyphicon-chevron-left"> </span>
+            </a>
+            {{lc.getTerm('system_edit_header')}}: {{ tc.currentTopic.name }} </div>
         <div >
 
             <div class="panel-body">
                 <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
-                      ng-submit="tc.updateTopic()">
+                      ng-submit="tc.updateStatus()">
                     <h4> {{lc.getTerm('system_edit_status')}}</h4>
 
                     <div ng-repeat="alert in alerts" class="alert alert-dismissible"
@@ -59,9 +63,8 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-8 input-group">
-                            <span class="input-group-addon">{{lc.getTerm('system_edit_content')}}</span>
-                            <textarea type="text" class="form-control" name="topicContent" id="topicContent" placeholder=""
-                                   ng-model="tc.currentTopic.content" rows="10"></textarea>
+                            <!--<span class="input-group-addon">{{lc.getTerm('system_edit_content')}}</span>-->
+                            <div text-angular ng-model="tc.currentTopic.content"></div>
                         </div>
                     </div>
 
