@@ -1,0 +1,14 @@
+<!-- Overlay start -->
+<div id="overlay" classname="overlayBG" class="overlayBG" ng-show="oc.overlayIsShown"></div>
+<div id="lightBox" ng-show="oc.overlayIsShown">
+    <div id="contentOfLightBox">
+                    <span class="pointer" classname="pointer" ng-click="oc.toggleOverlay()">
+                        {{lc.getTerm('system_clickToClose')}}
+                    </span>
+        <hr>
+        <div ng-transclude></div>
+
+    </div>
+
+</div>
+<!-- Overlay ends -->

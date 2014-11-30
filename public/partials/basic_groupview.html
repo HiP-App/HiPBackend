@@ -4,22 +4,14 @@
 
     <div ng-controller="OverlayCtrl as oc">
         <div ng-controller="TopicCtrl as tc">
-            <!-- Overlay start -->
-            <div id="overlay" classname="overlayBG" class="overlayBG" ng-show="oc.overlayIsShown"></div>
-            <div id="lightBox" ng-show="oc.overlayIsShown">
-                <div id="contentOfLightBox">
-                    <span class="pointer" classname="pointer" ng-click="oc.toggleOverlay()">
-                        {{lc.getTerm('system_clickToClose')}}
-                    </span>
 
-                    <hr>
-
-                    <h3>
-                        {{lc.getTerm('system_main_topic')}}
-                    </h3>
-                       <ul>
-                           <li>
-                               <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" >{{gc.bufferedTopic.name}}</a>
+            <hip-overlay>
+                <h3>
+                    {{lc.getTerm('system_main_topic')}}
+                </h3>
+                <ul>
+                    <li>
+                        <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" >{{gc.bufferedTopic.name}}</a>
                                <span class="glyphicon glyphicon-remove-circle"
                                      ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'done'}"
                                      tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
@@ -32,15 +24,15 @@
                                     ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'wip'}"
                                     tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
                                     tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
-                           </li>
-                       </ul>
+                    </li>
+                </ul>
 
-                    <h4>
-                        {{lc.getTerm('system_sub_topics')}}
-                    </h4>
-                    <ul>
-                        <li ng-repeat="topic in tc.subtopics">
-                            <a ng-href="/#/edit/{{ topic.uID }}" >{{topic.name}}</a>
+                <h4>
+                    {{lc.getTerm('system_sub_topics')}}
+                </h4>
+                <ul>
+                    <li ng-repeat="topic in tc.subtopics">
+                        <a ng-href="/#/edit/{{ topic.uID }}" >{{topic.name}}</a>
                             <span class="glyphicon glyphicon-remove-circle" ng-show="{{ topic.status == 'wip' }}"
                                   tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
                                   tooltip-trigger="mouseenter" tooltip-placement="right">
@@ -53,12 +45,9 @@
                                   tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
                                   tooltip-trigger="mouseenter" tooltip-placement="right">
                             </span>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-            <!-- Overlay ends -->
+                    </li>
+                </ul>
+            </hip-overlay>
 
             <div id="mainBox">
                 <div class="float-clear"></div>
