@@ -17,6 +17,12 @@ body{
     text-align:left;
 }
 
+.hip-button-red {
+    background: #c12e2a;
+    color: ghostwhite;
+    text-transform: none;
+}
+
 .hip-button-yellow {
     background: #eb9316;
     color: ghostwhite;
@@ -29,10 +35,16 @@ body{
     text-transform: none;
 }
 
-.hip-button-red {
-    background: #c12e2a;
-    color: ghostwhite;
-    text-transform: none;
+.icon-red {
+    color: #c12e2a;
+}
+
+.icon-yellow {
+    color: #eb9316;
+}
+
+.icon-green {
+    color: #419641;
 }
 
 #mainSingleBox{

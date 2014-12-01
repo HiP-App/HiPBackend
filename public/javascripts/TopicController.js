@@ -104,9 +104,15 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * @param uIDOfTheParentObject of the parent topic
      */
     this.getSubTopicByTopicID = function(uIDOfTheParentObject){
+        if(that.debug)
+        console.log("info TopicController: fetching subtopics for "+uIDOfTheParentObject);
+
         $http.get('/admin/topicbyuser/'+uIDOfTheParentObject).
             success(function(data, status, headers, config) {
                 that.subtopics = data;
+
+                if(that.debug)
+                    console.log( that.subtopics);
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Subtopics cannot get pulled");

@@ -35,7 +35,9 @@
                     <div id="groupNotification" class="panel panel-default">
                         <div class="panel-heading"> {{lc.getTerm('system_group_listOfTopics')}} </div>
                         <div class="panel-body">
-
+                            <div ng-controller="TopicCtrl as tc">
+                                <topic-list topic="gc.bufferedGroup.topic"></topic-list>
+                            </div>
                         </div>
                     </div>
 
