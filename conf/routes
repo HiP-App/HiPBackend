@@ -9,6 +9,7 @@ GET     /                                   @controllers.Application.index
 GET     /admin/users                        @controllers.UserController.getAllUsers
 GET     /admin/users/:email                 @controllers.UserController.getUserByEmail(email: String)
 
+GET     /admin/role/:userid                 @controllers.RoleController.getRole(userid: String)
 GET     /admin/roles                        @controllers.RoleController.getRoles
 PUT     /admin/roles                        @controllers.RoleController.updateRole
 

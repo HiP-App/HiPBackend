@@ -11,7 +11,8 @@
     <div class="panel-body">
         <div class="menuEntry" ng-repeat="grp in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
             <div class="menuLeft">
-                <a ng-href="/#/group/view/{{ grp.uID }}">{{ grp.name }}</a>
+                <a ng-href="/#/group/view/{{ grp.uID }}" ng-show="uc.isStudent()">{{ grp.name }}</a>
+                <a ng-href="/#/group/viewexternal/{{ grp.uID }}" ng-show="uc.isSupervisor()">{{ grp.name }}</a>
             </div>
 
             <div class="menuRight">

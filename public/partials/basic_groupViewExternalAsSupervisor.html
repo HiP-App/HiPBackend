@@ -1,0 +1,50 @@
+<!-- Content -->
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div>
+        <div ng-controller="TopicCtrl as tc">
+
+            <div id="mainBox">
+                <div class="float-clear"></div>
+
+                <div id="welcomePanel" class="panel panel-success">
+                    <div id="welcomeBox" class="panel-heading">
+                        <div class="shift-left">
+                            <span>
+                                {{lc.getTerm('system_group_welcome')}} {{gc.bufferedGroup.name}}
+                            </span>
+                        </div>
+                        <div class="shift-right" >
+                            {{lc.getTerm('system_group_topic_header')}}
+                            {{gc.bufferedTopic.name}}
+                        </div>
+                        <div class="float-clear"></div>
+                    </div>
+                    <div class="panel-footer"> {{lc.getTerm('system_group_member')}} {{gc.bufferedGroup.member}}</div>
+                </div>
+
+                <div id="contentBox">
+                    <div id="supervisorNavigation" class="panel panel-default">
+                        <div class="panel-heading"> {{lc.getTerm('system_group_navigation')}} </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+
+                    <div id="groupNotification" class="panel panel-default">
+                        <div class="panel-heading"> {{lc.getTerm('system_group_listOfTopics')}} </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+
+                    <chat-box></chat-box>
+
+                    <div class="float-clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="float-clear"></div>
+</div>

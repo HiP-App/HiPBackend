@@ -37,9 +37,6 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/create', {
                 templateUrl: '/assets/partials/myhip_createGroup.html'
             })
-            .when('/topic/create', {
-                templateUrl: '/assets/partials/myhip_createTopic.html'
-            })
             .when('/topic/modify/:userID', {
                 templateUrl: '/assets/partials/myhip_modifyTopic.html'
             })
@@ -48,6 +45,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             })
             .when('/group/view/:uID', {
                 templateUrl: '/assets/partials/basic_groupView.html'
+            })
+            .when('/group/viewexternal/:uID', {
+                templateUrl: '/assets/partials/basic_groupViewExternalAsSupervisor.html'
             })
             .when('/language/create', {
               templateUrl: '/assets/partials/admin_createLangTerm.html'
