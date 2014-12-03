@@ -8,4 +8,5 @@ case class TopicModel(uID: String,
                       group: String,
                       createdBy: String,
                       content: String,
-                      status: String)
+                      status: String,
+                      constraints: Array[String])

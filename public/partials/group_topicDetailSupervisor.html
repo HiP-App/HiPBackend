@@ -33,7 +33,28 @@
                         </li>
                     </ul>
 
-                    <br>
+                    <hr>
+
+                    <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
+                          ng-submit="tc.updateStatus()">
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <div class="input-group" ng-repeat="constraint in tc.currentTopic.constraints">
+                                    <span class="input-group-addon">
+                                        {{constraint.substring(0, constraint.indexOf('#'))}}
+                                    </span>
+
+                                    <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
+                                           ng-model="tc.currentTopic.constraints[$index]" tooltip="{{lc.getTerm('tooltip_constraint')}}"
+                                           tooltip-trigger="focus" tooltip-placement="right">
+                                </div>
+
+                                <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
+                                                submit="lc.getTerm('system_topic_detail_changeConstraint')">
+                                </cancel-submit>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

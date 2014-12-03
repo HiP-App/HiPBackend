@@ -13,6 +13,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         sender:"System"
     };
 
+    this.possibleContraints = ["character_limitation"];
+
     this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
 
     that.subtopics = [];
@@ -25,13 +27,28 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.modifyTopicName = "";
     this.modifyTopicContent = "";
     this.modifyTopicGroup = "";
+    this.modifyTopicContraints = [];
 
-    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus){
+    function initConstraintArray(topicConstraints) {
+        possibleContraints.forEach(function (c) {
+            topicConstraints.push(c + "#0");
+        });
+    }
+
+    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
         that.modifyTopicContent = topicContent;
         that.modifyTopicGroup   = topicGroup;
         that.modifyTopicStatus  = topicStatus;
+
+        var constraintsAreInitialized = topicConstraints[0] != "" || topicConstraints != undefined;
+        if(constraintsAreInitialized){
+            that.modifyTopicConstraints = topicConstraints;
+        }
+        else{
+            initConstraintArray(that.modifyTopicConstraints);
+        }
     };
 
     this.createTopic = function(){
@@ -54,6 +71,21 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return false;
     }
 
+    this.sendAlert = function (ac, lc, msg) {
+        if (ac != undefined && lc != undefined) {
+            if (msg == undefined || msg == null) {
+                ac.addAlert(lc.getTerm('notification_alert_changedStatus'), "info");
+            }
+            else {
+                if(msg.indexOf('fail')>=0){
+                    ac.addAlert(lc.getTerm(msg), "danger");
+                }else{
+                    ac.addAlert(lc.getTerm(msg), "info");
+                }
+            }
+        }
+    };
+
     this.updateStatus = function(ac, lc, msg){
         var topic = {
             uID : that.currentTopic.uID,
@@ -61,7 +93,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             group  : that.currentTopic.group,
             createdBy: that.currentTopic.createdBy,
             content: that.currentTopic.content,
-            status: that.currentTopic.status
+            status: that.currentTopic.status,
+            constraints: that.currentTopic.constraints
+        }
+
+        var constraintsAreInitialized = that.currentTopic.constraints[0] != "" || that.currentTopic.constraints != undefined;
+        if(!constraintsAreInitialized){
+            initConstraintArray(that.currentTopic.constraints);
         }
 
         $http.put('/admin/topic', topic).
@@ -71,16 +109,38 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 console.log("error TopicController: Topic cannot get updated");
             });
 
-        if(ac != undefined && lc != undefined){
-            if(msg == undefined || msg == null){
-                ac.addAlert(lc.getTerm('notification_alert_changedStatus'),"info");
-            }
-            else{
-                ac.addAlert(lc.getTerm(msg),"info");
-            }
-        }
+        this.sendAlert(ac, lc, msg);
     }
 
+    this.constraintsFulfilled = function () {
+        var fulfilled = true;
+
+        that.currentTopic.constraints.forEach(function (constraintToValidate) {
+            var token = constraintToValidate.split('#');
+
+            if (token[0] == 'character_limitation') {
+                if (that.currentTopic.content.length < token[1]) {
+                    fulfilled = false;
+                }
+            }
+        });
+
+        return fulfilled;
+    }
+
+    this.updateStatusIfAllowedByContraints = function(ac,lc,msg){
+        var constraintsfulfilled = that.constraintsFulfilled();
+
+        if(that.debug){
+            console.log("info TopicController: check end result of validation: "+constraintsfulfilled);
+        }
+
+        if(constraintsfulfilled){
+            that.updateStatus(ac,lc,msg)
+        }else{
+            this.sendAlert(ac, lc, 'notification_alert_failDueToContraints');
+        }
+    }
     /**
      * Requests the actual topic with the given uID as JSON object
      * and stores it internally in that.currentTopic
@@ -136,7 +196,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             group  : that.modifyTopicGroup,
             createdBy: $scope.uc.email,
             content: that.modifyTopicContent,
-            status: that.modifyTopicStatus
+            status: that.modifyTopicStatus,
+            constraints: that.modifyTopicConstraints
         }
 
         $http.put('/admin/topic', topic).

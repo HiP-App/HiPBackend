@@ -68,7 +68,8 @@ class TopicController extends Controller with MongoController {
                                         "$set" -> Json.obj("name" -> topic.name),
                                         "$set" -> Json.obj("createdBy" -> topic.createdBy),
                                         "$set" -> Json.obj("content" -> topic.content),
-                                        "$set" -> Json.obj("status" -> topic.status))
+                                        "$set" -> Json.obj("status" -> topic.status),
+                                        "$set" -> Json.obj("constraints" -> topic.constraints))
 
           collection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>
