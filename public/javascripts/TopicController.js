@@ -21,6 +21,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.currentUserTopics = [];
 
+    this.constraintsForThisTopic = [];
+
     this.modifyTopicID = "";
     this.modifyTopicName = "";
     this.modifyTopicContent = "";
@@ -76,6 +78,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 }
             }
         }
+    };
+
+    this.updateConstraints = function(){
+        // FIXME
     };
 
     this.updateStatus = function(ac, lc, msg){
@@ -172,6 +178,17 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    this.getConstraintsForThisTopic = function(topicID){
+        $http.get('/admin/constraints/' + topicID).
+            success(function(data, status, headers, config) {
+                that.constraintsForThisTopic = data;
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Constraints cannot get pulled");
+            });
+    };
+
+
     this.getTopicsByUserID = function(uID){
         $http.get('/admin/topicbyuser/'+uID).
             success(function(data, status, headers, config) {
@@ -213,6 +230,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
         that.getTopicByTopicID($routeParams.topicID);
+        that.getConstraintsForThisTopic($routeParams.topicID);
     }
 
     if($routeParams.userID != undefined){

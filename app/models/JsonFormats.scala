@@ -15,4 +15,5 @@ object JsonFormats {
   implicit val MessageFormat = Json.format[MessageModel]
   implicit val TopicFormat = Json.format[TopicModel]
   implicit val NotificationFormat = Json.format[NotificationModel]
+  implicit val constraintFormat = Json.format[ConstraintModel]
 }

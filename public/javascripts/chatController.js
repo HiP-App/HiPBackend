@@ -46,11 +46,13 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
 
         $http.post('/admin/chat/'+newChat, toSend).
             success(function(data, status, headers, config) {
-                that.chat.message.push(that.currentMessage);
-                that.chat.sender.push(user);
+                if(that.chat.message != undefined){
+                    that.chat.message.push(that.currentMessage);
+                    that.chat.sender.push(user);
 
-                // prepare the JSON formatting
-                that.prepareChatMessages();
+                    // prepare the JSON formatting
+                    that.prepareChatMessages();
+                }
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
@@ -80,7 +82,7 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
 
             return that.messagesJSON;
         }else
-            return [errorObject]
+            return [that.errorObject]
     };
 
     this.getChatByGroupUID = function(uID){

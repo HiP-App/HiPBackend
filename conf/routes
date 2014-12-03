@@ -41,6 +41,8 @@ DELETE  /admin/group/:uID                   @controllers.GroupController.deleteG
 
 POST    /admin/modify/group                 @controllers.GroupController.modifyGroup
 
+GET     /admin/constraints/:topicID         @controllers.ConstraintController.getConstraints(topicID: String)
+POST    /admin/constraints                  @controllers.ConstraintController.createConstraint
 
 # SECURE SOCIAL
 # Login page

@@ -5,17 +5,42 @@
 var DEBUG = true;
 
 var Interface = {};
+var Tooling = {};
 
 Interface.possibleContraints = ["character_limitation","img_limitation"];
 
-Interface.initConstraintArray = function(topicConstraints) {
-    Interface.possibleContraints.forEach(function (c) {
-        topicConstraints.push(c + "#0");
+Tooling.generateUID = function(inputString){
+    var timestamp = Math.round(new Date().getTime() / 1000);
+
+    return Sha1.hash(inputString + Math.floor((Math.random() * 100000) + 1) + timestamp);
+};
+
+Interface.createConstraints = function($http, subTopicJSON){
+    Interface.possibleContraints.forEach(function(constraint){
+        var constraintJSON = {
+            uID: Tooling.generateUID(constraint),
+            name: constraint,
+            topic: subTopicJSON.uID,
+            value: "0"
+        };
+
+        subTopicJSON.constraints.push(constraintJSON.uID);
+
+        if (DEBUG){
+            console.log("info TopicController: posting constraint ");
+            console.log(constraintJSON);
+        }
+
+        $http.post('/admin/constraints', constraintJSON).
+            success(function (data, status, headers, config) {
+            }).
+            error(function (data, status, headers, config) {
+            });
     });
 };
 
 Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGrpController, mainTopicCreatedBy, $http) {
-    var currentTopicID = Sha1.hash(topicname + Math.floor((Math.random() * 100000) + 1));
+    var currentTopicID = Tooling.generateUID(topicname);
 
     /* create all sub-topics */
     var subtopics = subTopicsAsString.split(',');
@@ -32,7 +57,7 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
             status: "wip"
         };
 
-        Interface.initConstraintArray(subTopicJSON.constraints);
+        Interface.createConstraints($http, subTopicJSON);
 
         $http.post('/admin/topic', subTopicJSON).
             success(function (data, status, headers, config) {
@@ -52,7 +77,7 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
         constraints: []
     };
 
-    Interface.initConstraintArray(topic.constraints);
+    Interface.createConstraints($http, topic);
 
     if (DEBUG){
         console.log("info TopicController: posting topic with name: " + topic.name)
@@ -82,5 +107,4 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
     }
 };
 
-Tooling = {};
 
