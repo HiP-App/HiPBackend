@@ -37,7 +37,8 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
         group: groupID,
         createdBy: mainTopicCreatedBy,
         content: "",
-        status: "wip"
+        status: "wip",
+        constraints: ['character_validation#0']
     }
 
     if (DEBUG)
