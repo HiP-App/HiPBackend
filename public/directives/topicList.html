@@ -3,7 +3,9 @@
 </h3>
 <ul>
     <li>
-        <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" >{{gc.bufferedTopic.name}}</a>
+        <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" ng-show="uc.isStudent()">{{gc.bufferedTopic.name}}</a>
+        <a ng-href="/#/viewExternalSupervisor/{{ gc.bufferedGroup.topic }}" ng-show="uc.isSupervisor()">{{gc.bufferedTopic.name}}</a>
+
                                <span class="glyphicon glyphicon-remove-circle icon-red"
                                      ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'done'}"
                                      tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
@@ -27,7 +29,8 @@
 
 <ul>
     <li ng-repeat="topic in tc.subtopics">
-        <a ng-href="/#/edit/{{ topic.uID }}" >{{topic.name}}</a>
+        <a ng-href="/#/edit/{{ topic.uID }}" ng-show="uc.isStudent()">{{topic.name}}</a>
+        <a ng-href="/#/viewExternalSupervisor/{{topic.uID }}" ng-show="uc.isSupervisor()">{{topic.name}}</a>
                             <span class="glyphicon glyphicon-remove-circle icon-red" ng-show="{{ topic.status == 'wip' }}"
                                   tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
                                   tooltip-trigger="mouseenter" tooltip-placement="right">

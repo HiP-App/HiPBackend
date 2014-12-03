@@ -1,0 +1,42 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
+        <div class="panel-heading">
+            <a ng-href="/#/group/viewexternal/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
+            {{lc.getTerm('system_topic_detail_head')}}
+        </div>
+        <div>
+            <div class="panel-body">
+                <div id="concreteContent" ng-show="tc.currentTopic.status == 'done'">
+                    <h4 ng-bind="tc.currentTopic.name"></h4>
+
+                    <br>
+
+                    <div ng-bind-html="tc.currentTopic.content"></div>
+
+                    <br>
+                </div>
+
+                <div id="briefContent" ng-show="tc.currentTopic.status != 'done'">
+                    <h4 ng-bind="tc.currentTopic.name"></h4>
+
+                    <br>
+
+                    <ul>
+                        <li>
+                            {{lc.getTerm('system_amount_chars')}}: {{tc.currentTopic.content.length}}
+                        </li>
+
+                        <li>
+                            {{lc.getTerm('system_amount_pics')}}: {{tc.currentTopic.content.split("img").length - 1}}
+                        </li>
+                    </ul>
+
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

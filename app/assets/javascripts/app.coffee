@@ -34,6 +34,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/edit/:topicID', {
               templateUrl: '/assets/partials/group_editContent.html'
             })
+            .when('/viewExternalSupervisor/:topicID', {
+              templateUrl: '/assets/partials/group_topicDetailSupervisor.html'
+            })
             .when('/group/create', {
                 templateUrl: '/assets/partials/myhip_createGroup.html'
             })
