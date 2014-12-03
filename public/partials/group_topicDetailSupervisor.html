@@ -25,11 +25,13 @@
 
                     <ul>
                         <li>
-                            {{lc.getTerm('system_amount_chars')}}: {{tc.currentTopic.content.length}}
+                            {{lc.getTerm('system_amount_chars')}}: {{tc.currentTopic.content.length}} =>
+                            {{lc.getTerm('system_missing_amount')}}
                         </li>
 
                         <li>
-                            {{lc.getTerm('system_amount_pics')}}: {{tc.currentTopic.content.split("img").length - 1}}
+                            {{lc.getTerm('system_amount_pics')}}: {{tc.currentTopic.content.split("img").length - 1}} =>
+                            {{lc.getTerm('system_missing_amount')}}
                         </li>
                     </ul>
 

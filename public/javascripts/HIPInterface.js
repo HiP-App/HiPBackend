@@ -6,6 +6,14 @@ var DEBUG = true;
 
 var Interface = {};
 
+Interface.possibleContraints = ["character_limitation","img_limitation"];
+
+Interface.initConstraintArray = function(topicConstraints) {
+    Interface.possibleContraints.forEach(function (c) {
+        topicConstraints.push(c + "#0");
+    });
+};
+
 Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGrpController, mainTopicCreatedBy, $http) {
     var currentTopicID = Sha1.hash(topicname + Math.floor((Math.random() * 100000) + 1));
 
@@ -20,8 +28,11 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
             group: groupID,
             createdBy: currentTopicID,
             content: "",
+            constraints: [],
             status: "wip"
-        }
+        };
+
+        Interface.initConstraintArray(subTopicJSON.constraints);
 
         $http.post('/admin/topic', subTopicJSON).
             success(function (data, status, headers, config) {
@@ -38,11 +49,14 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
         createdBy: mainTopicCreatedBy,
         content: "",
         status: "wip",
-        constraints: ['character_validation#0']
-    }
+        constraints: []
+    };
 
-    if (DEBUG)
+    Interface.initConstraintArray(topic.constraints);
+
+    if (DEBUG){
         console.log("info TopicController: posting topic with name: " + topic.name)
+    }
 
     // post
     $http.post('/admin/topic', topic).
@@ -66,7 +80,7 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
 
         refToGrpController.createNotificationAtGroup(groupID, "system_notification_groupTopicChanged",[topicname])
     }
-}
+};
 
 Tooling = {};
 

@@ -13,8 +13,6 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         sender:"System"
     };
 
-    this.possibleContraints = ["character_limitation"];
-
     this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
 
     that.subtopics = [];
@@ -29,12 +27,6 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.modifyTopicGroup = "";
     this.modifyTopicContraints = [];
 
-    function initConstraintArray(topicConstraints) {
-        possibleContraints.forEach(function (c) {
-            topicConstraints.push(c + "#0");
-        });
-    }
-
     this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
@@ -47,14 +39,14 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             that.modifyTopicConstraints = topicConstraints;
         }
         else{
-            initConstraintArray(that.modifyTopicConstraints);
+            Interface.initConstraintArray(that.modifyTopicConstraints);
         }
     };
 
     this.createTopic = function(){
         Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
             $scope.gc, $scope.uc.email, $http)
-    }
+    };
 
     this.setCurrentTopicGroupID = function(grpid){
         if(that.debug){
@@ -62,14 +54,14 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         }
 
         that.currentTopic.groupID = grpid;
-    }
+    };
 
     this.currentTopicGroupIdIsSet = function(){
         if(that.currentTopic.groupID != undefined && that.currentTopic.groupID != "")
             return true;
         else
             return false;
-    }
+    };
 
     this.sendAlert = function (ac, lc, msg) {
         if (ac != undefined && lc != undefined) {
@@ -95,11 +87,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             content: that.currentTopic.content,
             status: that.currentTopic.status,
             constraints: that.currentTopic.constraints
-        }
+        };
 
         var constraintsAreInitialized = that.currentTopic.constraints[0] != "" || that.currentTopic.constraints != undefined;
         if(!constraintsAreInitialized){
-            initConstraintArray(that.currentTopic.constraints);
+            Interface.initConstraintArray(that.currentTopic.constraints);
         }
 
         $http.put('/admin/topic', topic).
@@ -110,7 +102,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
 
         this.sendAlert(ac, lc, msg);
-    }
+    };
 
     this.constraintsFulfilled = function () {
         var fulfilled = true;
@@ -126,7 +118,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         });
 
         return fulfilled;
-    }
+    };
 
     this.updateStatusIfAllowedByContraints = function(ac,lc,msg){
         var constraintsfulfilled = that.constraintsFulfilled();
@@ -140,7 +132,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         }else{
             this.sendAlert(ac, lc, 'notification_alert_failDueToContraints');
         }
-    }
+    };
+
     /**
      * Requests the actual topic with the given uID as JSON object
      * and stores it internally in that.currentTopic
@@ -198,7 +191,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             content: that.modifyTopicContent,
             status: that.modifyTopicStatus,
             constraints: that.modifyTopicConstraints
-        }
+        };
 
         $http.put('/admin/topic', topic).
             success(function(data, status, headers, config) {
