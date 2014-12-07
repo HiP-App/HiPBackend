@@ -54,6 +54,31 @@ class ConstraintController extends Controller with MongoController {
   }
 
   /**
+   * Modifies/Stores the posted constraint
+   *
+   * @return
+   */
+  def updateConstraint = Action.async(parse.json){
+    request =>
+      request.body.validate[ConstraintModel].map {
+        constraint =>
+          val modifier    =   Json.obj( "$set" -> Json.obj("uID"        -> constraint.uID),
+                                        "$set" -> Json.obj("name"       -> constraint.name),
+                                        "$set" -> Json.obj("topic"      -> constraint.topic),
+                                        "$set" -> Json.obj("valueInTopic" -> constraint.valueInTopic),
+                                        "$set" -> Json.obj("value"      -> constraint.value),
+                                        "$set" -> Json.obj("fulfilled"  -> constraint.fulfilled),
+                                        "$set" -> Json.obj("languageTerm"  -> constraint.languageTerm))
+
+          collection.update(Json.obj("uID" -> constraint.uID), modifier).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Constraint has been updated")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  /**
    * Returns constraints given its topicID
    *
    * @return a list that contains every topic as a JSON object

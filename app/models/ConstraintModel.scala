@@ -6,4 +6,7 @@ package models
 case class ConstraintModel(uID: String,
                            name: String,
                       topic: String,
-                      value: String)
+                      valueInTopic: String,
+                      value: String,
+                      fulfilled: Boolean,
+                      languageTerm: String)

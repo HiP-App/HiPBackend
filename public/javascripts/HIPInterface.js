@@ -8,6 +8,13 @@ var Interface = {};
 var Tooling = {};
 
 Interface.possibleContraints = ["character_limitation","img_limitation"];
+Interface.addLanguageTermToConstraint = function (constraintJSON) {
+    if (constraintJSON.name == 'character_limitation') {
+        constraintJSON.languageTerm = 'system_amount_chars';
+    } else if (constraintJSON.name == 'img_limitation') {
+        constraintJSON.languageTerm = 'system_amount_pics';
+    }
+};
 
 Tooling.generateUID = function(inputString){
     var timestamp = Math.round(new Date().getTime() / 1000);
@@ -21,9 +28,12 @@ Interface.createConstraints = function($http, subTopicJSON){
             uID: Tooling.generateUID(constraint),
             name: constraint,
             topic: subTopicJSON.uID,
-            value: "0"
+            valueInTopic: "0",
+            value: "0",
+            fulfilled: true
         };
 
+        Interface.addLanguageTermToConstraint(constraintJSON);
         subTopicJSON.constraints.push(constraintJSON.uID);
 
         if (DEBUG){

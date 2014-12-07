@@ -81,7 +81,57 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     this.updateConstraints = function(){
-        // FIXME
+        var constraintNotFulfilledDebugOutput = function () {
+            if (that.debug) {
+                console.log("info TopicController: Constraint is not fulfilled");
+            }
+        };
+
+        that.constraintsForThisTopic.forEach(function(constraint, index, theArray){
+            // update data
+            var constraintJSON = {
+                uID: constraint.uID,
+                name: constraint.name,
+                topic: constraint.topic,
+                valueInTopic: "0",
+                value: constraint.value,
+                fulfilled: true,
+                languageTerm: constraint.languageTerm
+            };
+
+            // general check function
+            var checkConstraint = function () {
+                if (parseInt(constraintJSON.valueInTopic) < parseInt(constraintJSON.value)) {
+                    constraintJSON.fulfilled = false;
+                    theArray[index].fulfilled = false;
+
+                    constraintNotFulfilledDebugOutput();
+                } else {
+                    constraintJSON.fulfilled = true;
+                    theArray[index].fulfilled = true;
+                }
+            };
+
+            // update value according to type
+            if (constraintJSON.name == 'character_limitation') {
+                constraintJSON.valueInTopic = ""+that.currentTopic.content.length;
+                checkConstraint();
+            }else if (constraintJSON.name == 'img_limitation') {
+                constraintJSON.valueInTopic = ""+that.currentTopic.content.split('<img').length;
+                checkConstraint();
+            }
+
+            if(that.debug){
+                console.log("info TopicController: Updating constraint ");
+                console.log(constraintJSON);
+            }
+
+            $http.put('/admin/constraints', constraintJSON).
+                success(function (data, status, headers, config) {
+                }).
+                error(function (data, status, headers, config) {
+                });
+        });
     };
 
     this.updateStatus = function(ac, lc, msg){
@@ -107,20 +157,23 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 console.log("error TopicController: Topic cannot get updated");
             });
 
+        // updated the constraints - maybe their status has changed -
+        that.updateConstraints();
+
+        // send the fitting alert
         this.sendAlert(ac, lc, msg);
     };
 
+    /**
+     * This function checks if the constaints are fulfilled
+     * @returns {boolean}: true, if all constraint are fulfilled
+     */
     this.constraintsFulfilled = function () {
         var fulfilled = true;
 
-        that.currentTopic.constraints.forEach(function (constraintToValidate) {
-            var token = constraintToValidate.split('#');
-
-            if (token[0] == 'character_limitation') {
-                if (that.currentTopic.content.length < token[1]) {
-                    fulfilled = false;
-                }
-            }
+        that.constraintsForThisTopic.forEach(function (constraintToValidate) {
+            if(constraintToValidate.fulfilled == false)
+            fulfilled = false;
         });
 
         return fulfilled;
