@@ -7,14 +7,20 @@
             {{lc.getTerm('system_topic_detail_head')}}
         </div>
         <div>
-            <div class="panel-body">
+            <div class="panel-body" ng-controller="AnnotationCtrl as annoCtrl">
                 <div id="concreteContent" ng-show="tc.currentTopic.status == 'done'">
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
                     <br>
 
-                    <div ng-bind-html="tc.currentTopic.content"></div>
+                    <div class="shift-right">
+                        <button ng-click="annoCtrl.startAnnotation('#concreteContent')"
+                                class="btn btn-success" id="btn_create">
+                            {{lc.getTerm('start_annotation')}}
+                        </button>
+                    </div>
 
+                    <div ng-bind-html="tc.currentTopic.content"></div>
                     <br>
                 </div>
 
@@ -29,8 +35,8 @@
                             <div class="col-sm-offset-1 col-sm-10">
                                 <div ng-repeat="constraint in tc.constraintsForThisTopic">
                                     <div class="form-group">
-                                        <span ng-class="{  'hip-button-red'        : constraint.fulfilled == false,
-                                                         'hip-button-green'      : constraint.fulfilled == true}">
+                                        <span ng-class="{   'hip-button-red'        : constraint.fulfilled == false,
+                                                            'hip-button-green'      : constraint.fulfilled == true}">
                                             {{ lc.getTerm(constraint.languageTerm) }}
                                         </span>
                                         <div class="input-group">

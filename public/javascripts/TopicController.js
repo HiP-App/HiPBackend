@@ -117,7 +117,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 constraintJSON.valueInTopic = ""+that.currentTopic.content.length;
                 checkConstraint();
             }else if (constraintJSON.name == 'img_limitation') {
-                constraintJSON.valueInTopic = ""+that.currentTopic.content.split('<img').length;
+                constraintJSON.valueInTopic = ""+(that.currentTopic.content.split('<img').length-1);
                 checkConstraint();
             }
 
