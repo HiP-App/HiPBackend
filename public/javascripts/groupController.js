@@ -199,7 +199,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     this.createGroup = function(creator, firstname){
         console.log("creating group");
 
-        that.currentGroup.uID = Sha1.hash(this.currentGroup.name + Math.floor((Math.random() * 100000) + 1));
+        that.currentGroup.uID = Tooling.generateUID(this.currentGroup.name);
         that.groups.push(this.currentGroup);
         that.groupsCreatedByThisUser.push(this.currentGroup);
         that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(this.currentGroup);

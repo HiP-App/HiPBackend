@@ -13,7 +13,7 @@ Interface.possibleContraints = ["character_limitation","img_limitation"];
  * Adds the fitting language term to a given constraint in JSON format
  *
  * @param constraintJSON    the constraint in JSON format that should get the
- * language term
+ *                          language term
  */
 Interface.addLanguageTermToConstraint = function (constraintJSON) {
     if (constraintJSON.name == 'character_limitation') {
@@ -82,28 +82,32 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
     var currentTopicID = Tooling.generateUID(topicname);
 
     /* create all sub-topics */
-    var subtopics = subTopicsAsString.split(',');
-    subtopics.forEach(function (subTopic) {
-        var currentSubTopicID = Sha1.hash(subTopic + Math.floor((Math.random() * 100000) + 1));
+    if(subTopicsAsString == undefined)
+        subTopicsAsString = "";
+    else{
+        var subtopics = subTopicsAsString.split(',');
+        subtopics.forEach(function (subTopic) {
+            var currentSubTopicID = Tooling.generateUID(subTopic);
 
-        var subTopicJSON = {
-            uID: currentSubTopicID,
-            name: subTopic,
-            group: groupID,
-            createdBy: currentTopicID,
-            content: "",
-            constraints: [],
-            status: "wip"
-        };
+            var subTopicJSON = {
+                uID: currentSubTopicID,
+                name: subTopic,
+                group: groupID,
+                createdBy: currentTopicID,
+                content: "",
+                constraints: [],
+                status: "wip"
+            };
 
-        Interface.createConstraints($http, subTopicJSON);
+            Interface.createConstraints($http, subTopicJSON);
 
-        $http.post('/admin/topic', subTopicJSON).
-            success(function (data, status, headers, config) {
-            }).
-            error(function (data, status, headers, config) {
-            });
-    });
+            $http.post('/admin/topic', subTopicJSON).
+                success(function (data, status, headers, config) {
+                }).
+                error(function (data, status, headers, config) {
+                });
+        });
+    }
 
     /* create actual main topic */
     var topic = {
