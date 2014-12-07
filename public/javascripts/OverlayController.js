@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 28.11.14.
+ * Created by Jörg Amelunxen on 28.11.14.
  */
 
 overlayModule.controller('OverlayCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
@@ -14,6 +14,9 @@ overlayModule.controller('OverlayCtrl', ['$scope','$http', '$routeParams', funct
 
     this.overlayIsShown = false;
 
+    /**
+     * Toggles the overlay: on/off
+     */
     this.toggleOverlay = function(){
         that.overlayIsShown = !that.overlayIsShown;
     }

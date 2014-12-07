@@ -14,8 +14,15 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', '$routeParams', f
 
     this.propose = {};
 
+    /**
+     * Sends a new proposement message to another user
+     *
+     * @param receiver      the email address resp. uID of the supervisor
+     * @param sender        the email address resp. uID of the current user
+     * @param proposeString language specific prefix for the title of the message
+     */
     this.proposeTopic = function(receiver,sender,proposeString){
-        var currentPropID = Sha1.hash(that.propose.name + Math.floor((Math.random() * 100000) + 1));
+        var currentPropID = Tooling.generateUID(that.propose.name);
 
         var proposement = {
             uID : currentPropID,
@@ -23,7 +30,7 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', '$routeParams', f
             sender  : sender,
             title : proposeString + " " + that.propose.name,
             content : that.propose.content
-        }
+        };
 
         $http.post('/admin/messages', proposement).
             success(function(data, status, headers, config) {

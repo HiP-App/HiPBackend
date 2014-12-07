@@ -1,7 +1,6 @@
 /**
- * Created by joerg on 29.10.2014.
+ * Created by Jörg Amelunxen on 29.10.2014.
  */
-
 groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
@@ -10,7 +9,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * + CONFIGURATION VARIABLES   +
      * -----------------------------
      */
-    this.debug = true;
+    this.debug = false;
 
     /*
      * -----------------------------
@@ -34,11 +33,20 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     this.bufferedGroup = {uID: "toSet"};
     this.bufferedTopic = {
         name: "NaN"
-    }
+    };
+
     /*
      * ----------------------
      * + HELPER FUNCTIONS   +
      * ----------------------
+     */
+
+    /**
+     * The function creates the notifications given by their key and optional values
+     *
+     * @param keyOfTheNotification  e.g., 'system_notification_groupCreated'
+     * @param arrayOfValues         e.g., a username
+     * @returns {string}            the complete notification
      */
     var createNotification = function(keyOfTheNotification, arrayOfValues){
         var now = new Date();
@@ -50,20 +58,24 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         if(keyOfTheNotification == "system_notification_groupTopicChanged"){
             return "system_notification_groupTopicChanged" + "," + arrayOfValues[0] + " ("+now.toLocaleString()+")"
         }
-    }
+    };
 
     /*
      * --------------------------
      * + CONTROLLER FUNCTIONS   +
      * --------------------------
      */
+
+    /**
+     * This function sets a new topic at a given group
+     *
+     * @param groupID           the GroupID of the group that should get a new topic
+     * @param currentTopicID    the topicID of the new topic
+     */
     this.setTopicAtGroup = function(groupID,currentTopicID){
         // get group that should be changed
         $http.get('/admin/group/'+groupID).
             success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
-
                 var changeGroup = data[0];
                 changeGroup.topic = currentTopicID;
 
@@ -80,15 +92,22 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             }).
             error(function(data, status, headers, config) {
             });
-    }
+    };
 
+    /**
+     * Sets a new notification a the given group
+     *
+     * @param groupid               The GroupID of the group that should get a new topic
+     * @param keyOfTheNotification  The key of the notification. E.g., 'system_notification_groupCreated'
+     * @param arrayOfValues         E.g., a username
+     */
     this.createNotificationAtGroup = function(groupid, keyOfTheNotification, arrayOfValues){
         var notification = createNotification(keyOfTheNotification, arrayOfValues);
 
         var grpNotification = {
             groupID : groupid,
             notification : notification
-        }
+        };
 
         if(that.debug){
             console.log("info GrpCtrl: Posting notification with groupID " + grpNotification.groupID + " and notification " +
@@ -108,8 +127,14 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                     console.log("error GrpCtrl: Error while posting");
                 }
             });
-    }
+    };
 
+    /**
+     * Requests the group given by its uID and stores it in that.bufferedTopic as soon as
+     * it is possible.
+     *
+     * @param uID       The uID of the group
+     */
     this.getGroupByUID = function(uID){
         $http.get('/admin/group/'+uID).
             success(function(data, status, headers, config) {
@@ -133,6 +158,12 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             });
     };
 
+    /**
+     * Requests the group given by its creator's uID and stores it in that.groupsCreatedByThisUser as soon as
+     * it is possible.
+     *
+     * @param userid        UserID of the creator.
+     */
     this.getGroups = function(userid){
         $http.get('/admin/groups').
             success(function(data, status, headers, config) {
@@ -159,6 +190,12 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             });
     };
 
+    /**
+     * Creates a new group given its creator's userID and the firstname of the creator
+     *
+     * @param creator       the uID of the creator
+     * @param firstname     the firstname of the creator
+     */
     this.createGroup = function(creator, firstname){
         console.log("creating group");
 
@@ -187,8 +224,13 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             $scope.gc, $scope.uc.email, $http)
     };
 
-    this.deleteGroup = function(id){
-        $http.delete('/admin/group/'+id, this.currentGroup).
+    /**
+     * Deletes the group with the given uID
+     *
+     * @param uID   of the group that should be deleted
+     */
+    this.deleteGroup = function(uID){
+        $http.delete('/admin/group/'+uID, this.currentGroup).
             success(function(data, status, headers, config) {
             }).
             error(function(data, status, headers, config) {
@@ -197,7 +239,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         that.getGroups();
 
         // remove corresponding chat system
-        $http.delete('/admin/chat/'+id).
+        $http.delete('/admin/chat/'+uID).
             success(function(data, status, headers, config) {
             }).
             error(function(data, status, headers, config) {

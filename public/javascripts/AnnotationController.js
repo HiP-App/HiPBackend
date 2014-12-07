@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 07.12.14.
+ * Created by Jörg Amelunxen on 07.12.14.
  */
 
 controllersModule.controller('AnnotationCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {

@@ -1,6 +1,6 @@
 
 /**
- * Created by jorgamelunxen on 11.11.14.
+ * Created by Jörg Amelunxen on 11.11.14.
  */
 
 controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
@@ -29,6 +29,17 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.modifyTopicGroup = "";
     this.modifyTopicContraints = [];
 
+    /**
+     * Accepts a bunch of data for internal use. In general, this is only a string representation of the
+     * topic JSON object
+     *
+     * @param topicID
+     * @param topicName
+     * @param topicContent
+     * @param topicGroup
+     * @param topicStatus
+     * @param topicConstraints
+     */
     this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
@@ -45,11 +56,20 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         }
     };
 
+    /**
+     * Creates a new topic with the internally stored information
+     */
     this.createTopic = function(){
         Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
             $scope.gc, $scope.uc.email, $http)
     };
 
+    /**
+     * Sets the group if of the group that will work on this topic within the internal representation
+     * if the topic.
+     *
+     * @param grpid     of the group that will work on this topic
+     */
     this.setCurrentTopicGroupID = function(grpid){
         if(that.debug){
             console.log("info TopicController: Topic will be added to group " + grpid);
@@ -58,6 +78,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         that.currentTopic.groupID = grpid;
     };
 
+    /**
+     * Returns true if the group id of the current topic is set
+     *
+     * @returns {boolean}
+     */
     this.currentTopicGroupIdIsSet = function(){
         if(that.currentTopic.groupID != undefined && that.currentTopic.groupID != "")
             return true;
@@ -65,6 +90,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             return false;
     };
 
+    /**
+     * Sends a new alert to the system
+     *
+     * @param ac    reference to the alert controller that is responsible in this view
+     * @param lc    reference to the language controller that is responsible in this view
+     * @param msg   the message that should be contained in the alert
+     */
     this.sendAlert = function (ac, lc, msg) {
         if (ac != undefined && lc != undefined) {
             if (msg == undefined || msg == null) {
@@ -80,6 +112,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         }
     };
 
+    /**
+     * Updates the constraints of the current topic
+     */
     this.updateConstraints = function(){
         var constraintNotFulfilledDebugOutput = function () {
             if (that.debug) {
@@ -134,6 +169,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         });
     };
 
+    /**
+     * Updates the current topic
+     *
+     * @param ac    reference to the alert controller that is responsible in this view
+     * @param lc    reference to the language controller that is responsible in this view
+     * @param msg   the message that should be contained in the alert
+     */
     this.updateStatus = function(ac, lc, msg){
         var topic = {
             uID : that.currentTopic.uID,
@@ -165,7 +207,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     /**
-     * This function checks if the constaints are fulfilled
+     * This function checks if the constraints are fulfilled
      * @returns {boolean}: true, if all constraint are fulfilled
      */
     this.constraintsFulfilled = function () {
@@ -179,14 +221,21 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         return fulfilled;
     };
 
+    /**
+     * Updates the current topic if all constraints are fulfilled
+     *
+     * @param ac    reference to the alert controller that is responsible in this view
+     * @param lc    reference to the language controller that is responsible in this view
+     * @param msg   the message that should be contained in the alert
+     */
     this.updateStatusIfAllowedByContraints = function(ac,lc,msg){
-        var constraintsfulfilled = that.constraintsFulfilled();
+        var constraintsFulfilled = that.constraintsFulfilled();
 
         if(that.debug){
-            console.log("info TopicController: check end result of validation: "+constraintsfulfilled);
+            console.log("info TopicController: check end result of validation: "+constraintsFulfilled);
         }
 
-        if(constraintsfulfilled){
+        if(constraintsFulfilled){
             that.updateStatus(ac,lc,msg)
         }else{
             this.sendAlert(ac, lc, 'notification_alert_failDueToContraints');
@@ -231,6 +280,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    /**
+     * Fetches the constraints for this topic and stores them internally
+     * in that.constraintsForThisTopic
+     *
+     * @param topicID of the topic that should be searched for constraints
+     */
     this.getConstraintsForThisTopic = function(topicID){
         $http.get('/admin/constraints/' + topicID).
             success(function(data, status, headers, config) {
@@ -241,7 +296,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
-
+    /**
+     * Returns all topics that have been created by a specific user
+     *
+     * @param uID of the user that has created the topic
+     */
     this.getTopicsByUserID = function(uID){
         $http.get('/admin/topicbyuser/'+uID).
             success(function(data, status, headers, config) {
@@ -252,6 +311,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    /**
+     * Updates the topic by using the alternative internal representation (Strings:
+     * that.modifyTopicID, that.modifyTopicName, ...)
+     */
     this.updateTopic = function(){
         var topic = {
             uID : that.modifyTopicID,

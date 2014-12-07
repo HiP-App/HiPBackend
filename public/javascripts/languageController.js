@@ -1,5 +1,5 @@
 /**
- * Created by joerg on 29.10.2014.
+ * Created by Jörg Amelunxen on 29.10.2014.
  */
 
 controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
@@ -23,7 +23,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
      * This function returns the corresponding string the in active language
      *
      * @param key
-     * @returns the needed string
+     * @returns         the needed string
      */
     this.getTerm = function(key){
         var found = (that.language[key] != undefined);
@@ -37,8 +37,8 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
     /**
      * This function creates a correct notification from notification data
      *
-     * @param data - of the structure: [system_call, optional data like username, etc.]
-     * @returns {*} - The correct notification
+     * @param data      of the structure: [system_call, optional data like username, etc.]
+     * @returns {*}     The correct notification
      */
     this.getNotification = function (data) {
         var res = data.split(",");
@@ -49,7 +49,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
     }
 
     /**
-     * Sends a new term to the server
+     * Sends a new term to the server. The term is already stored internally in that.currentTerm.
      */
     this.createTerm = function(){
         $http.post('/admin/languages', that.currentTerm).
@@ -62,7 +62,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
     /**
      * This function loads the complete dictionary from the server
      *
-     * @param lang: the needed language, e.g., 'eng' or 'de'
+     * @param lang  the needed language, e.g., 'eng' or 'de'
      */
     this.getLanguage = function (lang){
         if(this.debug)

@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 20.11.14.
+ * Created by Jörg Amelunxen on 20.11.14.
  */
 
 controllersModule.controller('RoleCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
@@ -14,6 +14,9 @@ controllersModule.controller('RoleCtrl', ['$scope','$http', '$routeParams', func
 
     this.currentRole = {};
 
+    /**
+     * Creates resp. updates the role that is stored internally in that.currentRole
+     */
     this.createOrUpdateRole = function(){
 
         var role = {

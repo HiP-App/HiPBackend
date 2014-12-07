@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 28.11.14.
+ * Created by Jörg Amelunxen on 28.11.14.
  */
     //FIXME put this into services
 var DEBUG = true;
@@ -8,6 +8,13 @@ var Interface = {};
 var Tooling = {};
 
 Interface.possibleContraints = ["character_limitation","img_limitation"];
+
+/**
+ * Adds the fitting language term to a given constraint in JSON format
+ *
+ * @param constraintJSON    the constraint in JSON format that should get the
+ * language term
+ */
 Interface.addLanguageTermToConstraint = function (constraintJSON) {
     if (constraintJSON.name == 'character_limitation') {
         constraintJSON.languageTerm = 'system_amount_chars';
@@ -16,12 +23,24 @@ Interface.addLanguageTermToConstraint = function (constraintJSON) {
     }
 };
 
+/**
+ * Generates a uID for a given input String
+ *
+ * @param inputString   some text, e.g., a group name
+ * @returns {string}    the corresponding -random- uID
+ */
 Tooling.generateUID = function(inputString){
     var timestamp = Math.round(new Date().getTime() / 1000);
 
     return Sha1.hash(inputString + Math.floor((Math.random() * 100000) + 1) + timestamp);
 };
 
+/**
+ * Creates all needed/possible constraints for a given topic in JSON format
+ *
+ * @param $http         dependency needed for posting data to the REST interface
+ * @param subTopicJSON  the corresponding topic in JSON format
+ */
 Interface.createConstraints = function($http, subTopicJSON){
     Interface.possibleContraints.forEach(function(constraint){
         var constraintJSON = {
@@ -49,6 +68,16 @@ Interface.createConstraints = function($http, subTopicJSON){
     });
 };
 
+/**
+ * Creates a new topic with the given information
+ *
+ * @param topicname             the name of the topic
+ * @param subTopicsAsString     all sub topics
+ * @param groupID               the id of the group that works on this topic
+ * @param refToGrpController    reference to group controller
+ * @param mainTopicCreatedBy    creator of the main topic
+ * @param $http                 reference to the http interface
+ */
 Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGrpController, mainTopicCreatedBy, $http) {
     var currentTopicID = Tooling.generateUID(topicname);
 

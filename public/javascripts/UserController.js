@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 09.11.14.
+ * Created by Jörg Amelunxen on 09.11.14.
  */
 
 controllersModule.controller('UserCtrl', ['$scope','$http', '$routeParams', '$attrs', function($scope,$http,$routeParams,$attrs) {
@@ -19,6 +19,10 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$routeParams', '$at
     if(that.debug)
         console.log("info UserCtrl: init with email " + this.email);
 
+    /**
+     * Returns true, if the user is a student
+     * @returns {boolean}
+     */
     this.isStudent = function(){
         if(that.role == 'student'){
             if(that.debug)
@@ -29,6 +33,10 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$routeParams', '$at
         }
     };
 
+    /**
+     * Returns true, if the user is a supervisor
+     * @returns {boolean}
+     */
     this.isSupervisor = function(){
         if(that.role == 'supervisor'){
             if(that.debug)

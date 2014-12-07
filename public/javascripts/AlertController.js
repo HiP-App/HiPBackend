@@ -1,17 +1,20 @@
 /**
- * Created by jorgamelunxen on 28.11.14.
- */
-
-/**
- * Created by joerg on 29.10.2014.
+ * Created by Jörg Amelunxen on 28.11.14.
  */
 
 alertModule.controller('AlertCtrl', ['$scope',function($scope) {
     var that = this;
 
+    // The scope contains all active alerts in the system
     $scope.alerts = [
     ];
 
+    /**
+     * Adds a new alert to the system
+     *
+     * @param msg {string}  that should be contained in the message
+     * @param type {string} of the alert. E.g., 'info' or 'danger'
+     */
     this.addAlert = function(msg, type) {
         var found=false;
 
@@ -28,6 +31,11 @@ alertModule.controller('AlertCtrl', ['$scope',function($scope) {
         }
     };
 
+    /**
+     * Removes an alert from the system
+     *
+     * @param index     of the alert that should be removed
+     */
     this.closeAlert = function(index) {
         $scope.alerts.splice(index, 1);
     };

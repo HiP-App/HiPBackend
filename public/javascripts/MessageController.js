@@ -1,5 +1,5 @@
 /**
- * Created by joerg on 05.11.2014.
+ * Created by Jörg Amelunxen on 05.11.2014.
  */
 
 controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
@@ -21,7 +21,12 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
         content: "MyContent"
     };
 
-    /* functions */
+    /**
+     * Fetches the messages given the name of it's receiver.
+     * The data is stored internally in that.messages.
+     *
+     * @param recName   the name of the receiver.
+     */
     this.getMessagesByReceiverName = function(recName){
         $http.get('/admin/messages/all/'+recName).
             success(function(data, status, headers, config) {
@@ -38,6 +43,12 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
             });
     };
 
+    /**
+     * Fetches a concrete message by its uID.
+     * The message is stored internally in that.detailMessage.
+     *
+     * @param messageID     the uID of the message
+     */
     this.getMessageByID = function(messageID){
         $http.get('/admin/messages/view/'+messageID).
             success(function(data, status, headers, config) {
@@ -55,6 +66,11 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
             });
     };
 
+    /**
+     * Sends a new message given the uID of the sender
+     *
+     * @param emailOfTheSender  the uID resp. email address of the sender
+     */
     this.sendMessage = function(emailOfTheSender){
         var tempMessage = {
             uID: Sha1.hash(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
@@ -76,8 +92,13 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
                     console.log("error MessageCtrl: Error while sending message");
                 }
             });
-    }
+    };
 
+    /**
+     * Deletes a message given its uID
+     *
+     * @param messageID     of the message that should be deleted
+     */
     this.deleteMessage = function(messageID){
         /* remove from backend */
         if(that.debug == true){
@@ -109,7 +130,7 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
                     console.log("error MessageCtrl: message with id " + messageID + " has NOT been deleted ");
                 }
             });
-    }
+    };
 
     /* update parameter if needed */
     if($routeParams.recName != undefined){

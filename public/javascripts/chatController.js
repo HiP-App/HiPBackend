@@ -1,7 +1,6 @@
 /**
- * Created by joerg on 29.10.2014.
+ * Created by Jörg Amelunxen on 29.10.2014.
  */
-
 chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
@@ -13,7 +12,12 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
     this.messagesJSON = [that.errorObject];
     this.chat = { };
 
-    /* functions */
+    /**
+     * Posts a new message to the chat system
+     *
+     * @param newChat   true, if a new chat should be created
+     * @param user      name of the user that sends the message
+     */
     this.postMessage = function(newChat, user){
         if(that.chat == undefined){
             that.chat = {};
@@ -60,9 +64,14 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
             });
     };
 
+    /**
+     * Creates a new message array (that.messagesJSON) that contains the chat messages
+     * in reverse order
+     * @returns {*}     the chat messages
+     */
     this.prepareChatMessages = function(){
         if( that.chat.message != undefined ){
-            /* clear old array - efficient solution according to Stackoverflow.com*/
+            /* clear old array - most efficient solution according to Stackoverflow.com*/
             while(that.messagesJSON.length > 0) {
                 that.messagesJSON.pop();
             }
@@ -85,6 +94,11 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
             return [that.errorObject]
     };
 
+    /**
+     * Fetches the chat given by its uID. The chat is internally stored in that.chat
+     *
+     * @param uID   of the requested chat
+     */
     this.getChatByGroupUID = function(uID){
         $http.get('/admin/chat/'+uID).
             success(function(data, status, headers, config) {
