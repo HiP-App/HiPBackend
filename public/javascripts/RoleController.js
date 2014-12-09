@@ -5,7 +5,7 @@
 controllersModule.controller('RoleCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
-    this.debug = true;
+    this.debug = false;
 
     this.errorObject = {
         content:"Connection Error",

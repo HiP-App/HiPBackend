@@ -6,6 +6,7 @@ var DEBUG = true;
 
 var Interface = {};
 var Tooling = {};
+Tooling.lastGeneratedRandomUID = "";
 
 Interface.possibleContraints = ["character_limitation","img_limitation"];
 
@@ -32,7 +33,9 @@ Interface.addLanguageTermToConstraint = function (constraintJSON) {
 Tooling.generateUID = function(inputString){
     var timestamp = Math.round(new Date().getTime() / 1000);
 
-    return Sha1.hash(inputString + Math.floor((Math.random() * 100000) + 1) + timestamp);
+    var uID = Sha1.hash(inputString + Math.floor((Math.random() * 100000) + 1) + timestamp);
+    Tooling.lastGeneratedRandomUID = uID;
+    return uID;
 };
 
 /**

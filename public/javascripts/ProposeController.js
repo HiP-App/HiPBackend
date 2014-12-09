@@ -1,8 +1,8 @@
 /**
- * Created by joerg on 05.11.2014.
+ * Created by Jörg Amelunxen on 05.11.2014.
  */
 
-controllersModule.controller('ProposeCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+controllersModule.controller('ProposeCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
     this.debug = false;
