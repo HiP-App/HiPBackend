@@ -2,7 +2,7 @@
  * Created by Jörg Amelunxen on 28.11.14.
  */
 
-overlayModule.controller('OverlayCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+overlayModule.controller('OverlayCtrl', ['$scope', function($scope) {
     var that = this;
 
     this.debug = false;
