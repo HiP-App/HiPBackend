@@ -2,7 +2,7 @@
  * Created by Jörg Amelunxen on 09.11.14.
  */
 
-controllersModule.controller('UserCtrl', ['$scope','$http', '$routeParams', '$attrs', function($scope,$http,$routeParams,$attrs) {
+controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($scope,$http,$attrs) {
     var that = this;
 
     this.debug = false;
