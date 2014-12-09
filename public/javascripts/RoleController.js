@@ -2,7 +2,7 @@
  * Created by Jörg Amelunxen on 20.11.14.
  */
 
-controllersModule.controller('RoleCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+controllersModule.controller('RoleCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
     this.debug = true;

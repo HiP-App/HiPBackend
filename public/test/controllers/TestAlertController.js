@@ -2,7 +2,7 @@
  * Created by Jörg Amelunxen on 07.12.14.
  */
 
-describe('Testsuite for the alert-controller', function () {
+describe('Testsuite for the AlertController:', function () {
     var controller = null, $scope = null, $httpBackend = null;
 
     beforeEach(function () {

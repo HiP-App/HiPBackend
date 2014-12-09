@@ -2,14 +2,14 @@
  * Created by Jörg Amelunxen on 09.12.14.
  */
 
-function AddBufferedGroupInGroupControllerToScope($scope) {
+function addBufferedGroupInGroupControllerToScope($scope) {
     $scope.gc = {};
     $scope.gc.bufferedGroup = {};
     $scope.gc.bufferedGroup.name = "Dummy-Stub";
 }
 
 function initChatControllerAndFetchGroupWithUID1($scope, $httpBackend) {
-    AddBufferedGroupInGroupControllerToScope($scope);
+    addBufferedGroupInGroupControllerToScope($scope);
 
     $httpBackend.expectGET('/admin/chat/1').respond(200, {
     });
@@ -27,7 +27,7 @@ function addChatMessagesToTheTestChat(controller) {
     controller.chat.sender.push("sender2");
 }
 
-describe('Testsuite for the chatController', function () {
+describe('Testsuite for the ChatController:', function () {
     var controller = null, $scope = null, $httpBackend = null;
     var routeParams = {};
     routeParams.uID = 1;
@@ -46,19 +46,25 @@ describe('Testsuite for the chatController', function () {
         });
     }));
 
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
     it('fetches the chat with uID 1 and initializes a new chat', function () {
         initChatControllerAndFetchGroupWithUID1($scope, $httpBackend);
     });
 
-    it('sends a new message while using the postMessage(true,...) function', function () {
+    it('sends a new message while using the postMessage(false,...) function', function () {
         initChatControllerAndFetchGroupWithUID1($scope, $httpBackend);
 
         controller.postMessage(false,"dummy");
-        $httpBackend.expectPOST('/admin/chat/true').respond(200, {
+        $httpBackend.expectPOST('/admin/chat/false').respond(200, {
             name: "dummy",
             message: "dummyMessage",
             sender: "dummy"
         });
+        $httpBackend.flush();
     });
 
     it('reverses the order of the internal chat messages with the prepareChatMessages function', function(){

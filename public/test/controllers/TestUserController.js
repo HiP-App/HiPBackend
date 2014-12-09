@@ -10,7 +10,7 @@ function setUserToSupervisor(controller) {
     controller.role = 'supervisor';
 }
 
-describe('Testsuite for the userController', function () {
+describe('Testsuite for the userController:', function () {
     var controller = null, $scope = null, $httpBackend = null;
     var $attrs = {};
     $attrs.mail = "dummy@dummy.com";
