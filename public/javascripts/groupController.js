@@ -150,8 +150,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                     });
 
                 // revert the order of the notifications
-                var revertedNotifications = that.bufferedGroup.notifications.slice().reverse();
-                that.bufferedGroup.revertedNotifications = revertedNotifications;
+                that.bufferedGroup.revertedNotifications = that.bufferedGroup.notifications.slice().reverse();
             }).
             error(function(data, status, headers, config) {
                 that.bufferedGroup.name = "Error: Connection error";
