@@ -34,18 +34,20 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
         // FIXME: DONT SEND THE WHOLE ARRAY EVERYTIME
         if(newChat == false){
             var i=0;
-            for(i = 0; i < that.chat.message.length; i++){
-                if(that.chat.message[i] != "")
-                    toSend.message.push( that.chat.message[i] );
-            }
+            if(that.chat.message != undefined){
+                for(i = 0; i < that.chat.message.length; i++){
+                    if(that.chat.message[i] != "")
+                        toSend.message.push( that.chat.message[i] );
+                }
 
-            for(i = 0; i < that.chat.sender.length; i++){
-                if(that.chat.sender[i] != "")
-                    toSend.sender.push( that.chat.sender[i] );
-            }
+                for(i = 0; i < that.chat.sender.length; i++){
+                    if(that.chat.sender[i] != "")
+                        toSend.sender.push( that.chat.sender[i] );
+                }
 
-            toSend.message.push(this.currentMessage);
-            toSend.sender.push(user);
+                toSend.message.push(this.currentMessage);
+                toSend.sender.push(user);
+            }
         }
 
         $http.post('/admin/chat/'+newChat, toSend).
