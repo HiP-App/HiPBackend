@@ -4,6 +4,8 @@
 chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
+    this.debug = true;
+
     this.errorObject = {
         content:"Connection Error",
         sender:"System"
@@ -21,8 +23,8 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
     this.postMessage = function(newChat, user){
         if(that.chat == undefined){
             that.chat = {};
-            that.chat.uID = $routeParams.uID;
-            that.chat.name = $scope.gc.bufferedGroup.name;
+            that.chat.uID = ($routeParams.uID || $routeParams.topicID);
+            that.chat.name = ($scope.gc.bufferedGroup.name || 'topicChat');
         }
 
         var toSend = {"uID" : that.chat.uID,
@@ -48,6 +50,11 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
                 toSend.message.push(this.currentMessage);
                 toSend.sender.push(user);
             }
+        }
+
+        if(that.debug){
+            console.log("posting message:");
+            console.log(toSend);
         }
 
         $http.post('/admin/chat/'+newChat, toSend).
@@ -126,6 +133,10 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
     /* update parameter if needed */
     if($routeParams.uID != undefined){
         that.getChatByGroupUID($routeParams.uID);
+    }
+
+    else if($routeParams.topicID != undefined){
+        that.getChatByGroupUID($routeParams.topicID);
     }
 
 }]);

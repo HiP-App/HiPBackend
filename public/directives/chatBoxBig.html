@@ -1,0 +1,25 @@
+<div class="panel panel-default" ng-controller="ChatCtrl as cc">
+    <div class="panel-heading"> {{lc.getTerm('system_chat_head')}} {{cc.chat.name}} </div>
+    <div class="panel-body">
+        <div id="chatContent">
+            <div role="alert" class="alert" ng-repeat="message in cc.messagesJSON" ng-hide='message.content == ""'
+                 ng-class="{'alert-info': message.sender != uc.firstname, 'alert-success': message.sender == uc.firstname}">
+                {{message.content}} <br> <p align="right">  {{lc.getTerm('system_chat_by')}} {{message.sender}} </p>
+            </div>
+        </div>
+
+        <br>
+
+        <div id="chatControls">
+            <div id="chatTextfield">
+                <input id="message" type="text" size="10" ng-model="cc.currentMessage" class="form-control">
+            </div>
+            <div id="chatSendButton">
+                <button type="button" ng-click="cc.postMessage(false,uc.firstname)" class="btn btn-default">
+                    {{lc.getTerm('system_chat_send')}}
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

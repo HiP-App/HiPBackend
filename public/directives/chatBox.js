@@ -8,3 +8,10 @@ chatModule.directive('chatBox', function() {
         templateUrl: '/assets/directives/chatBox.html'
     };
 });
+
+chatModule.directive('chatBoxBig', function() {
+    return {
+        restrict: 'E',
+        templateUrl: '/assets/directives/chatBoxBig.html'
+    };
+});
