@@ -73,8 +73,8 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
      */
     this.sendMessage = function(emailOfTheSender){
         var tempMessage = {
-            uID: Sha1.hash(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
-                that.messageThatGetsCurrentlyCreated.content + Math.floor((Math.random() * 100000) + 1)),
+            uID: Tooling.generateUID(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
+                that.messageThatGetsCurrentlyCreated.content),
             receiver:   that.messageThatGetsCurrentlyCreated.receiver,
             sender:     emailOfTheSender,
             title:      that.messageThatGetsCurrentlyCreated.title,
