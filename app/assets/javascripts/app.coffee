@@ -26,7 +26,7 @@ angular.module('myApp.routeConfig', ['ngRoute'])
                 templateUrl: '/assets/partials/index.html'
             })
             .when('/myhip', {
-                templateUrl: '/assets/partials/basic_supervisorView.html'
+                templateUrl: '/assets/partials/basic_myhip.html'
             })
             .when('/contact', {
                 templateUrl: '/assets/partials/basic_contact.html'
