@@ -1,14 +1,22 @@
-<div ng-controller="GroupCtrl as gc">
+<div ng-controller="GroupCtrl as gc" ng-init="showDiv = 1">
     <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
         <div class="panel-heading">
-            <a ng-href="/#/group/viewexternal/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
-            {{lc.getTerm('system_topic_detail_head')}}
+            <div class="shift-left">
+                <a ng-href="/#/group/viewexternal/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
+                <a ng-click="showDiv = 1"> {{lc.getTerm('system_topic_detail_head')}}</a>
+            </div>
+
+            <div class="shift-right">
+                <a ng-click="showDiv = 2"> {{lc.getTerm('system_open_chat')}} </a>
+            </div>
+
+            <div class="float-clear"></div>
         </div>
         <div>
             <div class="panel-body" ng-controller="AnnotationCtrl as annoCtrl">
-                <div id="concreteContent" ng-show="tc.currentTopic.status == 'done'">
+                <div id="concreteContent" ng-show="tc.currentTopic.status == 'done' && showDiv == 1">
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
                     <br>
@@ -24,7 +32,11 @@
                     <br>
                 </div>
 
-                <div id="briefContent" ng-show="tc.currentTopic.status != 'done'">
+
+                <!--
+                Show this box iff status of the topic is not 'done'
+                -->
+                <div id="briefContent" ng-show="tc.currentTopic.status != 'done' && showDiv == 1">
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
                     <br>
@@ -72,7 +84,7 @@
 
                 <hr>
 
-                <div class="col-sm-offset-1 col-sm-10">
+                <div class="col-sm-offset-1 col-sm-10" ng-show="showDiv == 2">
                     <chat-box-big></chat-box-big>
                 </div>
             </div>
