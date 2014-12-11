@@ -12,6 +12,8 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
         sender:"System"
     };
 
+    this.userList   = "unset";
+
     this.email      = $attrs.mail;
     this.firstname  = $attrs.firstname;
     this.role       = "unset";
@@ -47,6 +49,9 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
         }
     };
 
+    /**
+     * Fetches the role of the current user if needed (a.k.a, on init)
+     */
     if(that.role == 'unset'){
         $http.get('/admin/role/'+that.email).
             success(function(data, status, headers, config) {
@@ -56,5 +61,15 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
             });
     }
 
-
+    /**
+     * Fetches the list of all users if needed (a.k.a, on init)
+     */
+    if(that.userList == 'unset'){
+        $http.get('/admin/users').
+            success(function(data, status, headers, config) {
+                that.userList = data;
+            }).
+            error(function(data, status, headers, config) {
+            });
+    }
 }]);

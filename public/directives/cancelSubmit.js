@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 30.11.14.
+ * Created by Jörg Amelunxen on 30.11.14.
  */
 
 controllersModule.directive('cancelSubmit', function() {

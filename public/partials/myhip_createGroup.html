@@ -21,13 +21,6 @@
                             </div>
 
                             <div class="input-group">
-                                <span class="input-group-addon">{{lc.getTerm('system_groups_form_member')}}</span>
-                                <input type="text" class="form-control" name="groupMember" id="groupMember" placeholder=""
-                                       ng-model="gc.currentGroup.member" tooltip="{{lc.getTerm('tooltip_createGroup_member')}}"
-                                       tooltip-trigger="focus" tooltip-placement="right">
-                            </div>
-
-                            <div class="input-group">
                                 <span class="input-group-addon">{{lc.getTerm('system_groups_form_topic')}}</span>
                                 <input type="text" class="form-control" name="groupTopic" id="groupTopic" placeholder=""
                                        ng-model="gc.currentGroupTopic.topic" tooltip="{{lc.getTerm('tooltip_createGroup_mainTopic')}}"
@@ -40,13 +33,22 @@
                                        ng-model="gc.currentGroupTopic.subtopics" tooltip-html-unsafe="{{lc.getTerm('tooltip_createGroup_subTopic')}}"
                                        tooltip-trigger="focus" tooltip-placement="right">
                             </div>
+                        </div>
+                    </div>
 
+                    <div class="form-group" >
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <user-selector></user-selector>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
                             <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
                                             submit="lc.getTerm('system_groups_form_create')">
                             </cancel-submit>
                         </div>
                     </div>
-
                 </form>
              </div>
         </div>

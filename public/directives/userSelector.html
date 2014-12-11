@@ -1,0 +1,25 @@
+<div>
+    <div class="input-group">
+        <div class="input-group-btn">
+            <button type="button"
+                    ng-class="{     'btn-warning'       : gc.userInGroupArray[0] == undefined,
+                                    'btn-success'       : gc.userInGroupArray[0] != undefined}"
+                    class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                {{lc.getTerm('system_groups_form_addmember')}}
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="user in uc.userList">
+                    <a ng-click="gc.userInGroupArray.push(user)">{{user.email}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-repeat="userInGroup in gc.userInGroupArray" class="input-group">
+        <span class="input-group-addon">{{lc.getTerm('system_member')}}</span>
+        <input type="text" class="form-control" name="groupID" placeholder=""
+               ng-model="gc.userInGroupArray[$index].email">
+        <div class="float-clear"></div>
+    </div>
+
+</div>

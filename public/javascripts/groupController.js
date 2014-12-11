@@ -21,9 +21,11 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
 
     this.groupsCreatedByThisUserOrUserIsMemberOfGroup = [];
 
+    this.userInGroupArray = [];
+
     this.createdByTemp = "dummy";
-    this.currentGroup = {name: this.groupName,
-        member: this.groupMember,
+    this.currentGroup = {name: "",
+        member: "",
         createdBy: that.createdByTemp,
         topic: ""
     };
@@ -196,8 +198,17 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * @param firstname     the firstname of the creator
      */
     this.createGroup = function(creator, firstname){
-        console.log("creating group");
+        /* add user array to grp */
+        if(that.userInGroupArray[0] != undefined){
+            that.userInGroupArray.forEach(function(usr){
+               that.currentGroup.member +=  usr.email+",";
+            });
 
+            /* cutoff last ',' */
+            that.currentGroup.member = that.currentGroup.member.substr(0,that.currentGroup.member.length-1);
+        }
+
+        /* generate uID and other communication stuff */
         that.currentGroup.uID = Tooling.generateUID(this.currentGroup.name);
         that.groups.push(this.currentGroup);
         that.groupsCreatedByThisUser.push(this.currentGroup);
