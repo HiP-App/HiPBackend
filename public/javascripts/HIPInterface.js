@@ -2,7 +2,7 @@
  * Created by Jörg Amelunxen on 28.11.14.
  */
     //FIXME put this into services
-var DEBUG = true;
+var DEBUG = false;
 
 var Interface = {};
 var Tooling = {};

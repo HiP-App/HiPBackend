@@ -4,7 +4,7 @@
 chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 
-    this.debug = true;
+    this.debug = false;
 
     this.errorObject = {
         content:"Connection Error",

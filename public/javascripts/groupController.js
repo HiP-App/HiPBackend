@@ -209,7 +209,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         }
 
         /* generate uID and other communication stuff */
-        that.currentGroup.uID = Tooling.generateUID(this.currentGroup.name);
+        that.currentGroup.uID = Tooling.generateUID(that.currentGroup.name);
         that.groups.push(this.currentGroup);
         that.groupsCreatedByThisUser.push(this.currentGroup);
         that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(this.currentGroup);

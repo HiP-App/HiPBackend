@@ -19,7 +19,7 @@ describe('Testsuite for the OverlayController:', function () {
 
     it('toggles the shown overlay with the toggleOverlay method', function(){
         controller.overlayIsShown = false;
-        controller.toggleOverlay()
+        controller.toggleOverlay();
         expect(controller.overlayIsShown).toBe(true);
 
         controller.toggleOverlay();
