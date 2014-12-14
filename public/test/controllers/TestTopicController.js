@@ -82,6 +82,7 @@ describe('Testsuite for the TopicController:', function () {
         /* Mock for group controller */
         gc.setTopicAtGroup = function(){};
         gc.createNotificationAtGroup = function(){};
+        gc.createNotificationAtGroupAndSetTopic = function(){};
 
         /* add mocked user controller resp.
          group controller to scope */
@@ -205,6 +206,7 @@ describe('Testsuite for the TopicController:', function () {
 
         spyOn(gc,'setTopicAtGroup');
         spyOn(gc,'createNotificationAtGroup');
+        spyOn(gc,'createNotificationAtGroupAndSetTopic');
 
         /* prepare controller */
         controller.currentTopicSubTopicsAsString = "";
@@ -212,8 +214,9 @@ describe('Testsuite for the TopicController:', function () {
         /* create topic */
         controller.createTopic();
 
-        expect(gc.setTopicAtGroup).toHaveBeenCalled();
-        expect(gc.createNotificationAtGroup).toHaveBeenCalled();
+        //expect(gc.setTopicAtGroup).toHaveBeenCalled();
+        //expect(gc.createNotificationAtGroup).toHaveBeenCalled();
+        expect(gc.createNotificationAtGroupAndSetTopic).toHaveBeenCalled();
 
         $httpBackend.flush();
     });

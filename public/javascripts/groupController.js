@@ -132,6 +132,39 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     };
 
     /**
+     * Function sets the new topic and creates a corresponding notification
+     *
+     * @param groupID
+     * @param currentTopicID
+     * @param notimsg
+     * @param topicname
+     */
+    this.createNotificationAtGroupAndSetTopic = function(groupID, currentTopicID, notimsg, topicname){
+        var notification = createNotification(notimsg, topicname);
+
+        // get group that should be changed
+        $http.get('/admin/group/'+groupID).
+            success(function(data, status, headers, config) {
+                var changeGroup = data[0];
+                changeGroup.topic = currentTopicID;
+                changeGroup.notifications.push(notification);
+
+                // send data back to the server
+                $http.post('/admin/modify/group', changeGroup).
+                    success(function(data, status, headers, config) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            }).
+            error(function(data, status, headers, config) {
+            });
+    };
+
+    /**
      * Requests the group given by its uID and stores it in that.bufferedTopic as soon as
      * it is possible.
      *
@@ -241,6 +274,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             });
 
         /* FIXME create corresponding chat system */
+        console.log(that.currentGroupTopic.topic +"|"+ that.currentGroupTopic.subtopics +"|"+  that.currentGroup.uID +"|"+
+            $scope.gc +"|"+ $scope.uc.email+"|");
 
         /* create the fitting topics */
         Interface.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,

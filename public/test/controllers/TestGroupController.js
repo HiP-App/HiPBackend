@@ -60,6 +60,13 @@ describe('Testsuite for the GroupController:', function () {
         $httpBackend.when('POST','/admin/topic')
             .respond(200,{});
 
+        /* -------
+         FIXME: small hack
+         * -------*/
+        $httpBackend.when('GET','/admin/users/someOneundefined')
+            .respond(200,[demoUser]);
+        /* --------- */
+
         /* Mock for user controller */
         var uc = {
           email: "Tester"
@@ -68,6 +75,7 @@ describe('Testsuite for the GroupController:', function () {
         /* Mock for group controller */
         gc.setTopicAtGroup = function(){};
         gc.createNotificationAtGroup = function(){};
+        gc.createNotificationAtGroupAndSetTopic = function(){};
 
         /* Included mocked user controller and group controller in scope */
         $scope = {
@@ -168,8 +176,7 @@ describe('Testsuite for the GroupController:', function () {
     it('creates a new group with the createGroup function', function(){
         initController();
 
-        spyOn(gc,'setTopicAtGroup');
-        spyOn(gc,'createNotificationAtGroup');
+        spyOn(gc,'createNotificationAtGroupAndSetTopic');
 
         /* prepare controller */
         controller.userInGroupArray = ["dummy"];
@@ -177,7 +184,7 @@ describe('Testsuite for the GroupController:', function () {
 
         var currentGroupTopic = {
             topic: "bla",
-            subtopic: "..."
+            subtopics: "..."
         };
 
         controller.currentGroupTopic = currentGroupTopic;
@@ -185,8 +192,7 @@ describe('Testsuite for the GroupController:', function () {
         /* create group */
         controller.createGroup('creator','John');
 
-        expect(gc.setTopicAtGroup).toHaveBeenCalled();
-        expect(gc.createNotificationAtGroup).toHaveBeenCalled();
+        expect(gc.createNotificationAtGroupAndSetTopic).toHaveBeenCalled();
 
         $httpBackend.expectPOST('/admin/group',demoGroup).respond(200,{});
 

@@ -141,15 +141,13 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
         });
 
     if (groupID != "" || groupID != "undefined") {
-        // adding topic to group
-        refToGrpController.setTopicAtGroup(groupID, currentTopicID);
-
         // adding notification
         if (DEBUG) {
             console.log("info TopicController: posting notification to group with ID " + groupID);
         }
 
-        refToGrpController.createNotificationAtGroup(groupID, "system_notification_groupTopicChanged",[topicname])
+        refToGrpController.createNotificationAtGroupAndSetTopic(groupID,
+            currentTopicID, "system_notification_groupTopicChanged",[topicname])
     }
 };
 
