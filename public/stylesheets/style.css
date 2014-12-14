@@ -7,6 +7,10 @@ body{
 	margin: auto;
 }
 
+.userAvatars{
+    margin-left: 5px;
+}
+
 .input-group-btn {
     min-width:250px;
     text-align:left;

@@ -13,11 +13,19 @@ var demoGroup = {
 
 var demoGroup2 = {
     name: "AnotherDummy",
-    member: "someOne2",
+    member: "someOne",
     createdBy: "Tester",
     topic: "someTopicAgain",
     subtopics: "test",
     notifications: [""]
+};
+
+var demoUser = {
+    userid:     'someOne@someting.com',
+    email:      'someOne@someting.com',
+    firstname:  "John",
+    lastname:   "Doe",
+    avatar:     "gravatarAddress"
 };
 
 describe('Testsuite for the GroupController:', function () {
@@ -42,6 +50,9 @@ describe('Testsuite for the GroupController:', function () {
 
         $httpBackend.when('GET','/admin/topic/someTopic')
             .respond(200,[{}]);
+
+        $httpBackend.when('GET','/admin/users/someOne')
+            .respond(200,[demoUser]);
 
         $httpBackend.when('POST','/admin/constraints')
             .respond(200,{});
@@ -91,6 +102,14 @@ describe('Testsuite for the GroupController:', function () {
             topic: "someTopicAgain",
             notifications: [""]
         };
+
+        demoUser = {
+            userid:     'someOne',
+            email:      'someOne@someting.com',
+            firstname:  "John",
+            lastname:   "Doe",
+            avatar:     "gravatarAddress"
+        };
     });
 
     function initController() {
@@ -102,6 +121,9 @@ describe('Testsuite for the GroupController:', function () {
 
         var lengthOfTheArrayForStoredGroups = controller.groups.length;
         expect(lengthOfTheArrayForStoredGroups).toBe(2);
+
+        var nameOfTheUserFetchedViaUID = controller.userInGroupArray[0].firstname;
+        expect(nameOfTheUserFetchedViaUID).toBe("John");
     }
 
     it('fetches the needed Groups for the currently logged in user on startup and' +

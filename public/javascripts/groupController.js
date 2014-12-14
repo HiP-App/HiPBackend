@@ -151,6 +151,19 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                         console.log("error GroupController: Topic cannot get pulled");
                     });
 
+                // get the users of the group
+                var userIDsOfTheGroup = that.bufferedGroup.member.split(',');
+
+                userIDsOfTheGroup.forEach(function(userid){
+                    $http.get('/admin/users/'+userid).
+                        success(function(data, status, headers, config) {
+                            that.userInGroupArray.push(data[0]);
+                        }).
+                        error(function(data, status, headers, config) {
+                            console.log("error GroupController: User "+ userid +" cannot get pulled");
+                        });
+                });
+
                 // revert the order of the notifications
                 that.bufferedGroup.revertedNotifications = that.bufferedGroup.notifications.slice().reverse();
             }).
