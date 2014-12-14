@@ -22,11 +22,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.constraintsForThisTopic = [];
 
-    this.modifyTopicID = "";
-    this.modifyTopicName = "";
+    this.modifyTopicID      = "";
+    this.modifyTopicName    = "";
     this.modifyTopicContent = "";
-    this.modifyTopicGroup = "";
-    this.modifyTopicContraints = [];
+    this.modifyTopicGroup   = "";
+    that.modifyTopicCreatedBy   = "";
+    this.modifyTopicContraints  = [];
 
     /**
      * Accepts a bunch of data for internal use. In general, this is only a string representation of the
@@ -38,13 +39,16 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * @param topicGroup
      * @param topicStatus
      * @param topicConstraints
+     * @param topicCreatedBy
      */
-    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints){
+    this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints,
+        topicCreatedBy){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
         that.modifyTopicContent = topicContent;
         that.modifyTopicGroup   = topicGroup;
         that.modifyTopicStatus  = topicStatus;
+        that.modifyTopicCreatedBy = topicCreatedBy;
 
         var constraintsAreInitialized = topicConstraints[0] != "" || topicConstraints != undefined;
         if(constraintsAreInitialized){
@@ -304,6 +308,20 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         $http.get('/admin/topicbyuser/'+uID).
             success(function(data, status, headers, config) {
                 that.currentUserTopics = data;
+
+                /* fetch all subtopics (the createdBy field contains a uID of another
+                 topic)*/
+                that.currentUserTopics.forEach(function(topic){
+                    $http.get('/admin/topicbyuser/'+topic.uID).
+                        success(function(data, status, headers, config) {
+                            var newTopicArray = that.currentUserTopics.concat(data);
+
+                            that.currentUserTopics = newTopicArray;
+                        }).
+                        error(function(data, status, headers, config) {
+                            console.log("error TopicController: Topic cannot get pulled");
+                        });
+                });
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get pulled");
@@ -316,12 +334,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      */
     this.updateTopic = function(){
         var topic = {
-            uID : that.modifyTopicID,
-            name : that.modifyTopicName,
-            group  : that.modifyTopicGroup,
-            createdBy: $scope.uc.email,
-            content: that.modifyTopicContent,
-            status: that.modifyTopicStatus,
+            uID :       that.modifyTopicID,
+            name :      that.modifyTopicName,
+            group  :    that.modifyTopicGroup,
+            createdBy:  that.modifyTopicCreatedBy,
+            content:    that.modifyTopicContent,
+            status:     that.modifyTopicStatus,
             constraints: that.modifyTopicConstraints
         };
 

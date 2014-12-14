@@ -55,6 +55,12 @@ describe('Testsuite for the TopicController:', function () {
         $httpBackend.when('GET', '/admin/topicbyuser/anUser')
             .respond(demoTopicList);
 
+        $httpBackend.when('GET', '/admin/topicbyuser/1')
+            .respond([demoTopic1]);
+
+        $httpBackend.when('GET', '/admin/topicbyuser/2')
+            .respond([demoTopic2]);
+
         $httpBackend.when('GET', '/admin/topic/1')
             .respond([demoTopic1]);
 
@@ -138,6 +144,7 @@ describe('Testsuite for the TopicController:', function () {
         controller.modifyTopicContent       = demoTopic1.content;
         controller.modifyTopicGroup         = demoTopic1.group;
         controller.modifyTopicStatus        = demoTopic1.status;
+        controller.modifyTopicCreatedBy     = demoTopic1.createdBy;
         controller.modifyTopicConstraints   = demoTopic1.constraints[0];
 
         /* update */
@@ -346,7 +353,7 @@ describe('Testsuite for the TopicController:', function () {
         expect(mockLC.getTerm).toHaveBeenCalled();
     });
 
-    it('updates the status iff all constraints are fulfilled and sends an alert' +
+    it('updates the status iff all constraints are fulfilled and sends an alert ' +
         'if not all constraints are fulfilled', function () {
         initController();
 

@@ -23,7 +23,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="top in tc.currentUserTopics">
                                             <a ng-click="tc.doSomethingWithTopic(top.uID, top.name, top.content, top.group,
-                                            top.status, top.constraints)">
+                                            top.status, top.constraints, top.createdBy)">
                                                 {{top.name}}
                                             </a>
                                         </li>
@@ -45,18 +45,14 @@
                             </div>
                         </div>
 
-
-
                         <div class="col-sm-offset-1 col-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon">{{lc.getTerm('system_topic_modify_form_topicname')}}</span>
-                                <input type="text" class="form-control" name="topicContent" id="topicContent" placeholder=""
+                                <input type="text" class="form-control" name="topicName" id="topicName" placeholder=""
                                        ng-model="tc.modifyTopicName" tooltip-html-unsafe="{{lc.getTerm('tooltip_modifyTopic_name')}}"
                                        tooltip-trigger="focus" tooltip-placement="right">
                              </div>
                         </div>
-
-
 
                         <div class="col-sm-offset-1 col-sm-10">
                             <div class="input-group">
@@ -78,9 +74,6 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <h4>{{lc.getTerm('system_topic_modify_subtopics')}}</h4>
 
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-10">
