@@ -2,7 +2,7 @@
  * Created by Jörg Amelunxen on 29.10.2014.
  */
 
-controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+controllersModule.controller('LangCtrl', ['$http', function($http) {
     this.debug = false;
     var errorString = "not fetched yet: ";
 
@@ -10,7 +10,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
 
     this.language = {
         init:false
-    }
+    };
 
     this.defaultLanguage = "de";
 
@@ -32,7 +32,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
             return that.language[key];
         else
             return errorString + key;
-    }
+    };
 
     /**
      * This function creates a correct notification from notification data
@@ -46,7 +46,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
         var notiMessage = that.getTerm(res[0]);
 
         return notiMessage + " " + res[1];
-    }
+    };
 
     /**
      * Sends a new term to the server. The term is already stored internally in that.currentTerm.
@@ -94,7 +94,7 @@ controllersModule.controller('LangCtrl', ['$scope','$http', '$routeParams', func
 
                 that.language = that.errorObject;
             });
-    }
+    };
 
     if(this.language.init == false){
         // init language

@@ -93,7 +93,7 @@ describe('Testsuite for the GroupController:', function () {
         };
     });
 
-    function initGroupController() {
+    function initController() {
         /* all needed calls are handled via $httpBackend.when(...) */
         $httpBackend.flush();
 
@@ -106,11 +106,11 @@ describe('Testsuite for the GroupController:', function () {
 
     it('fetches the needed Groups for the currently logged in user on startup and' +
         'the needed details about Group 1 because uID=1 within the routeParams', function(){
-        initGroupController();
+        initController();
     });
 
     it('sets a topic at a group with the setTopicAtGroup function', function(){
-        initGroupController();
+        initController();
 
         controller.setTopicAtGroup('1','topicID');
 
@@ -127,7 +127,7 @@ describe('Testsuite for the GroupController:', function () {
     });
 
     it('creates a new notification at a grp with the createNotification function', function(){
-        initGroupController();
+        initController();
 
         controller.createNotificationAtGroup('1','system_notification_groupCreated',['dummy']);
 
@@ -144,7 +144,7 @@ describe('Testsuite for the GroupController:', function () {
     });
 
     it('creates a new group with the createGroup function', function(){
-        initGroupController();
+        initController();
 
         spyOn(gc,'setTopicAtGroup');
         spyOn(gc,'createNotificationAtGroup');
@@ -173,7 +173,7 @@ describe('Testsuite for the GroupController:', function () {
     });
 
     it('deletes a group with the deleteGroup function', function(){
-        initGroupController();
+        initController();
 
         controller.deleteGroup('1');
 
