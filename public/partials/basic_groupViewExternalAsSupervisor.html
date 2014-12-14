@@ -21,7 +21,19 @@
                         </div>
                         <div class="float-clear"></div>
                     </div>
-                    <div class="panel-footer"> {{lc.getTerm('system_group_member')}} {{gc.bufferedGroup.member}}</div>
+                    <div class="panel-footer">
+                        <div class="shift-left">
+                            {{lc.getTerm('system_group_member')}}
+                        </div>
+
+                        <div class="shift-left">
+                            <img class="userAvatars" ng-repeat="usr in gc.userInGroupArray" ng-src="{{usr.avatar}}"
+                                 tooltip-html-unsafe="{{usr.firstname}} {{usr.lastname}}"
+                                 tooltip-trigger="mouseenter" tooltip-placement="top">
+                        </div>
+
+                        <div class="float-clear"></div>
+                    </div>
                 </div>
 
                 <div id="contentBox">
