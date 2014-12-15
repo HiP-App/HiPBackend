@@ -196,8 +196,17 @@ describe('Testsuite for the GroupController:', function () {
 
         $httpBackend.expectPOST('/admin/group',demoGroup).respond(200,{});
 
+        /* expect the creation of the chat */
+        var expectedChat = {
+            uID     : demoGroup.uID,
+            name    : demoGroup.name + " Chat",
+            message : [""],
+            sender  : [""]
+        };
+
+        $httpBackend.expectPOST('/admin/chat/true',expectedChat).respond(200,{});
+
         $httpBackend.flush();
-        /* FIXME create chat system */
     });
 
     it('deletes a group with the deleteGroup function', function(){

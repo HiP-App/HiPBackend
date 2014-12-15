@@ -31,7 +31,7 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
             "name" : that.chat.name,
             "sender" : [""],
             "message" : [""]
-        }
+        };
 
         // FIXME: DONT SEND THE WHOLE ARRAY EVERYTIME
         if(newChat == false){
@@ -111,7 +111,7 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
     this.getChatByGroupUID = function(uID){
         $http.get('/admin/chat/'+uID).
             success(function(data, status, headers, config) {
-
+                /* store fetched chat data in internal variable */
                 that.chat = data[0];
 
                 if(that.chat == undefined){

@@ -19,6 +19,7 @@ describe('Testsuite for the TopicController:', function () {
             status: "wip",
             constraints: ["constraintA"]
         };
+
         var demoTopic2 = {
             uID: "2",
             name: "aTopic2",
@@ -28,6 +29,17 @@ describe('Testsuite for the TopicController:', function () {
             status: "wip",
             constraints: ["constraintA"]
         };
+
+        var demoSubTopic = {
+            uID: "3",
+            name: "aSubTopic",
+            group: "groupID1",
+            createdBy: "1",
+            content: "...",
+            status: "wip",
+            constraints: ["constraintA"]
+        };
+
         var demoConstraint = {
             uID: "constraintA",
             name: "character_limitation",
@@ -36,12 +48,14 @@ describe('Testsuite for the TopicController:', function () {
             value: "0",
             fulfilled: true
         };
-        return {demoTopic1: demoTopic1, demoTopic2: demoTopic2, demoConstraint: demoConstraint};
+        return {demoTopic1: demoTopic1, demoTopic2: demoTopic2,
+            demoSubTopic: demoSubTopic, demoConstraint: demoConstraint};
     }
 
     var __ret           = initTestVariables();
     var demoTopic1      = __ret.demoTopic1;
     var demoTopic2      = __ret.demoTopic2;
+    var demoSubTopic    = __ret.demoSubTopic;
     var demoConstraint  = __ret.demoConstraint;
     var demoTopicList   = [demoTopic1, demoTopic2];
 
@@ -56,7 +70,7 @@ describe('Testsuite for the TopicController:', function () {
             .respond(demoTopicList);
 
         $httpBackend.when('GET', '/admin/topicbyuser/1')
-            .respond([demoTopic1]);
+            .respond([demoSubTopic]);
 
         $httpBackend.when('GET', '/admin/topicbyuser/2')
             .respond([demoTopic2]);
@@ -98,6 +112,7 @@ describe('Testsuite for the TopicController:', function () {
         var __ret           = initTestVariables();
         demoTopic1      = __ret.demoTopic1;
         demoTopic2      = __ret.demoTopic2;
+        demoSubTopic    = __ret.demoSubTopic;
         demoConstraint  = __ret.demoConstraint;
     }));
 
@@ -186,7 +201,8 @@ describe('Testsuite for the TopicController:', function () {
         expect(mockLC.getTerm).toHaveBeenCalled();
     });
 
-    it('deletes the current topic with the deleteCurrentTopic function', function () {
+    it('deletes the current topic with the deleteCurrentTopic function and includes sub-topics' +
+        'within this process', function () {
         initController();
 
         /* prepare controller
@@ -198,14 +214,25 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectDELETE('/admin/topic/'+demoTopic1.uID)
             .respond(200,{});
+
+        /* expect deletion of chat system */
+        $httpBackend.expectDELETE('/admin/chat/'+demoTopic1.uID)
+            .respond(200,{});
+
+        /* expect deletion of subtopic and the chat system */
+        $httpBackend.expectDELETE('/admin/topic/'+demoSubTopic.uID)
+            .respond(200,{});
+
+        /* expect deletion of chat system */
+        $httpBackend.expectDELETE('/admin/chat/'+demoSubTopic.uID)
+            .respond(200,{});
+
         $httpBackend.flush();
     });
 
     it('creates a new topic with the create topic function', function() {
         initController();
 
-        spyOn(gc,'setTopicAtGroup');
-        spyOn(gc,'createNotificationAtGroup');
         spyOn(gc,'createNotificationAtGroupAndSetTopic');
 
         /* prepare controller */
@@ -214,9 +241,17 @@ describe('Testsuite for the TopicController:', function () {
         /* create topic */
         controller.createTopic();
 
-        //expect(gc.setTopicAtGroup).toHaveBeenCalled();
-        //expect(gc.createNotificationAtGroup).toHaveBeenCalled();
         expect(gc.createNotificationAtGroupAndSetTopic).toHaveBeenCalled();
+
+        /* expect the creation of the chat */
+        var expectedChat = {
+            uID     : demoTopic1.uID,
+            name    : demoTopic1.name + " Chat",
+            message : [""],
+            sender  : [""]
+        };
+
+        $httpBackend.expectPOST('/admin/chat/true',expectedChat).respond(200,{});
 
         $httpBackend.flush();
     });

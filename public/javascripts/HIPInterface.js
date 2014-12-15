@@ -39,6 +39,43 @@ Tooling.generateUID = function(inputString){
 };
 
 /**
+ * This method creates a chat with the given information
+ *
+ * @param $http
+ * @param uID       uID of the chat - is in most cases the same ID of the object that owns the
+ *                  chat, e.g., groups, topics, etc.
+ * @param name      the name of the chat
+ */
+Interface.createChat = function($http, uID, name){
+    var chat = {
+        uID     : uID,
+        name    : name,
+        message : [""],
+        sender  : [""]
+    };
+
+    $http.post('/admin/chat/true', chat).
+        success(function(data, status, headers, config) {
+        }).
+        error(function(data, status, headers, config) {
+        });
+};
+
+/**
+ * This function deletes an existing chat
+ *
+ * @param $http     dependency of the function
+ * @param uID       of the chat that should be deleted
+ */
+Interface.deleteChat = function($http, uID){
+    $http.delete('/admin/chat/'+uID).
+        success(function(data, status, headers, config) {
+        }).
+        error(function(data, status, headers, config) {
+        });
+};
+
+/**
  * Creates all needed/possible constraints for a given topic in JSON format
  *
  * @param $http         dependency needed for posting data to the REST interface

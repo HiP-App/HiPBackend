@@ -64,7 +64,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      */
     this.createTopic = function(){
         Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
-            $scope.gc, $scope.uc.email, $http)
+            $scope.gc, $scope.uc.email, $http);
+
+        /* create corresponding chat system */
+        Interface.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
     };
 
     /**
@@ -351,13 +354,38 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    /**
+     * Deletes the current topic AND every attached subtopic (i.e., a topic that is
+     * 'createdBy' this uID).
+     *
+     * Furthermore, the corresponding chat systems are removed.
+     */
     this.deleteCurrentTopic = function(){
-        $http.delete('/admin/topic/'+that.modifyTopicID).
-            success(function(data, status, headers, config) {
+        function deletingProcedure(deleteThis) {
+            $http.delete('/admin/topic/' + deleteThis).
+                success(function (data, status, headers, config) {
+                }).
+                error(function (data, status, headers, config) {
+                    console.log("error TopicController: Topic cannot get removed");
+                });
+            // remove corresponding chat system
+            Interface.deleteChat($http, deleteThis);
+        }
+
+        /* delete the sub-topics and their chat systems */
+        $http.get('/admin/topicbyuser/'+that.modifyTopicID).
+            success(function (data, status, headers, config) {
+                data.forEach(function(subtopic){
+                    if(subtopic.uID != that.modifyTopicID)
+                        deletingProcedure(subtopic.uID);
+                });
             }).
-            error(function(data, status, headers, config) {
-                console.log("error TopicController: Topic cannot get removed");
+            error(function (data, status, headers, config) {
+                console.log("error TopicController: Sub-Topic cannot get removed");
             });
+
+        /* delete the main topic and the main chat */
+        deletingProcedure(that.modifyTopicID);
     };
 
     /* update parameter if needed */

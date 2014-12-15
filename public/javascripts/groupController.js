@@ -273,9 +273,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             error(function(data, status, headers, config) {
             });
 
-        /* FIXME create corresponding chat system */
-        console.log(that.currentGroupTopic.topic +"|"+ that.currentGroupTopic.subtopics +"|"+  that.currentGroup.uID +"|"+
-            $scope.gc +"|"+ $scope.uc.email+"|");
+        /* create corresponding chat system */
+        Interface.createChat($http, that.currentGroup.uID, that.currentGroup.name + " Chat");
 
         /* create the fitting topics */
         Interface.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
@@ -297,11 +296,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         that.getGroups();
 
         // remove corresponding chat system
-        $http.delete('/admin/chat/'+uID).
-            success(function(data, status, headers, config) {
-            }).
-            error(function(data, status, headers, config) {
-            });
+        Interface.deleteChat($http, uID);
     };
 
     /* update parameter if needed */
