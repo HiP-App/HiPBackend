@@ -71,6 +71,25 @@ class GroupController extends Controller with MongoController {
   }
 
   /**
+   * Method adds the given uID of a group to the list of groups that can read the content of
+   * the current group
+   *
+   * @param uIDOfTheGroupThatShouldBeChanged uID of the group that should be modified
+   * @param uIDOfTheGroupThatShouldGetTheReadRight uID of the group that should get read-rights
+   * @return
+   */
+  def addGroupToReadableList(uIDOfTheGroupThatShouldBeChanged: String,
+                             uIDOfTheGroupThatShouldGetTheReadRight: String) = Action.async{
+      val modifier    =   Json.obj("$push" -> Json.obj("readableBy" -> uIDOfTheGroupThatShouldGetTheReadRight))
+
+      collection.update(Json.obj("uID" -> uIDOfTheGroupThatShouldBeChanged), modifier).map {
+        lastError =>
+          logger.debug(s"Successfully inserted with LastError: $lastError")
+          Created(s"Notification has been added")
+      }
+  }
+
+  /**
    * Returns a group given by its uID
    *
    * @return a list that contains every group as a JSON object
@@ -138,7 +157,8 @@ class GroupController extends Controller with MongoController {
                                         "$set" -> Json.obj("createdBy" -> grp.createdBy),
                                         "$set" -> Json.obj("name" -> grp.name),
                                         "$set" -> Json.obj("member" -> grp.member),
-                                        "$set" -> Json.obj("notifications" -> grp.notifications))
+                                        "$set" -> Json.obj("notifications" -> grp.notifications),
+                                        "$set" -> Json.obj("readableBy" -> grp.readableBy));
 
           collection.update(Json.obj("uID" -> grp.uID), modifier).map {
             lastError =>

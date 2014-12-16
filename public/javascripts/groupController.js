@@ -27,7 +27,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     this.currentGroup = {name: "",
         member: "",
         createdBy: that.createdByTemp,
-        topic: ""
+        topic: "",
+        readableBy: []
     };
 
     this.currentGroupTopic = {};
@@ -67,6 +68,26 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * + CONTROLLER FUNCTIONS   +
      * --------------------------
      */
+
+    /**
+     * The function adds the given group to the list of groups that has read rights for the
+     * current group
+     *
+     * @param uIDOfTheGroupThatShouldGetTheReadRight
+     */
+    this.setReadRightWithinCurrentGroupForAnotherGroup = function(uIDOfTheGroupThatShouldGetTheReadRight){
+        var currentGroupUID = that.bufferedGroup.uID;
+
+        $http.post('/admin/readRight/'+currentGroupUID+"/"+uIDOfTheGroupThatShouldGetTheReadRight).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+    };
 
     /**
      * This function sets a new topic at a given group

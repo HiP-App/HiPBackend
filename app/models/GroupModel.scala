@@ -5,4 +5,5 @@ case class GroupModel(uID: String,
                  member: String,
                  createdBy: String,
                  topic : String,
-                 notifications: Array[String])
+                 notifications: Array[String],
+                 readableBy: Array[String]);

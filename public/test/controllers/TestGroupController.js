@@ -3,6 +3,7 @@
  */
 
 var demoGroup = {
+    uID: "1",
     name: "Dummy",
     member: "someOne",
     createdBy: "Tester",
@@ -12,6 +13,7 @@ var demoGroup = {
 };
 
 var demoGroup2 = {
+    uID: "2",
     name: "AnotherDummy",
     member: "someOne",
     createdBy: "Tester",
@@ -96,6 +98,7 @@ describe('Testsuite for the GroupController:', function () {
 
         /* reset test data */
         demoGroup = {
+            uID: "1",
             name: "Dummy",
             member: "someOne",
             createdBy: "Tester",
@@ -104,6 +107,7 @@ describe('Testsuite for the GroupController:', function () {
         };
 
         demoGroup2 = {
+            uID: "2",
             name: "AnotherDummy",
             member: "someOne2",
             createdBy: "Tester",
@@ -206,6 +210,15 @@ describe('Testsuite for the GroupController:', function () {
 
         $httpBackend.expectPOST('/admin/chat/true',expectedChat).respond(200,{});
 
+        $httpBackend.flush();
+    });
+
+    it('is able to grant read rights for a group within the current group', function () {
+        initController();
+
+        controller.setReadRightWithinCurrentGroupForAnotherGroup("testUID");
+
+        $httpBackend.expectPOST('/admin/readRight/1/testUID').respond(200,{});
         $httpBackend.flush();
     });
 
