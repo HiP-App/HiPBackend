@@ -21,6 +21,22 @@
 
             <div class="float-clear"></div>
         </div>
+
+        <hr ng-show="gc.groupsThatGrantedReadAccessForThisUser.length != 0">
+
+        <!-- List with read rights -->
+        <div class="menuEntry" ng-repeat="grp in gc.groupsThatGrantedReadAccessForThisUser">
+            <div class="menuLeft">
+                <a ng-href="/#/group/view/{{ grp.uID }}" ng-show="uc.isStudent()">{{ grp.name }}</a>
+                <a ng-href="/#/group/viewexternal/{{ grp.uID }}" ng-show="uc.isSupervisor()">{{ grp.name }}</a>
+            </div>
+
+            <div class="menuRight">
+                [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span>
+            </div>
+
+            <div class="float-clear"></div>
+        </div>
     </div>
 
     <div class="float-clear"></div>

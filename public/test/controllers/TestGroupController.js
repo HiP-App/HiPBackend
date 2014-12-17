@@ -9,7 +9,8 @@ var demoGroup = {
     createdBy: "Tester",
     topic: "someTopic",
     subtopics: "test",
-    notifications: [""]
+    notifications: [""],
+    readableBy: ["user1","group3"]
 };
 
 var demoGroup2 = {
@@ -19,7 +20,19 @@ var demoGroup2 = {
     createdBy: "Tester",
     topic: "someTopicAgain",
     subtopics: "test",
-    notifications: [""]
+    notifications: [""],
+    readableBy: ["user2"]
+};
+
+var demoGroup3 = {
+    uID: "group3",
+    name: "AnotherDummy",
+    member: "user3",
+    createdBy: "Tester",
+    topic: "someTopicAgain",
+    subtopics: "test",
+    notifications: [""],
+    readableBy: ["user3"]
 };
 
 var demoUser = {
@@ -48,7 +61,7 @@ describe('Testsuite for the GroupController:', function () {
             .respond(200,[demoGroup]);
 
         $httpBackend.when('GET','/admin/groups')
-            .respond(200,[demoGroup, demoGroup2]);
+            .respond(200,[demoGroup, demoGroup2, demoGroup3]);
 
         $httpBackend.when('GET','/admin/topic/someTopic')
             .respond(200,[{}]);
@@ -103,16 +116,31 @@ describe('Testsuite for the GroupController:', function () {
             member: "someOne",
             createdBy: "Tester",
             topic: "someTopic",
-            notifications: [""]
+            subtopics: "test",
+            notifications: [""],
+            readableBy: ["user1","group3"]
         };
 
         demoGroup2 = {
             uID: "2",
             name: "AnotherDummy",
-            member: "someOne2",
+            member: "someOne",
             createdBy: "Tester",
             topic: "someTopicAgain",
-            notifications: [""]
+            subtopics: "test",
+            notifications: [""],
+            readableBy: ["user2"]
+        };
+
+        demoGroup3 = {
+            uID: "group3",
+            name: "AnotherDummy",
+            member: "user3",
+            createdBy: "Tester",
+            topic: "someTopicAgain",
+            subtopics: "test",
+            notifications: [""],
+            readableBy: ["user3"]
         };
 
         demoUser = {
@@ -132,7 +160,7 @@ describe('Testsuite for the GroupController:', function () {
         expect(nameOfTheDetailedGroupFetchedViaUID).toBe("Dummy");
 
         var lengthOfTheArrayForStoredGroups = controller.groups.length;
-        expect(lengthOfTheArrayForStoredGroups).toBe(2);
+        expect(lengthOfTheArrayForStoredGroups).toBe(3);
 
         var nameOfTheUserFetchedViaUID = controller.userInGroupArray[0].firstname;
         expect(nameOfTheUserFetchedViaUID).toBe("John");
@@ -231,5 +259,46 @@ describe('Testsuite for the GroupController:', function () {
         $httpBackend.expectDELETE('/admin/chat/1').respond('200',{});
 
         $httpBackend.flush();
+    });
+
+    it('is able to check if a given user is member of given group', function () {
+        initController();
+
+        var returnValue = controller.userIDIsMemberOfGrp('someOne','1');
+
+        expect(returnValue).toBe(true);
+    });
+
+    it('is able to check if a given user is not a member of a given group', function () {
+        initController();
+
+        var returnValue = controller.userIDIsMemberOfGrp('someOne2','1');
+
+        expect(returnValue).toBe(false);
+    });
+
+    it('is able to check if a given user has read rights for a given group', function () {
+        initController();
+
+        var returnValue = controller.userIDIsReaderOfGrp('user1','1');
+
+        expect(returnValue).toBe(true);
+    });
+
+    it('is able to check if a given user has no read rights for a given group', function () {
+        initController();
+
+        var returnValue = controller.userIDIsReaderOfGrp('user2','1');
+
+        expect(returnValue).toBe(false);
+    });
+
+    it('is able to get the read-access right even when the user is only in another group that ' +
+        'has the right', function () {
+        initController();
+
+        var returnValue = controller.userIDIsReaderOfGrp('user3','1');
+
+        expect(returnValue).toBe(true);
     });
 });

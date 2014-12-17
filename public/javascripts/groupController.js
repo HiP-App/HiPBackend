@@ -18,8 +18,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      */
     this.groups = ["initMe"];
     this.groupsCreatedByThisUser = [];
-
     this.groupsCreatedByThisUserOrUserIsMemberOfGroup = [];
+    this.groupsThatGrantedReadAccessForThisUser = [];
 
     this.userInGroupArray = [];
 
@@ -68,6 +68,79 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * + CONTROLLER FUNCTIONS   +
      * --------------------------
      */
+
+    /**
+     * Returns true, iff the user is a member of the given grp
+     * @param userID    of the user that should be checked
+     * @param groupID   of the group that should be used for checking the member
+     */
+    this.userIDIsMemberOfGrp = function(userID,groupID){
+        var result = false;
+
+        // get positionOfGroup
+        this.groups.forEach(function(grp) {
+            if (grp.uID == groupID) {
+                /* is the user a member of this grp? */
+                if(grp.member != undefined)
+                    result = (grp.member.indexOf(userID) != -1);
+            }
+        });
+
+        return result;
+    };
+
+    /**
+     * Returns true, iff the user has read rights of the given group
+     *
+     * @param userID    of the user that should be checked
+     * @param groupID   of the group that should be used for checking the member
+     */
+    this.userIDIsReaderOfGrp = function(userID,groupID){
+        var result = false;
+
+        this.groups.forEach(function(grp){
+            if(grp.uID == groupID){
+                /* check is userID is contained in the list of given rights */
+                var userInReadableList = (jQuery.inArray( userID, grp.readableBy ) != -1);
+                if(userInReadableList){
+                    result = true;
+                }else{
+                    /* cancel if not fully loaded */
+                    if(grp.readableBy == undefined)
+                        return;
+                    
+                    /* now check again, assuming that the array of given read rights contains not a userID but a groupID */
+                    grp.readableBy.forEach(function(assumedGroup){
+                        /* get position of grp in cache */
+                        var pos = "-1";
+
+                        for(var i=0; i < that.groups.length; i++){
+                            if(that.groups[i].uID == assumedGroup){
+                                pos = i;
+                            }
+                        }
+
+                        var assumedGroupIsContainedInGroupCache = (pos != -1);
+                        if(assumedGroupIsContainedInGroupCache){
+                            /* is the checked user member of that group? */
+                            var checkedUserIsMemberOfThatGroup = ( that.groups[pos].member.indexOf(userID) != -1 );
+
+                            if(checkedUserIsMemberOfThatGroup){
+                                result = true;
+                            }
+                        }
+                    });
+                }
+            }
+
+            /* stop looking, if result is found */
+            if(result){
+                return true;
+            }
+        });
+
+        return result;
+    };
 
     /**
      * The function adds the given group to the list of groups that has read rights for the
@@ -249,6 +322,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                             that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(group);
                         }else if(group.member.indexOf($scope.uc.email) > -1){
                             that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(group);
+                        }else if(that.userIDIsReaderOfGrp($scope.uc.email, group.uID)){
+                            that.groupsThatGrantedReadAccessForThisUser.push(group);
                         }
                     });
                 }

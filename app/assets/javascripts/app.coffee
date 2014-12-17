@@ -40,6 +40,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/create', {
                 templateUrl: '/assets/partials/myhip_createGroup.html'
             })
+            .when('/group/rights/:uID', {
+                templateUrl: '/assets/partials/myhip_readRights.html'
+            })
             .when('/topic/modify/:userID', {
                 templateUrl: '/assets/partials/myhip_modifyTopic.html'
             })

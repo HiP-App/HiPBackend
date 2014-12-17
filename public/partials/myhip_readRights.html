@@ -1,0 +1,58 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
+        <div class="panel-heading" ng-bind="lc.getTerm('system_topic_header')"></div>
+        <div >
+            <div class="panel-body">
+                <form id="CreateTopicForm" name="CreateTopicForm" class="form-horizontal" role="form"
+                      ng-submit="gc.setReadRightWithinCurrentGroupForAnotherGroup(group.uID)">
+                    <h4 ng-bind="lc.getTerm('system_set_rights')"></h4>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button"
+                                            ng-class="{ 'btn-warning'       : group.name.length == 0,
+                                                        'btn-success'       : group.name.length > 0}"
+                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                                            ng-bind="lc.getTerm('system_topic_rights_group')">
+                                            <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="grp in gc.groups">
+                                            <a ng-click="$parent.group = grp" ng-bind="grp.name"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
+                                       ng-model="group.name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-3 text-right">
+                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning" ng-bind="lc.getTerm('system_rights_cancel')"></a>
+                        </div>
+
+                        <div class="col-sm-offset-1 col-sm-6 text-right">
+                            <button type="submit" class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('system_rights_create')"></button>
+                        </div>
+                    </div>
+                </form>
+
+                <hr>
+
+                <h4 ng-bind="lc.getTerm('system_topic_rights_groupsWithReadRights')"></h4>
+
+                <ul>
+                    <li ng-repeat="grp in gc.bufferedGroup.readableBy" ng-bind="grp"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

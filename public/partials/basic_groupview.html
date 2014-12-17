@@ -45,21 +45,21 @@
                 </div>
 
                 <div id="contentBox">
-                    <div id="supervisorNavigation" class="panel panel-default">
+                    <div id="supervisorNavigation" class="panel panel-default" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID)">
                         <div class="panel-heading"> {{lc.getTerm('system_group_navigation')}} </div>
                         <div class="panel-body">
                             <ul>
-                                <li> <a href="#"> ... </a> </li>
                                 <li> <a href="/#/group/propose"> {{lc.getTerm('system_group_navigation_proposeTopic')}} </a> </li>
                                 <li> <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">
                                     {{lc.getTerm('system_group_navigation_editContentOfTopic')}}
                                 </a> </li>
-                                <li> <a href="#"> ... </a> </li>
+                                <li> <a ng-href="/#/group/rights/{{gc.bufferedGroup.uID}}"> {{lc.getTerm('system_group_navigation_inviteRead')}} </a> </li>
                             </ul>
                         </div>
                     </div>
 
-                    <div id="groupNotification" class="panel panel-default">
+                    <div id="groupNotification" class="panel panel-default" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID) ||
+                    gc.userIDIsReaderOfGrp(uc.email,gc.bufferedGroup.uID)">
                         <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
                         <div class="panel-body">
                                 <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <chat-box></chat-box>
+                    <chat-box ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID)"></chat-box>
 
                     <div class="float-clear"></div>
                 </div>

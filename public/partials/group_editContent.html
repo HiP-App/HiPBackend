@@ -12,8 +12,11 @@
 
             <div class="float-clear"></div>
         </div>
-        <div >
 
+        <!--
+        GROUP MEMBER VIEW
+        -->
+        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
             <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
                 <fullscreen-overlay>
                     <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
@@ -94,9 +97,16 @@
             <div class="col-sm-offset-1 col-sm-10" ng-show="showDiv == 2">
                 <chat-box-big></chat-box-big>
             </div>
-
-
         </div>
+
+
+        <!--
+        GUEST VIEW
+        -->
+        <div ng-show="gc.userIDIsReaderOfGrp(uc.email,tc.currentTopic.group)">
+            <div ng-bind-html="tc.currentTopic.content"></div>
+        </div>
+
     </div>
 </div>
 <div class="float-clear"></div>
