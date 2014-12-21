@@ -14,7 +14,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
 
-    that.subtopics = [];
+    this.subtopics = [];
 
     this.currentTopic = {};
 
@@ -26,7 +26,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.modifyTopicName    = "";
     this.modifyTopicContent = "";
     this.modifyTopicGroup   = "";
-    that.modifyTopicCreatedBy   = "";
+    this.modifyTopicCreatedBy   = "";
     this.modifyTopicContraints  = [];
 
     /**
@@ -63,7 +63,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * Creates a new topic with the internally stored information
      */
     this.createTopic = function(){
-        Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
+        Interface.createTopicObject(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
             $scope.gc, $scope.uc.email, $http);
 
         /* create corresponding chat system */
@@ -183,15 +183,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * @param msg   the message that should be contained in the alert
      */
     this.updateStatus = function(ac, lc, msg){
-        var topic = {
-            uID : that.currentTopic.uID,
-            name : that.currentTopic.name,
-            group  : that.currentTopic.group,
-            createdBy: that.currentTopic.createdBy,
-            content: that.currentTopic.content,
-            status: that.currentTopic.status,
-            constraints: that.currentTopic.constraints
-        };
+        var topic = Tooling.createTopicObject(that.currentTopic.uID,
+            that.currentTopic.name,
+            that.currentTopic.group,
+            that.currentTopic.createdBy,
+            that.currentTopic.content,
+            that.currentTopic.status,
+            that.currentTopic.constraints);
 
         var constraintsAreInitialized = that.currentTopic.constraints[0] != "" || that.currentTopic.constraints != undefined;
         if(!constraintsAreInitialized){

@@ -301,4 +301,21 @@ describe('Testsuite for the GroupController:', function () {
 
         expect(returnValue).toBe(true);
     });
+
+    it('is able to request read rights from a given group', function () {
+        initController();
+
+        controller.requestReadRightsFromGroup('2', "sender", "title", "content");
+
+        var getUID = Tooling.lastGeneratedRandomUID;
+
+        var buttonHTML = '<br><a ng-href="/#/group/rights/"' + '1' + ' id="btn_send_request" ' +
+            'class="btn btn-info" ' +
+            'ng-bind="lc.getTerm("system_getRights_send")></a>';
+
+        var tempMessage = Tooling.createMessageObject(getUID,"someOne", "sender", "title", "content"+buttonHTML);
+
+        $httpBackend.expectPOST('/admin/messages', tempMessage).respond(200,{});
+        $httpBackend.flush();
+    });
 });

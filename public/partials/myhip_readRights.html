@@ -46,6 +46,50 @@
 
                 <hr>
 
+                <h4 ng-bind="lc.getTerm('system_topic_rights_requestReadRights')"></h4>
+
+                <form id="RequestReadRightForm" name="RequestReadRightForm" class="form-horizontal" role="form"
+                      ng-submit="gc.requestReadRightsFromGroup(group.uID, uc.email,
+                                                                lc.getTerm('rightRequestTitle'),
+                                                                lc.getTerm('rightRequestContent')">
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button"
+                                            ng-class="{ 'btn-warning'       : group.name.length == 0,
+                                                        'btn-success'       : group.name.length > 0}"
+                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                                            ng-bind="lc.getTerm('system_topic_rights_group')">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="grp in gc.groups">
+                                            <a ng-click="$parent.group = grp" ng-bind="grp.name"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <input type="text" class="form-control" name="requestGroupName" id="requestGroupName" placeholder=""
+                                       ng-model="group.name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-3 text-right">
+                            <a ng-href="/#/myhip" id="btn_cancel_request" class="btn btn-warning" ng-bind="lc.getTerm('system_getRights_cancel')"></a>
+                        </div>
+
+                        <div class="col-sm-offset-1 col-sm-6 text-right">
+                            <button type="submit" class="btn btn-success" id="btn_create_request" ng-bind="lc.getTerm('system_getRights_create')"></button>
+                        </div>
+                    </div>
+                </form>
+
+                <hr>
+
                 <h4 ng-bind="lc.getTerm('system_topic_rights_groupsWithReadRights')"></h4>
 
                 <ul>

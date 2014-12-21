@@ -72,26 +72,13 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
      * @param emailOfTheSender  the uID resp. email address of the sender
      */
     this.sendMessage = function(emailOfTheSender){
-        var tempMessage = {
-            uID: Tooling.generateUID(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
-                that.messageThatGetsCurrentlyCreated.content),
-            receiver:   that.messageThatGetsCurrentlyCreated.receiver,
-            sender:     emailOfTheSender,
-            title:      that.messageThatGetsCurrentlyCreated.title,
-            content:    that.messageThatGetsCurrentlyCreated.content
-        };
+        var uID = Tooling.generateUID(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
+            that.messageThatGetsCurrentlyCreated.content);
 
-        $http.post('/admin/messages', tempMessage).
-            success(function(data, status, headers, config) {
-                if(that.debug){
-                    console.log("info MessageCtrl: Message sending completed");
-                }
-            }).
-            error(function(data, status, headers, config) {
-                if(that.debug) {
-                    console.log("error MessageCtrl: Error while sending message");
-                }
-            });
+        var tempMessage = Tooling.createMessageObject(uID,that.messageThatGetsCurrentlyCreated.receiver, emailOfTheSender,
+        that.messageThatGetsCurrentlyCreated.title, that.messageThatGetsCurrentlyCreated.content);
+
+        Interface.sendPrivateMessage($http, tempMessage, that.debug);
     };
 
     /**

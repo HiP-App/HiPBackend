@@ -143,6 +143,45 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     };
 
     /**
+     * This function requests the read right from another group
+     *
+     * @param uID               uID of the group that should be asked for rights
+     * @param emailOfTheSender  email of the sender
+     * @param messagetitle      the title of the message - needs to be injected because this is language specific -
+     * @param messageContent    the content of the message - needs to be injected because this is language specific -
+     */
+    this.requestReadRightsFromGroup = function(uID, emailOfTheSender, messagetitle, messageContent){
+        var currentGroupUID = that.bufferedGroup.uID;
+        var receiverGrpUID = uID;
+
+        var buttonHTML = '<br><a ng-href="/#/group/rights/"' + that.bufferedGroup.uID + ' id="btn_send_request" ' +
+            'class="btn btn-info" ' +
+            'ng-bind="lc.getTerm("system_getRights_send")></a>';
+
+        this.groups.forEach(function(grp) {
+            if (grp.uID == receiverGrpUID) {
+                /* found the correct group in groups cache */
+                var member = grp.member.split(',');
+                member.forEach(function(aMember){
+                    /* send every member a message */
+                    var messageData = {
+                        title:      messagetitle,
+                        receiver:   aMember,
+                        content:    messageContent + buttonHTML
+                    };
+
+                    var uID = Tooling.generateUID(messageData.title + messageData.receiver + messageData.content);
+
+                    var tempMessage = Tooling.createMessageObject(uID, messageData.receiver, emailOfTheSender,
+                        messageData.title, messageData.content);
+
+                    Interface.sendPrivateMessage($http, tempMessage, that.debug);
+                });
+            }
+        });
+    };
+
+    /**
      * The function adds the given group to the list of groups that has read rights for the
      * current group
      *
@@ -373,7 +412,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         Interface.createChat($http, that.currentGroup.uID, that.currentGroup.name + " Chat");
 
         /* create the fitting topics */
-        Interface.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
+        Interface.createTopicObject(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
             $scope.gc, $scope.uc.email, $http)
     };
 

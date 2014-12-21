@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 09.12.14.
+ * Created by Jörg Amelunxen on 09.12.14.
  */
 
 function setUserToStudent(controller) {

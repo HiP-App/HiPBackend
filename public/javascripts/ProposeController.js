@@ -24,13 +24,8 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', function($scope,$
     this.proposeTopic = function(receiver,sender,proposeString){
         var currentPropID = Tooling.generateUID(that.propose.name);
 
-        var proposement = {
-            uID : currentPropID,
-            receiver : receiver,
-            sender  : sender,
-            title : proposeString + " " + that.propose.name,
-            content : that.propose.content
-        };
+        var proposement = Tooling.createMessageObject(currentPropID, receiver, sender, proposeString + " " +
+            that.propose.name, that.propose.content);
 
         $http.post('/admin/messages', proposement).
             success(function(data, status, headers, config) {
