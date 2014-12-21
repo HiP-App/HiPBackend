@@ -149,14 +149,14 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * @param emailOfTheSender  email of the sender
      * @param messagetitle      the title of the message - needs to be injected because this is language specific -
      * @param messageContent    the content of the message - needs to be injected because this is language specific -
+     * @param buttonContent    the label of the button - needs to be injected because this is language specific -
      */
-    this.requestReadRightsFromGroup = function(uID, emailOfTheSender, messagetitle, messageContent){
+    this.requestReadRightsFromGroup = function(uID, emailOfTheSender, messagetitle, messageContent, buttonContent){
         var currentGroupUID = that.bufferedGroup.uID;
         var receiverGrpUID = uID;
 
-        var buttonHTML = '<br><a ng-href="/#/group/rights/"' + that.bufferedGroup.uID + ' id="btn_send_request" ' +
-            'class="btn btn-info" ' +
-            'ng-bind="lc.getTerm("system_getRights_send")></a>';
+        var buttonHTML = '<br><a href="/#/group/rights/' + currentGroupUID + '" id="btn_send_request" ' +
+            'class="btn btn-info">' + buttonContent + '</a>';
 
         this.groups.forEach(function(grp) {
             if (grp.uID == receiverGrpUID) {
@@ -165,7 +165,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                 member.forEach(function(aMember){
                     /* send every member a message */
                     var messageData = {
-                        title:      messagetitle,
+                        title:      messagetitle + ":" + that.bufferedGroup.name,
                         receiver:   aMember,
                         content:    messageContent + buttonHTML
                     };

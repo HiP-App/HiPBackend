@@ -21,3 +21,4 @@ server.pid
 *.iml
 *.eml
 activator-*.sbt
+4_Code/modern-web-template/conf/application.conf
