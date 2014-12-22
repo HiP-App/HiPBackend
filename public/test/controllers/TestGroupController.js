@@ -9,7 +9,7 @@ var demoGroup = {
     createdBy: "Tester",
     topic: "someTopic",
     subtopics: "test",
-    notifications: [""],
+    notifications: ["ABC (2011-04-12)"],
     readableBy: ["user1","group3"]
 };
 
@@ -20,7 +20,7 @@ var demoGroup2 = {
     createdBy: "Tester",
     topic: "someTopicAgain",
     subtopics: "test",
-    notifications: [""],
+    notifications: ["EFG (2011-05-11)"],
     readableBy: ["user2"]
 };
 
@@ -31,7 +31,7 @@ var demoGroup3 = {
     createdBy: "Tester",
     topic: "someTopicAgain",
     subtopics: "test",
-    notifications: [""],
+    notifications: ["HHG (2013-04-11)"],
     readableBy: ["user3"]
 };
 
@@ -117,7 +117,7 @@ describe('Testsuite for the GroupController:', function () {
             createdBy: "Tester",
             topic: "someTopic",
             subtopics: "test",
-            notifications: [""],
+            notifications: ["ABC (2011-04-12)"],
             readableBy: ["user1","group3"]
         };
 
@@ -128,7 +128,7 @@ describe('Testsuite for the GroupController:', function () {
             createdBy: "Tester",
             topic: "someTopicAgain",
             subtopics: "test",
-            notifications: [""],
+            notifications: ["EFG (2011-05-11)"],
             readableBy: ["user2"]
         };
 
@@ -139,7 +139,7 @@ describe('Testsuite for the GroupController:', function () {
             createdBy: "Tester",
             topic: "someTopicAgain",
             subtopics: "test",
-            notifications: [""],
+            notifications: ["HHG (2013-04-11)"],
             readableBy: ["user3"]
         };
 
@@ -316,5 +316,17 @@ describe('Testsuite for the GroupController:', function () {
 
         $httpBackend.expectPOST('/admin/messages', tempMessage).respond(200,{});
         $httpBackend.flush();
+    });
+
+    it('is able to create a list of aggregated notification messages and sorts them by date', function(){
+        initController();
+
+        var checkGroupsWithIDs = ["1","2","group3"];
+
+        controller.createAggregatedNotificationList(checkGroupsWithIDs);
+
+        expect(controller.aggregatedNotifications[2].notification).toBe("ABC (2011-04-12)");
+        expect(controller.aggregatedNotifications[1].notification).toBe("EFG (2011-05-11)");
+        expect(controller.aggregatedNotifications[0].notification).toBe("HHG (2013-04-11)");
     });
 });

@@ -154,6 +154,15 @@ body{
     display: none;
 }
 
+.scroll{
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.max500{
+    height: 500px;
+}
+
 #chatContent{
     overflow-y: auto;
     overflow-x: auto;

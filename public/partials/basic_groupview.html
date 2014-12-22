@@ -61,7 +61,7 @@
                     <div id="groupNotification" class="panel panel-default" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID) ||
                     gc.userIDIsReaderOfGrp(uc.email,gc.bufferedGroup.uID)">
                         <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
-                        <div class="panel-body">
+                        <div class="panel-body scroll">
                                 <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications">
                                     {{lc.getNotification(message)}}
                                 </div>

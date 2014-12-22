@@ -31,6 +31,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         readableBy: []
     };
 
+    this.aggregatedNotifications = []; // contains the aggregated notifications of a couple of specified groups
+
     this.currentGroupTopic = {};
 
     this.bufferedGroup = {uID: "toSet"};
@@ -73,6 +75,68 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * + CONTROLLER FUNCTIONS   +
      * --------------------------
      */
+
+    /**
+     * This function creates an internal representation of the aggregated notifications that
+     * are included within the groups that are specified with the parameter
+     *
+     * @param checkGroupsWithIDs the groups that should be used to aggregate the notifications
+     */
+    this.createAggregatedNotificationList = function(checkGroupsWithIDs){
+        /* get all notifications */
+        checkGroupsWithIDs.forEach(function(grp){
+
+            for(var i = 0; i < that.groups.length; i++){
+                if(that.groups[i].uID == grp){
+                    // found the correct group
+                    that.groups[i].notifications.forEach(function(message){
+
+                        var notification = {
+                            groupID:        that.groups[i].uID,
+                            group:          that.groups[i].name,
+                            notification:   message,
+                            date:           Math.floor(new Date(
+                                        message.substring(message.indexOf('(')+1, message.length - 1)).getTime() / 1000)
+                        };
+
+                        that.aggregatedNotifications.push(notification);
+                    });
+                }
+            }
+        });
+
+        /* sort them */
+        var tempArray = [];
+        var minimumPosition = 0;
+        var minimumLocalTime = Number.MAX_VALUE;
+
+        for(var i = 0; i < that.aggregatedNotifications.length; i++){
+            if(that.aggregatedNotifications[i] != undefined){
+                if(that.aggregatedNotifications[i].date < minimumLocalTime){
+                    minimumPosition = i;
+                    minimumLocalTime = that.aggregatedNotifications[i].date;
+                }
+
+                tempArray.push(
+                {
+                    groupID:        that.aggregatedNotifications[i].groupID,
+                    group:          that.aggregatedNotifications[i].group,
+                    notification:   that.aggregatedNotifications[i].notification,
+                    date:           minimumLocalTime
+                });
+            }
+
+            // delete
+            that.aggregatedNotifications[i] = undefined;
+
+            // reset
+            minimumPosition = 0;
+            minimumLocalTime = Number.MAX_VALUE;
+        }
+
+        /* restore */
+        that.aggregatedNotifications = tempArray.reverse();
+    };
 
     /**
      * Returns true, iff the user is a member of the given grp
@@ -371,6 +435,21 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                         }
                     });
                 }
+
+                if(that.debug){
+                    console.log("info GrpCtrl: building aggregated notifications ");
+                }
+
+                /* build aggregated notifications */
+                var requestNotifications = [];
+                that.groupsCreatedByThisUserOrUserIsMemberOfGroup.forEach(function(grp){
+                    requestNotifications.push(grp.uID);
+
+                    if(that.debug){
+                        console.log("info GrpCtrl: including  " + grp.name + " in notifications");
+                    }
+                });
+                that.createAggregatedNotificationList(requestNotifications);
             }).
             error(function(data, status, headers, config) {
                 that.groups = "Error: Connection error";
@@ -444,7 +523,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         that.getGroupByUID($routeParams.uID);
     }
 
-    if(that.groups[0] = "initMe"){
+    if(that.groups[0] == "initMe"){
         //FIXME don't use the scope
         that.getGroups($scope.uc.email);
     }

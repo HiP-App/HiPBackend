@@ -56,7 +56,14 @@
 
             <div id="groupNotification" class="panel panel-default">
                 <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
-                <div class="panel-body"> bla </div>
+                <div class="panel-body scroll max500">
+
+                    <div  class="alert alert-info" role="alert" ng-repeat="message in gc.aggregatedNotifications">
+                        <a ng-href="/#/group/view/{{message.groupID}}">
+                            {{message.group}}: {{lc.getNotification(message.notification)}}
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <div id="templates" class="panel panel-default" ng-show="uc.isSupervisor()">
