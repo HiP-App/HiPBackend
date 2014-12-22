@@ -43,9 +43,17 @@ controllersModule.controller('LangCtrl', ['$http', function($http) {
     this.getNotification = function (data) {
         var res = data.split(",");
 
-        var notiMessage = that.getTerm(res[0]);
+        if(res[0] == "system_notification_groupTopicUpdated1"){
+            var notiMessage1 = that.getTerm(res[0]);
+            var notiMessage2 = that.getTerm(res[2]);
 
-        return notiMessage + " " + res[1];
+            return notiMessage1 + " " + res[1] + " " + notiMessage2 + " " + res[3];
+        }
+        else{
+            var notiMessage = that.getTerm(res[0]);
+
+            return notiMessage + " " + res[1];
+        }
     };
 
     /**
