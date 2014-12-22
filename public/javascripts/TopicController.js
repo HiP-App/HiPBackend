@@ -208,6 +208,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
         // send the fitting alert
         this.sendAlert(ac, lc, msg);
+
+        // send a group notification
+        if($scope.gc != undefined && $scope.uc.email != undefined)
+            $scope.gc.createNotificationAtGroup(that.currentTopic.group, 'system_notification_groupTopicUpdated',
+                [that.currentTopic.name, $scope.uc.email]);
     };
 
     /**

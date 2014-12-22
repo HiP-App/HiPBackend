@@ -61,6 +61,11 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         if(keyOfTheNotification == "system_notification_groupTopicChanged"){
             return "system_notification_groupTopicChanged" + "," + arrayOfValues[0] + " ("+now.toLocaleString()+")"
         }
+
+        if(keyOfTheNotification == "system_notification_groupTopicUpdated"){
+            return "system_notification_groupTopicUpdated1" + " " + arrayOfValues[0] + " " +
+                "system_notification_groupTopicUpdated2" + " " + arrayOfValues[1]  + " ("+now.toLocaleString()+")"
+        }
     };
 
     /*

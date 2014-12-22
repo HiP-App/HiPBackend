@@ -46,6 +46,7 @@ class GroupController extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  @deprecated
   /**
    * Adds a notification to a group.
    * The needed information (groupID and notification) is contained in the
