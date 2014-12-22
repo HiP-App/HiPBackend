@@ -103,7 +103,9 @@
         <!--
         GUEST VIEW
         -->
-        <div ng-show="gc.userIDIsReaderOfGrp(uc.email,tc.currentTopic.group)">
+        <div ng-show="gc.userIDIsReaderOfGrp(uc.email,tc.currentTopic.group)
+                            && !gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
+            
             <div ng-bind-html="tc.currentTopic.content"></div>
         </div>
 
