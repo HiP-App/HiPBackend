@@ -11,14 +11,7 @@ controllersModule.controller('AnnotationCtrl', ['$scope','$http', '$routeParams'
      * @param id - The DOM element that should be used to start the annotation with
      */
     this.startAnnotation = function(id){
-        $(id).annotator('addPlugin', 'Store', {
-            urls: {
-                // These are the default URLs.
-                create:  '/annotations',
-                update:  '/annotations/:id',
-                destroy: '/annotations/:id',
-                search:  '/search'
-            }
-        });
+        $(id).annotator().annotator('setupPlugins',
+            {tokenUrl: 'http://localhost:9000/token'});
     };
 }]);

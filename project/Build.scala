@@ -13,7 +13,8 @@ object ApplicationBuild extends Build {
     "org.reactivemongo" %% "play2-reactivemongo" % "0.10.2",
 
     "org.mockito" % "mockito-core" % "1.9.5" % "test",
-    "ws.securesocial" %% "securesocial" % "2.1.4"
+    "ws.securesocial" %% "securesocial" % "2.1.4",
+    "com.nimbusds" % "nimbus-jose-jwt" % "2.15.1"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
