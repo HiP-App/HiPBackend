@@ -45,7 +45,7 @@
                 </div>
 
                 <div id="contentBox">
-                    <div id="supervisorNavigation" class="panel panel-default" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID)">
+                    <div class="panel panel-default quarter-left" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID)">
                         <div class="panel-heading"> {{lc.getTerm('system_group_navigation')}} </div>
                         <div class="panel-body">
                             <ul>
@@ -58,8 +58,8 @@
                         </div>
                     </div>
 
-                    <div id="groupNotification" class="panel panel-default" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID) ||
-                    gc.userIDIsReaderOfGrp(uc.email,gc.bufferedGroup.uID)">
+                    <div class="panel panel-default almost-half"
+                         ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID) || gc.userIDIsReaderOfGrp(uc.email,gc.bufferedGroup.uID)">
                         <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
                         <div class="panel-body scroll">
                                 <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications">

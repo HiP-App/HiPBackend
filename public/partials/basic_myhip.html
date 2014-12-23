@@ -23,7 +23,7 @@
         </div>
 
         <div id="contentBox">
-            <div id="supervisorNavigation" class="panel panel-default" ng-show="uc.isSupervisor()">
+            <div class="panel panel-default quarter-left" ng-show="uc.isSupervisor()">
                 <div class="panel-heading">
                     <div ng-show="uc.isSupervisor()">
                     {{lc.getTerm('system_supervisor_navigation')}}
@@ -54,7 +54,9 @@
                 </div>
             </div>
 
-            <div id="groupNotification" class="panel panel-default">
+            <div class="panel panel-default almost-half"
+                 ng-class="{'full-size': uc.isStudent()}">
+
                 <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
                 <div class="panel-body scroll max400">
 
@@ -70,7 +72,7 @@
                 </div>
             </div>
 
-            <div id="templates" class="panel panel-default" ng-show="uc.isSupervisor()">
+            <div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()">
                 <div class="panel-heading"> {{lc.getTerm('system_supervisor_templates')}} </div>
                 <div class="panel-body"> bla </div>
             </div>

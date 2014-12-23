@@ -226,6 +226,11 @@ nav {
 	width: 940px;
 }
 
+.full-size{
+    width: 100% !important;
+    margin-left: 0% !important;
+}
+
 #welcomePanel{
     margin-top: 15px;
 }
@@ -249,22 +254,28 @@ nav {
     /* outline: 2px solid grey; */
 }
 
-#supervisorNavigation{
-	float:left;
-	width: 200px;
+.quarter-left{
+    float:left;
+    width: 25%;
+
+    min-height: 450px;
 }
 
-#groupNotification{
-	float: left;
-	width: 450px;
+.quarter-right{
+    float:left;
+    width: 25%;
 
-	margin-left: 15px;
-	margin-right: 15px;
+    min-height: 450px;
 }
 
-#templates{
-	float: right;
-	width: 260px;
+.almost-half{
+    float: left;
+    width: 45%;
+
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+
+    min-height: 450px;
 }
 
 #contentBox{
@@ -275,6 +286,7 @@ nav {
 * Footer
 * =================== */
 #footer{
+    width: 100%;
 	margin-top: 15px;
 	min-height: 30px;
 
