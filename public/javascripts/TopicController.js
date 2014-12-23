@@ -362,6 +362,28 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     /**
+     * This function checks if the deadline of the current topic is reached
+     *
+     * @returns {boolean} true iff the current date is behind the deadline
+     */
+    this.deadlineReached = function(){
+        var date = new Date();
+
+        return (date > new Date(that.currentTopic.deadline));
+    };
+
+    /**
+     * Returns the deadline in string representation
+     *
+     * @returns {String} the date of the deadline
+     */
+    this.getDateAsString = function(){
+        var date = new Date(that.currentTopic.deadline);
+
+        return date.toDateString();
+    };
+
+    /**
      * Updates the topic by using the alternative internal representation (Strings:
      * that.modifyTopicID, that.modifyTopicName, ...)
      */

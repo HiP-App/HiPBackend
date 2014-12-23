@@ -19,9 +19,12 @@
             <div class="panel-body" ng-controller="AnnotationCtrl as annoCtrl">
 
                 <!--
-                Show this box iff status of the topic is 'done' => show the content of the topic
+                Show this box iff status of the topic is 'done' OR iff the deadline has past by
+                        => show the content of the topic
                 -->
-                <div id="concreteContent" ng-show="tc.currentTopic.status == 'done' && showDiv == 1">
+                <div id="concreteContent"
+                     ng-show="(tc.currentTopic.status == 'done' || tc.deadlineReached()) && showDiv == 1">
+
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
                     <br>

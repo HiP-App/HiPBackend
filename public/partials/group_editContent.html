@@ -28,6 +28,8 @@
                       ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
                     <h4> {{lc.getTerm('system_edit_status')}}</h4>
 
+                    <span>Deadline: {{ tc.getDateAsString() }}</span>
+
                     <alert-box></alert-box>
 
                     <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">

@@ -22,7 +22,8 @@ describe('Testsuite for the TopicController:', function () {
                 imageLink +
                 "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
             status: "wip",
-            constraints: ["constraintA"]
+            constraints: ["constraintA"],
+            deadline : "2015-01-14T23:00:00.000Z"
         };
 
         var demoTopic2 = {
@@ -32,7 +33,8 @@ describe('Testsuite for the TopicController:', function () {
             createdBy: "anUser",
             content: "...",
             status: "wip",
-            constraints: ["constraintA"]
+            constraints: ["constraintA"],
+            deadline : "2013-01-14T23:00:00.000Z"
         };
 
         var demoSubTopic = {
@@ -42,7 +44,8 @@ describe('Testsuite for the TopicController:', function () {
             createdBy: "1",
             content: "...",
             status: "wip",
-            constraints: ["constraintA"]
+            constraints: ["constraintA"],
+            deadline : "2015-01-14T23:00:00.000Z"
         };
 
         var demoConstraint = {
@@ -437,5 +440,23 @@ describe('Testsuite for the TopicController:', function () {
         init process */
 
         expect(controller.listOfPictures.length).toBe(2);
+    });
+
+    it('is able to check if the current time is before the deadline', function () {
+        initController();
+
+        var deadlineReached = controller.deadlineReached();
+
+        expect(deadlineReached).toBe(false);
+    });
+
+    it('is able to check if the current time is after the deadline', function () {
+        initController();
+
+        controller.currentTopic.deadline = "2013-01-14T23:00:00.000Z";
+
+        var deadlineReached = controller.deadlineReached();
+
+        expect(deadlineReached).toBe(true);
     });
 });
