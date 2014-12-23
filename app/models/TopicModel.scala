@@ -9,4 +9,5 @@ case class TopicModel(uID: String,
                       createdBy: String,
                       content: String,
                       status: String,
-                      constraints: Array[String])
+                      constraints: Array[String],
+                      deadline: String)

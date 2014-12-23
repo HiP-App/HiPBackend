@@ -65,7 +65,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * Creates a new topic with the internally stored information
      */
     this.createTopic = function(){
-        Interface.createTopicObject(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
+        Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
             $scope.gc, $scope.uc.email, $http);
 
         /* create corresponding chat system */

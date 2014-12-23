@@ -68,9 +68,10 @@ Tooling.createMessageObject = function(uID, receiver, sender, title, content){
  * @param content       content of the topic
  * @param topicStatus   status of the topic. I.e., 'wip', 'ir' or 'done'
  * @param constraintArray   An array containing all constraints for this topic
+ * @param deadline              the deadline for the given topic
  * @returns {{uID: *, name: *, group: *, createdBy: *, content: *, status: *, constraints: *}}
  */
-Tooling.createTopicObject = function(uID, topicname, groupID, createdBy, content, topicStatus, constraintArray){
+Tooling.createTopicObject = function(uID, topicname, groupID, createdBy, content, topicStatus, constraintArray, deadline){
     return {
         uID:        uID,
         name:       topicname,
@@ -78,7 +79,8 @@ Tooling.createTopicObject = function(uID, topicname, groupID, createdBy, content
         createdBy:  createdBy,
         content:    content,
         status:     topicStatus,
-        constraints:constraintArray
+        constraints:constraintArray,
+        deadline:   deadline
     };
 };
 
@@ -182,8 +184,10 @@ Interface.sendPrivateMessage = function ($http, tempMessage, debugFlag) {
  * @param refToGrpController    reference to group controller
  * @param mainTopicCreatedBy    creator of the main topic
  * @param $http                 reference to the http interface
+ * @param deadline              the deadline for the given topic
  */
-Interface.createTopicObject = function (topicname, subTopicsAsString, groupID, refToGrpController, mainTopicCreatedBy, $http) {
+Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGrpController, mainTopicCreatedBy, $http,
+                                  deadline) {
     var currentTopicID = Tooling.generateUID(topicname);
 
     /* create all sub-topics */
@@ -195,7 +199,7 @@ Interface.createTopicObject = function (topicname, subTopicsAsString, groupID, r
             var currentSubTopicID = Tooling.generateUID(subTopic);
 
             var subTopicJSON = Tooling.createTopicObject(currentSubTopicID, subTopic, groupID, currentTopicID, "",
-            "wip", []);
+            "wip", [], deadline);
 
             Interface.createConstraints($http, subTopicJSON);
 
@@ -208,7 +212,7 @@ Interface.createTopicObject = function (topicname, subTopicsAsString, groupID, r
     }
 
     /* create actual main topic */
-    var topic = Tooling.createTopicObject(currentTopicID, topicname, groupID, mainTopicCreatedBy, "", "wip", []);
+    var topic = Tooling.createTopicObject(currentTopicID, topicname, groupID, mainTopicCreatedBy, "", "wip", [], deadline);
     Interface.createConstraints($http, topic);
 
     if (DEBUG){

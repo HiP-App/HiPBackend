@@ -496,8 +496,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         Interface.createChat($http, that.currentGroup.uID, that.currentGroup.name + " Chat");
 
         /* create the fitting topics */
-        Interface.createTopicObject(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
-            $scope.gc, $scope.uc.email, $http)
+        Interface.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
+            $scope.gc, $scope.uc.email, $http, that.currentGroupTopic.deadline)
     };
 
     /**
