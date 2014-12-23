@@ -10,12 +10,17 @@ describe('Testsuite for the TopicController:', function () {
     routeParams.userID = "anUser";
 
     function initTestVariables() {
+        var imageLink = "<img src=\"http://blog.recrutainment.de/wp-content/uploads/2012/06/Lorem_Ipsum_Jung_von_Matt.png\" alt=\"dummyPic\">";
         var demoTopic1 = {
             uID: "1",
             name: "aTopic",
             group: "groupID1",
             createdBy: "anUser",
-            content: "...",
+            content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
+                imageLink +
+                "sed diam nonumy eirmod tempor " +
+                imageLink +
+                "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
             status: "wip",
             constraints: ["constraintA"]
         };
@@ -110,10 +115,10 @@ describe('Testsuite for the TopicController:', function () {
         });
 
         var __ret           = initTestVariables();
-        demoTopic1      = __ret.demoTopic1;
-        demoTopic2      = __ret.demoTopic2;
-        demoSubTopic    = __ret.demoSubTopic;
-        demoConstraint  = __ret.demoConstraint;
+        demoTopic1          = __ret.demoTopic1;
+        demoTopic2          = __ret.demoTopic2;
+        demoSubTopic        = __ret.demoSubTopic;
+        demoConstraint      = __ret.demoConstraint;
     }));
 
     afterEach(function () {
@@ -422,5 +427,15 @@ describe('Testsuite for the TopicController:', function () {
 
         expect(mockAC.addAlert).toHaveBeenCalled();
         expect(mockLC.getTerm).toHaveBeenCalled();
+    });
+
+    it('is able to fill the list of pictures for a given topic content', function () {
+        initController();
+
+        /*
+        controller.preparePictureList(); is implicitly done in the
+        init process */
+
+        expect(controller.listOfPictures.length).toBe(2);
     });
 });

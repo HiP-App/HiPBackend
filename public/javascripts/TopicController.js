@@ -22,6 +22,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.constraintsForThisTopic = [];
 
+    this.listOfPictures = [];   // contains a list of all pictures that are used resp. shown in this topic
+
     this.modifyTopicID      = "";
     this.modifyTopicName    = "";
     this.modifyTopicContent = "";
@@ -261,6 +263,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         $http.get('/admin/topic/'+uIDOfTheTopic).
             success(function(data, status, headers, config) {
                 that.currentTopic = data[0];
+
+                /* create the list of pictures of the topic */
+                that.preparePictureList();
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get pulled");
@@ -332,6 +337,28 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get pulled");
             });
+    };
+
+    /**
+     * This function prepares the internal list of pictures for the current topic
+     */
+    this.preparePictureList = function(){
+        var currentContent = that.currentTopic.content;
+        var count = (currentContent.match(/<img/g) || []).length;
+
+        var offset = 0;
+        for (var i = 0; i < count; i++) {
+            var startLink   =   currentContent.indexOf("<img", offset);
+            var endLink     =   currentContent.indexOf(">", startLink) + 1;
+            var url         =   currentContent.substring(startLink, endLink);
+
+            if(that.debug)
+                console.log("info TopicController: Fetching url " + url);
+
+            that.listOfPictures.push(url);
+
+            offset          =   startLink;
+        }
     };
 
     /**

@@ -6,6 +6,7 @@
             <div class="shift-left">
                 <a ng-href="/#/group/viewexternal/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
                 <a ng-click="showDiv = 1"> {{lc.getTerm('system_topic_detail_head')}}</a>
+                <a ng-click="showDiv = 3"> {{lc.getTerm('system_topic_detail_pictures')}}</a>
             </div>
 
             <div class="shift-right">
@@ -16,6 +17,10 @@
         </div>
         <div>
             <div class="panel-body" ng-controller="AnnotationCtrl as annoCtrl">
+
+                <!--
+                Show this box iff status of the topic is 'done' => show the content of the topic
+                -->
                 <div id="concreteContent" ng-show="tc.currentTopic.status == 'done' && showDiv == 1">
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
@@ -82,10 +87,16 @@
                     </form>
                 </div>
 
-                <hr>
-
                 <div class="col-sm-offset-1 col-sm-10" ng-show="showDiv == 2">
                     <chat-box-big></chat-box-big>
+                </div>
+
+                <div class="col-sm-offset-1 col-sm-10" ng-show="showDiv == 3">
+                    <h4 ng-bind="lc.getTerm('system_topic_pictures_head')"></h4>
+
+                    <div ng-repeat="pic in tc.listOfPictures">
+                        <div ng-bind-html="pic"></div><br>
+                    </div>
                 </div>
             </div>
         </div>
