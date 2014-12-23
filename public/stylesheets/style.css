@@ -163,6 +163,10 @@ body{
     height: 500px;
 }
 
+.max400{
+    height: 400px;
+}
+
 #chatContent{
     overflow-y: auto;
     overflow-x: auto;
