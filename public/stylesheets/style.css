@@ -246,14 +246,6 @@ nav {
 	background-color: #cccccc;
 }
 
-#supervisorNavigation,
-#groupNotification,
-#templates{
-	min-height: 450px;
-
-    /* outline: 2px solid grey; */
-}
-
 .quarter-left{
     float:left;
     width: 25%;
@@ -273,6 +265,15 @@ nav {
     width: 45%;
 
     margin-left: 2.5%;
+    margin-right: 2.5%;
+
+    min-height: 450px;
+}
+
+.almost-3quarter{
+    float: left;
+    width: 72.5%;
+
     margin-right: 2.5%;
 
     min-height: 450px;
