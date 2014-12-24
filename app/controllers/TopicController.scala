@@ -80,6 +80,34 @@ class TopicController extends Controller with MongoController {
   }
 
   /**
+   * Returns topics, which have the given status
+   * @param status
+   * @return
+   */
+  def getTopicByStatus(status : String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[TopicModel] = collection.
+      // find all
+      find(Json.obj("status" -> status)).
+      // perform the query and get a cursor of JsObject
+      cursor[TopicModel]
+
+    // gather all the JsObjects in a list
+    val futureTopicList: Future[List[TopicModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
+      Json.arr(topics)
+    }
+
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      topics =>
+        Ok(topics(0))
+    }
+  }
+
+  /**
    * Returns a topic given by its uID
    *
    * @return a list that contains every topic as a JSON object

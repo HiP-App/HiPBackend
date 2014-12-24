@@ -20,6 +20,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.currentUserTopics = [];
 
+    this.topicsByStatus = []; // contains topics as soon as they are fetched for a specific status via the getTopicsByStatus function
     this.constraintsForThisTopic = [];
 
     this.listOfPictures = [];   // contains a list of all pictures that are used resp. shown in this topic
@@ -30,6 +31,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.modifyTopicGroup   = "";
     this.modifyTopicCreatedBy   = "";
     this.modifyTopicContraints  = [];
+    this.modifyTopicDeadline    = [];
 
     /**
      * Accepts a bunch of data for internal use. In general, this is only a string representation of the
@@ -44,13 +46,14 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * @param topicCreatedBy
      */
     this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints,
-        topicCreatedBy){
+        topicCreatedBy, deadline){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
         that.modifyTopicContent = topicContent;
         that.modifyTopicGroup   = topicGroup;
         that.modifyTopicStatus  = topicStatus;
         that.modifyTopicCreatedBy = topicCreatedBy;
+        that.modifyTopicDeadline  = deadline;
 
         var constraintsAreInitialized = topicConstraints[0] != "" || topicConstraints != undefined;
         if(constraintsAreInitialized){
@@ -191,7 +194,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             that.currentTopic.createdBy,
             that.currentTopic.content,
             that.currentTopic.status,
-            that.currentTopic.constraints);
+            that.currentTopic.constraints,
+            that.currentTopic.deadline);
 
         var constraintsAreInitialized = that.currentTopic.constraints[0] != "" || that.currentTopic.constraints != undefined;
         if(!constraintsAreInitialized){
@@ -272,6 +276,21 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    /**
+     * Requests the topics with the given status as JSON object
+     * and stores them internally in that.topicsByStatus
+     *
+     * @param statusOfTheTopic
+     */
+    this.getTopicsByStatus = function(statusOfTheTopic){
+        $http.get('/admin/topicbystatus/'+statusOfTheTopic).
+            success(function(data, status, headers, config) {
+                that.topicsByStatus = data;
+            }).
+            error(function(data, status, headers, config) {
+                console.log("error TopicController: Topics with status "+statusOfTheTopic+" cannot get pulled");
+            });
+    };
     /**
      * Requests the actual sub-topic with the given uID of the parent topic as
      * JSON objects and stores them internally in that.subtopics

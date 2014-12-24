@@ -23,7 +23,7 @@
         </div>
 
         <div id="contentBox">
-            <div class="panel panel-default quarter-left" ng-show="uc.isSupervisor()">
+            <div class="panel panel-default quarter-left">
                 <div class="panel-heading">
                     <div ng-show="uc.isSupervisor()">
                     {{lc.getTerm('system_supervisor_navigation')}}
@@ -37,25 +37,24 @@
 
                     <div ng-show="uc.isSupervisor()">
                         <ul>
-                            <li> <a href="#"> ... </a> </li>
                             <li> <a href="/#/topic/create"> {{lc.getTerm('system_supervisor_navigation_addTopic')}} </a> </li>
                             <li> <a ng-href="/#/topic/modify/{{ uc.email }}"> {{lc.getTerm('system_supervisor_navigation_modifyTopic')}} </a> </li>
                             <li> <a href="/#/group/create"> {{lc.getTerm('system_supervisor_navigation_addGroup')}} </a> </li>
-                            <li> <a href="#"> ... </a> </li>
+                            <li> <a href="/#/browse"> {{lc.getTerm('system_navigation_browse')}} </a> </li>
                         </ul>
                     </div>
 
                     <div ng-show="uc.isStudent()">
                         <ul>
-                            <li> <a href="#"> ... </a> </li>
-
+                            <li> <a href="/#/browse"> {{lc.getTerm('system_navigation_browse')}} </a> </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="panel panel-default almost-half"
-                 ng-class="{'full-size': uc.isStudent()}">
+            <div class="panel panel-default"
+                 ng-class="{'almost-3quarter-right': uc.isStudent(),
+                            'almost-half': uc.isSupervisor()}">
 
                 <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
                 <div class="panel-body scroll max400">

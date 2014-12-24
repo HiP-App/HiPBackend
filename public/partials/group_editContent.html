@@ -1,6 +1,6 @@
 <div ng-controller="GroupCtrl as gc" ng-init="showDiv = 1">
     <div id="mainSingleBoxBig" class="panel panel-default" ng-controller="TopicCtrl as tc">
-        <div class="panel-heading">
+        <div class="panel-heading" ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
             <div class="shift-left">
                 <a ng-href="/#/group/view/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
                 <a ng-click="showDiv = 1">{{lc.getTerm('system_edit_header')}}: {{ tc.currentTopic.name }}</a>
@@ -103,7 +103,7 @@
 
 
         <!--
-        GUEST VIEW
+        GUEST VIEW: Reader
         -->
         <div ng-show="gc.userIDIsReaderOfGrp(uc.email,tc.currentTopic.group)
                             && !gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
@@ -111,6 +111,14 @@
             <div ng-bind-html="tc.currentTopic.content"></div>
         </div>
 
+
+        <!--
+        GUEST VIEW: NO rights
+        -->
+        <div ng-show="!gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
+
+            <div ng-bind-html="tc.currentTopic.content"></div>
+        </div>
     </div>
 </div>
 <div class="float-clear"></div>

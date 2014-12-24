@@ -279,6 +279,13 @@ nav {
     min-height: 450px;
 }
 
+.almost-3quarter-right{
+    float: right;
+    width: 72.5%;
+
+    min-height: 450px;
+}
+
 #contentBox{
 	margin-top: 15px;
 }

@@ -43,7 +43,7 @@ describe('Testsuite for the TopicController:', function () {
             group: "groupID1",
             createdBy: "1",
             content: "...",
-            status: "wip",
+            status: "done",
             constraints: ["constraintA"],
             deadline : "2015-01-14T23:00:00.000Z"
         };
@@ -458,5 +458,14 @@ describe('Testsuite for the TopicController:', function () {
         var deadlineReached = controller.deadlineReached();
 
         expect(deadlineReached).toBe(true);
+    });
+
+    it('is able to download topics by a given status', function () {
+        initController();
+
+        controller.getTopicsByStatus('done');
+
+        $httpBackend.expectGET('/admin/topicbystatus/done').respond(200,demoSubTopic);
+        $httpBackend.flush();
     });
 });

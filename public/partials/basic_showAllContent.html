@@ -1,0 +1,19 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
+        <div class="panel-heading"> {{lc.getTerm('system_content')}} </div>
+        <div>
+            <div class="panel-body">
+                <h4 ng-click="tc.getTopicsByStatus('done')">{{lc.getTerm('system_content')}}</h4>
+
+                <ul>
+                    <li ng-repeat="topic in tc.topicsByStatus">
+                        <a ng-href="/#/edit/{{topic.uID}}">{{topic.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>
