@@ -83,6 +83,9 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
      * @param checkGroupsWithIDs the groups that should be used to aggregate the notifications
      */
     this.createAggregatedNotificationList = function(checkGroupsWithIDs){
+        /* clear old array */
+        that.aggregatedNotifications = [];
+
         /* get all notifications */
         checkGroupsWithIDs.forEach(function(grp){
 
