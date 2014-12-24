@@ -33,7 +33,6 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
             "message" : [""]
         };
 
-        // FIXME: DONT SEND THE WHOLE ARRAY EVERYTIME
         if(newChat == false){
             var i=0;
             if(that.chat.message != undefined){
