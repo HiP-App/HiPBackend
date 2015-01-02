@@ -58,6 +58,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/view/:uID', {
                 templateUrl: '/assets/partials/basic_groupView.html'
             })
+            .when('/group/3d/:uID', {
+                templateUrl: '/assets/partials/basic_groupMeshes.html'
+            })
             .when('/group/viewexternal/:uID', {
                 templateUrl: '/assets/partials/basic_groupViewExternalAsSupervisor.html'
             })
