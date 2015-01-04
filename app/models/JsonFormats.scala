@@ -1,7 +1,7 @@
 package models
 
 /**
- * Created by joerg on 26.10.2014.
+ * Created by Jörg Amelunxen on 26.10.2014.
  */
 object JsonFormats {
   import play.api.libs.json.Json
@@ -16,4 +16,5 @@ object JsonFormats {
   implicit val TopicFormat = Json.format[TopicModel]
   implicit val NotificationFormat = Json.format[NotificationModel]
   implicit val constraintFormat = Json.format[ConstraintModel]
+  implicit val footnoteFormat = Json.format[FootnoteModel]
 }

@@ -25,6 +25,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.listOfPictures = [];   // contains a list of all pictures that are used resp. shown in this topic
 
+    this.footnotes = []; // stores the footnotes of the current topic
+
+    this.temporaryFootnote = {}; // stores a footnote that is going to be created
+
     this.modifyTopicID      = "";
     this.modifyTopicName    = "";
     this.modifyTopicContent = "";
@@ -65,7 +69,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     /**
-     * Creates a new topic with the internally stored information
+     * Creates a new topic with the internally stored information and sends it to the server
      */
     this.createTopic = function(){
         Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
@@ -73,6 +77,18 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
         /* create corresponding chat system */
         Interface.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
+    };
+
+    /**
+     * This function prepares the creation of a new footnote. I.e., it creates the JSON object containing an UID,
+     * the creator and the link to the current topic
+     */
+    this.prepareANewFootnote = function(){
+        that.temporaryFootnote = {
+            uID: Tooling.generateUID($scope.uc.email),
+            creator: $scope.uc.email,
+            linkedToTopic: that.currentTopic.uID
+        };
     };
 
     /**
@@ -306,7 +322,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 that.subtopics = data;
 
                 if(that.debug)
-                    console.log( that.subtopics);
+                    console.log(that.subtopics);
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Subtopics cannot get pulled");
@@ -459,10 +475,79 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         deletingProcedure(that.modifyTopicID);
     };
 
+    /**
+     * The function fetches the footnotes for the current topic and stores them internally
+     * within this.footnotes
+     */
+    this.getFootnotesForTopic = function(uID){
+        $http.get('/admin/footnotesByTopic/'+uID).
+            success(function (data, status, headers, config) {
+                that.footnotes = data;
+            }).
+            error(function (data, status, headers, config) {
+                console.log("error TopicController: Footnotes cannot get fetched");
+            });
+    };
+
+    /**
+     * The function sends the given footnote to the server
+     *
+     * @param note {JSON}: The footnote that should be send
+     */
+    this.storeFootnote = function(note){
+        if(note == undefined){
+            note = {
+                uID: Tooling.generateUID(that.temporaryFootnote.content),
+                content: that.temporaryFootnote.content,
+                creator: that.temporaryFootnote.creator,
+                linkedToTopic: that.temporaryFootnote.linkedToTopic
+            };
+        }
+
+        $http.post('/admin/footnote', note).
+            success(function () {
+                // add the data to the fontend as well
+                that.footnotes.push(note);
+
+                // delete the temporary footnote
+                that.temporaryFootnote = undefined;
+            }).
+            error(function () {
+                console.log("error TopicController: Footnote cannot get posted");
+            });
+    };
+
+    /**
+     * This function removes a specific footnote from the frontend and the database
+     *
+     * @param uID {String}:     UID of the footnote that should be removed
+     */
+    this.deleteFootnote = function(uID){
+        $http.delete('/admin/footnote/'+uID).
+            success(function () {
+
+                /* remove also from frontend and delete marker from text*/
+                for(var i = 0; i < that.footnotes.length; i++){
+                    if(that.footnotes[i].uID == uID){
+                        /* remove from frontend */
+                        that.footnotes.splice(i, 1);
+
+                        /* remove also marker from text */
+                        var replaceString = "["+i+"]";
+                        that.currentTopic.content = that.currentTopic.content.replace(replaceString,"");
+                    }
+                }
+            }).
+            error(function () {
+                console.log("error TopicController: Footnote cannot get removed");
+            });
+    };
+
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
         that.getTopicByTopicID($routeParams.topicID);
         that.getConstraintsForThisTopic($routeParams.topicID);
+        that.getFootnotesForTopic($routeParams.topicID);
     }
 
     if($routeParams.userID != undefined){

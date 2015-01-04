@@ -49,6 +49,10 @@ GET           /admin/constraints/:topicID            @controllers.ConstraintCont
 PUT           /admin/constraints                     @controllers.ConstraintController.updateConstraint
 POST          /admin/constraints                     @controllers.ConstraintController.createConstraint
 
+GET           /admin/footnotesByTopic/:topicID       @controllers.TopicController.getFootnotesByTopic(topicID: String)
+POST          /admin/footnote                        @controllers.TopicController.storeFootnote
+DELETE        /admin/footnote/:uID                   @controllers.TopicController.deleteFootnote(uID: String)
+
 # SECURE SOCIAL
 # Login page
 GET           /login                                 securesocial.controllers.LoginPage.login

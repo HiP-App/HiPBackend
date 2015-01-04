@@ -1,0 +1,29 @@
+<div class="shift-right">
+    <a class="btn btn-success"
+       ng-click="tc.prepareANewFootnote()"
+       ng-bind="lc.getTerm('button_footnote_new')"></a>
+</div>
+<div class="float-clear"></div>
+
+<div ng-hide="tc.temporaryFootnote.uID == undefined">
+    <div class="input-group">
+        <span class="input-group-addon" ng-bind="lc.getTerm('system_footnotes_content')"></span>
+        <input type="text" class="form-control" name="groupSubTopic" placeholder=""
+               ng-model="tc.temporaryFootnote.content"
+               tooltip-html-unsafe="{{lc.getTerm('tooltip_footnote_content')}}"
+               tooltip-trigger="focus" tooltip-placement="right">
+    </div>
+
+    <div class="shift-left">
+        <a class="btn btn-danger"
+           ng-click="tc.temporaryFootnote = undefined"
+           ng-bind="lc.getTerm('button_footnote_cancel')"></a>
+    </div>
+
+    <div class="shift-right">
+        <a class="btn btn-success"
+           ng-click="tc.storeFootnote()"
+           ng-bind="lc.getTerm('button_footnote_send')"></a>
+    </div>
+    <div class="float-clear"></div>
+</div>

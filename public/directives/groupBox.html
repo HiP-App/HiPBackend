@@ -1,8 +1,8 @@
 <div id="groups" class="panel panel-default">
 
     <div class="panel-heading">
-        <div class="menuLeft">{{lc.getTerm('system_groups')}}</div>
-        <div class="menuRight"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
+        <div class="shift-left">{{lc.getTerm('system_groups')}}</div>
+        <div class="shift-right"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
             <span class='glyphicon  glyphicon-refresh'></span> </a>
         </div>
         <div class="float-clear"></div>
@@ -10,12 +10,12 @@
 
     <div class="panel-body">
         <div class="menuEntry" ng-repeat="grp in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
-            <div class="menuLeft">
+            <div class="shift-left">
                 <a ng-href="/#/group/view/{{ grp.uID }}" ng-show="uc.isStudent()">{{ grp.name }}</a>
                 <a ng-href="/#/group/viewexternal/{{ grp.uID }}" ng-show="uc.isSupervisor()">{{ grp.name }}</a>
             </div>
 
-            <div class="menuRight">
+            <div class="shift-right">
                 [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span>
             </div>
 
@@ -26,12 +26,12 @@
 
         <!-- List with read rights -->
         <div class="menuEntry" ng-repeat="grp in gc.groupsThatGrantedReadAccessForThisUser">
-            <div class="menuLeft">
+            <div class="shift-left">
                 <a ng-href="/#/group/view/{{ grp.uID }}" ng-show="uc.isStudent()">{{ grp.name }}</a>
                 <a ng-href="/#/group/viewexternal/{{ grp.uID }}" ng-show="uc.isSupervisor()">{{ grp.name }}</a>
             </div>
 
-            <div class="menuRight">
+            <div class="shift-right">
                 [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span>
             </div>
 

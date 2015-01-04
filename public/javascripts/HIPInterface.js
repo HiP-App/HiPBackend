@@ -59,6 +59,24 @@ Tooling.createMessageObject = function(uID, receiver, sender, title, content){
 };
 
 /**
+ * The function creates a footnote object with the given data
+ *
+ * @param uID           uID of the footnote object
+ * @param content       content of the footnote
+ * @param creator       creator of the footnote
+ * @param linkedToTopic topic that uses this footnote
+ * @returns {{uID: *, content: *, creator: *, linkedToTopic: *}}
+ */
+Tooling.createFootnote = function(uID, content, creator, linkedToTopic){
+    return {
+        uID: uID,
+        content: content,
+        creator: creator,
+        linkedToTopic: linkedToTopic
+    };
+};
+
+/**
  * The function creates a topic object with the given data
  *
  * @param uID           uID of the topic

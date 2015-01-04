@@ -54,7 +54,7 @@
                     -->
                     <div ng-show="tc.currentTopic.status == 'wip'">
                         <div class="shift-left">
-                            <h4>{{lc.getTerm('system_edit_information')}} </h4>
+                            <h4 ng-bind="lc.getTerm('system_edit_information')"></h4>
                         </div>
                         <div class="shift-right">
                             <span class="glyphicon glyphicon-resize-full" ng-click="oc.toggleOverlay()"></span>
@@ -67,6 +67,18 @@
                         <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
                                         submit="lc.getTerm('system_edit_form_create')">
                         </cancel-submit>
+
+                        <div class="float-clear"></div>
+                        <hr>
+
+                        <h4 ng-bind="lc.getTerm('system_edit_footnotes')"></h4>
+
+                        <!-- show footnotes -->
+                        <show-footnotes></show-footnotes>
+
+                        <!-- Footnote creation -->
+                        <create-footnotes></create-footnotes>
+
                     </div>
                 </form>
 
@@ -109,6 +121,9 @@
                             && !gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
 
             <div ng-bind-html="tc.currentTopic.content"></div>
+
+            <!-- show footnotes -->
+            <show-footnotes></show-footnotes>
         </div>
 
 
@@ -118,6 +133,9 @@
         <div ng-show="!gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
 
             <div ng-bind-html="tc.currentTopic.content"></div>
+
+            <!-- show footnotes -->
+            <show-footnotes></show-footnotes>
         </div>
     </div>
 </div>

@@ -129,12 +129,12 @@ body{
     background-color: #172b72;
 }
 
-.menuLeft{
-    float:left;
+.footnote{
+    list-style: none;
 }
 
-.menuRight{
-    float:right;
+.footnote:hover{
+    background-color: lightgray;
 }
 
 /* ===================

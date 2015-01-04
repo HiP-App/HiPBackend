@@ -24,35 +24,24 @@ class TopicController extends Controller with MongoController {
 
   private final val logger: Logger = LoggerFactory.getLogger(classOf[TopicController])
 
-  /*
-   * Get a JSONCollection (a Collection implementation that is designed to work
-   * with JsObject, Reads and Writes.)
-   * Note that the `collection` is not a `val`, but a `def`. We do _not_ store
-   * the collection reference to avoid potential problems in development with
-   * Play hot-reloading.
-   */
-  def collection: JSONCollection = db.collection[JSONCollection]("topics")
+  def topicCollection: JSONCollection = db.collection[JSONCollection]("topics")
 
-  // ------------------------------------------ //
-  // Using case classes + Json Writes and Reads //
-  // ------------------------------------------ //
+  def footnoteCollection: JSONCollection = db.collection[JSONCollection]("footnotes")
 
   import models.JsonFormats._
   import models._
 
+  /**
+   * This Action creates a new topic
+   *
+   * @return
+   */
   def createTopic = Action.async(parse.json) {
     request =>
-      /*
-       * request.body is a JsValue.
-       * There is an implicit Writes that turns this JsValue as a JsObject,
-       * so you can call insert() with this JsValue.
-       * (insert() takes a JsObject as parameter, or anything that can be
-       * turned into a JsObject using a Writes.)
-       */
       request.body.validate[TopicModel].map {
         topic =>
           // `user` is an instance of the case class `models.User`
-          collection.insert(topic).map {
+          topicCollection.insert(topic).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
               Created(s"Topic Created")
@@ -71,7 +60,7 @@ class TopicController extends Controller with MongoController {
                                         "$set" -> Json.obj("status" -> topic.status),
                                         "$set" -> Json.obj("constraints" -> topic.constraints))
 
-          collection.update(Json.obj("uID" -> topic.uID), modifier).map {
+          topicCollection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
               Created(s"Topic has been updated")
@@ -86,7 +75,7 @@ class TopicController extends Controller with MongoController {
    */
   def getTopicByStatus(status : String) = Action.async {
     // let's do our query
-    val cursor: Cursor[TopicModel] = collection.
+    val cursor: Cursor[TopicModel] = topicCollection.
       // find all
       find(Json.obj("status" -> status)).
       // perform the query and get a cursor of JsObject
@@ -114,7 +103,7 @@ class TopicController extends Controller with MongoController {
    */
   def getTopic(uID : String) = Action.async {
     // let's do our query
-    val cursor: Cursor[TopicModel] = collection.
+    val cursor: Cursor[TopicModel] = topicCollection.
       // find all
       find(Json.obj("uID" -> uID)).
       // perform the query and get a cursor of JsObject
@@ -143,7 +132,7 @@ class TopicController extends Controller with MongoController {
    */
   def getTopicByUser(uID : String) = Action.async {
     // let's do our query
-    val cursor: Cursor[TopicModel] = collection.
+    val cursor: Cursor[TopicModel] = topicCollection.
       // find all
       find(Json.obj("createdBy" -> uID)).
       // perform the query and get a cursor of JsObject
@@ -164,9 +153,75 @@ class TopicController extends Controller with MongoController {
     }
   }
 
+  /**
+   * This Action returns the footnotes of a given topic
+   *
+   * @param uID
+   * @return
+   */
+  def getFootnotesByTopic(uID: String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[FootnoteModel] = footnoteCollection.
+      // find all
+      find(Json.obj("linkedToTopic" -> uID)).
+      // perform the query and get a cursor of JsObject
+      cursor[FootnoteModel]
+
+    // gather all the JsObjects in a list
+    val futureTopicList: Future[List[FootnoteModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { footnotes =>
+      Json.arr(footnotes)
+    }
+
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      footnotes =>
+        Ok(footnotes(0))
+    }
+  }
+
+  /**
+   * This Action stores a new footnote in the database
+   *
+   * @return
+   */
+  def storeFootnote = Action.async(parse.json) {
+    request =>
+      request.body.validate[FootnoteModel].map {
+        footnote =>
+          footnoteCollection.insert(footnote).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Footnote Created")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  /**
+   * This Action deletes a given footnote from the database
+   *
+   * @param uID
+   * @return
+   */
+  def deleteFootnote(uID: String) = Action.async {
+    /* delete main topic from DB */
+    footnoteCollection.remove(Json.obj("uID" -> uID)).map {
+      lastError =>
+        Created(s"Item removed")
+    }
+  }
+
+  /**
+   * This Action deletes a given topic from the database
+   *
+   * @param uID
+   * @return
+   */
   def deleteTopic(uID: String) = Action.async {
     /* delete main topic from DB */
-    collection.remove(Json.obj("uID" -> uID)).map {
+    topicCollection.remove(Json.obj("uID" -> uID)).map {
       lastError =>
         Created(s"Item removed")
     }

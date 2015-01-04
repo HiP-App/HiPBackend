@@ -1,0 +1,17 @@
+<div>
+    <ul>
+        <li class="footnote"
+            ng-repeat="note in tc.footnotes">
+            <div class="shift-left">
+                [{{$index + 1}}] {{note.content}}
+            </div>
+
+            <div class="shift-right"
+                 ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
+
+                [<span ng-click="tc.deleteFootnote(note.uID)" class="glyphicon glyphicon-trash">]</span>
+            </div>
+            <div class="float-clear"></div>
+        </li>
+    </ul>
+</div>

@@ -56,8 +56,24 @@ describe('Testsuite for the TopicController:', function () {
             value: "0",
             fulfilled: true
         };
+
+        var footnote1 = {
+            uID: "footnote1",
+            content: "Foot1",
+            creator: "JonDoe@dummy.com",
+            linkedToTopic: "1"
+        };
+
+        var footnote2 = {
+            uID: "footnote2",
+            content: "Foot2",
+            creator: "JonDoe@dummy.com",
+            linkedToTopic: "1"
+        };
+
         return {demoTopic1: demoTopic1, demoTopic2: demoTopic2,
-            demoSubTopic: demoSubTopic, demoConstraint: demoConstraint};
+            demoSubTopic: demoSubTopic, demoConstraint: demoConstraint,
+            footnote1: footnote1, footnote2: footnote2};
     }
 
     var __ret           = initTestVariables();
@@ -66,6 +82,9 @@ describe('Testsuite for the TopicController:', function () {
     var demoSubTopic    = __ret.demoSubTopic;
     var demoConstraint  = __ret.demoConstraint;
     var demoTopicList   = [demoTopic1, demoTopic2];
+
+    var demoFootnote1   = __ret.footnote1;
+    var demoFootnote2   = __ret.footnote2;
 
     beforeEach(function () {
         module('myApp.controllers');
@@ -95,6 +114,9 @@ describe('Testsuite for the TopicController:', function () {
         $httpBackend.when('POST','/admin/topic')
             .respond(200,{});
 
+        $httpBackend.when('GET','/admin/footnotesByTopic/1')
+            .respond(200,[demoFootnote1,demoFootnote2]);
+
         $scope = $rootScope.$new();
 
         /* Mock user controller */
@@ -122,6 +144,9 @@ describe('Testsuite for the TopicController:', function () {
         demoTopic2          = __ret.demoTopic2;
         demoSubTopic        = __ret.demoSubTopic;
         demoConstraint      = __ret.demoConstraint;
+
+        demoFootnote1       = __ret.footnote1;
+        demoFootnote2       = __ret.footnote2;
     }));
 
     afterEach(function () {
@@ -466,6 +491,39 @@ describe('Testsuite for the TopicController:', function () {
         controller.getTopicsByStatus('done');
 
         $httpBackend.expectGET('/admin/topicbystatus/done').respond(200,demoSubTopic);
+        $httpBackend.flush();
+    });
+
+    it('is able to get the footnotes for a given topic', function () {
+        initController();
+
+        /*
+         controller.getFootnotes(uID); is implicitly done in the
+         init process */
+
+        // FIXME: create async test case -> this here takes way too long
+        //expect(controller.footnotes.length).toBe(2);
+    });
+
+    it('is able to save a new footnote', function () {
+        initController();
+
+        var contentOfTheFootnote = "I am a footnote";
+        var note = Tooling.createFootnote(Tooling.generateUID(contentOfTheFootnote), contentOfTheFootnote,
+                                            "dummy@dummy.com","1");
+
+        controller.storeFootnote(note);
+
+        $httpBackend.expectPOST('/admin/footnote',note).respond(200,{});
+        $httpBackend.flush();
+    });
+
+    it('is able to delete a specific footnote', function () {
+        initController();
+
+        controller.deleteFootnote("footnote1");
+
+        $httpBackend.expectDELETE('/admin/footnote/footnote1').respond(200,{});
         $httpBackend.flush();
     });
 });
