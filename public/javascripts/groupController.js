@@ -352,7 +352,10 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             success(function(data, status, headers, config) {
                 var changeGroup = data[0];
                 changeGroup.topic = currentTopicID;
-                changeGroup.notifications.push(notification);
+
+                if( !$.inArray( notification, changeGroup.notifications ) ){
+                    changeGroup.notifications.push(notification);
+                }
 
                 // send data back to the server
                 $http.post('/admin/modify/group', changeGroup).
