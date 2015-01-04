@@ -5,7 +5,6 @@
 controllersModule.directive('createFootnotes', function() {
     return {
         restrict: 'E',
-        transclude: true,
         templateUrl: '/assets/directives/createFootnotes.html'
     };
 });

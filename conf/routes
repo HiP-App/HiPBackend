@@ -53,6 +53,8 @@ GET           /admin/footnotesByTopic/:topicID       @controllers.TopicControlle
 POST          /admin/footnote                        @controllers.TopicController.storeFootnote
 DELETE        /admin/footnote/:uID                   @controllers.TopicController.deleteFootnote(uID: String)
 
+POST          /admin/picture                         @controllers.FileController.upload
+
 # SECURE SOCIAL
 # Login page
 GET           /login                                 securesocial.controllers.LoginPage.login

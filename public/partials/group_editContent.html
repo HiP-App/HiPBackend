@@ -23,6 +23,11 @@
                     'overflow': 'scroll', 'max-height':'550px'}"></div>
                 </fullscreen-overlay>
 
+                <div ng-app="app" ng-controller="DropUploadCtrl">
+                    <button dropzone="dropzoneConfig">
+                     Drag and drop files here or click to upload
+                    </button>
+                </div>
 
                 <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
                       ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
@@ -53,6 +58,8 @@
                     Show this edit field iff status of the topic is work in progress
                     -->
                     <div ng-show="tc.currentTopic.status == 'wip'">
+
+                        <!-- Headline -->
                         <div class="shift-left">
                             <h4 ng-bind="lc.getTerm('system_edit_information')"></h4>
                         </div>
@@ -60,6 +67,8 @@
                             <span class="glyphicon glyphicon-resize-full" ng-click="oc.toggleOverlay()"></span>
                         </div>
                         <div class="float-clear"></div>
+                        <!-- END: Headline -->
+
 
                         <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
                         'overflow': 'scroll'}"></div>

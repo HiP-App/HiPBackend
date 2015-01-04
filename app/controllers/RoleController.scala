@@ -1,7 +1,7 @@
 package controllers
 
 /**
- * Created by jorgamelunxen on 20.11.14.
+ * Created by Jörg Amelunxen on 20.11.14.
  */
 
 import javax.inject.Singleton
