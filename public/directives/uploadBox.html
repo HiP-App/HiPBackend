@@ -1,7 +1,5 @@
-<!--<div ng-controller="DropUploadCtrl as upload">
-    <div id="uploadDIV"></div>
-</div>-->
-
-<form action="/file-upload"
-      class="dropzone"
-      id="my-awesome-dropzone"></form>
+<div ng-controller="DropUploadCtrl">
+    <button class="btn btn-success" dropzone="dropzoneConfig">
+        {{ lc.getTerm('system_upload') }}
+    </button>
+</div>

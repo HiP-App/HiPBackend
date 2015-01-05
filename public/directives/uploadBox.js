@@ -17,3 +17,10 @@ controllersModule.directive('dropzone', function () {
         });
     };
 });
+
+controllersModule.directive('uploadBox', function() {
+    return {
+        restrict: 'E',
+        templateUrl: '/assets/directives/uploadBox.html'
+    };
+});

@@ -23,73 +23,78 @@
                     'overflow': 'scroll', 'max-height':'550px'}"></div>
                 </fullscreen-overlay>
 
-                <div ng-app="app" ng-controller="DropUploadCtrl">
-                    <button dropzone="dropzoneConfig">
-                     Drag and drop files here or click to upload
-                    </button>
+                <h4 ng-bind="lc.getTerm('system_edit_status')"></h4>
+
+                <span>Deadline: {{ tc.getDateAsString() }}</span>
+
+                <alert-box></alert-box>
+
+                <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                    <label>
+                        <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
+                    </label>
                 </div>
+                <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                    <label>
+                        <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir">{{lc.getTerm('system_ir')}}
+                    </label>
+                </div>
+                <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                    <label>
+                        <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done">{{lc.getTerm('system_done')}}
+                    </label>
+                </div>
+                <hr>
 
-                <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
-                      ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
-                    <h4> {{lc.getTerm('system_edit_status')}}</h4>
+                <!--
+                Show this edit field iff status of the topic is work in progress
+                -->
+                <div ng-show="tc.currentTopic.status == 'wip'">
 
-                    <span>Deadline: {{ tc.getDateAsString() }}</span>
-
-                    <alert-box></alert-box>
-
-                    <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
-                        <label>
-                            <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
-                        </label>
+                    <!-- Picture upload -->
+                    <h5 ng-bind="lc.getTerm('system_upload_header')"></h5>
+                    <div class="shift-right">
+                        <upload-box></upload-box>
                     </div>
-                    <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
-                        <label>
-                            <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir">{{lc.getTerm('system_ir')}}
-                        </label>
-                    </div>
-                    <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
-                        <label>
-                            <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done">{{lc.getTerm('system_done')}}
-                        </label>
-                    </div>
+                    <div class="float-clear"></div>
+                    <!-- END: Picture upload -->
+
                     <hr>
 
-                    <!--
-                    Show this edit field iff status of the topic is work in progress
-                    -->
-                    <div ng-show="tc.currentTopic.status == 'wip'">
-
-                        <!-- Headline -->
-                        <div class="shift-left">
-                            <h4 ng-bind="lc.getTerm('system_edit_information')"></h4>
-                        </div>
-                        <div class="shift-right">
-                            <span class="glyphicon glyphicon-resize-full" ng-click="oc.toggleOverlay()"></span>
-                        </div>
-                        <div class="float-clear"></div>
-                        <!-- END: Headline -->
-
-
-                        <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
-                        'overflow': 'scroll'}"></div>
-
-                        <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
-                                        submit="lc.getTerm('system_edit_form_create')">
-                        </cancel-submit>
-
-                        <div class="float-clear"></div>
-                        <hr>
-
-                        <h4 ng-bind="lc.getTerm('system_edit_footnotes')"></h4>
-
-                        <!-- show footnotes -->
-                        <show-footnotes></show-footnotes>
-
-                        <!-- Footnote creation -->
-                        <create-footnotes></create-footnotes>
-
+                    <!-- Headline -->
+                    <div class="shift-left">
+                        <h5 ng-bind="lc.getTerm('system_edit_information')"></h5>
                     </div>
-                </form>
+                    <div class="shift-right">
+                        <span class="glyphicon glyphicon-resize-full" ng-click="oc.toggleOverlay()"></span>
+                    </div>
+                    <div class="float-clear"></div>
+                    <!-- END: Headline -->
+
+                    <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
+                          ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
+
+                    <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
+                    'overflow': 'scroll'}"></div>
+
+                    <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
+                                    submit="lc.getTerm('system_edit_form_create')">
+                    </cancel-submit>
+                    </form>
+                    <div class="float-clear"></div>
+
+                    <hr>
+
+                    <h5 ng-bind="lc.getTerm('system_edit_footnotes')"></h5>
+
+                    <!-- show footnotes -->
+                    <show-footnotes></show-footnotes>
+
+                    <!-- Footnote creation -->
+                    <create-footnotes></create-footnotes>
+
+                </div>
+
 
                 <!--
                 Show this annotation field iff status of the topic is in review
