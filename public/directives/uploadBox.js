@@ -4,7 +4,7 @@
 
 controllersModule.directive('dropzone', function () {
     return function (scope, element, attrs) {
-        var config, dropzone;
+        var config, dropzone, topic;
 
         config = scope[attrs.dropzone];
 
@@ -21,6 +21,10 @@ controllersModule.directive('dropzone', function () {
 controllersModule.directive('uploadBox', function() {
     return {
         restrict: 'E',
+        scope: {
+            topic: '=topic',
+            label: '=label'
+        },
         templateUrl: '/assets/directives/uploadBox.html'
     };
 });
