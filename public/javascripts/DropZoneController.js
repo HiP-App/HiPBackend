@@ -2,20 +2,21 @@
  * Created by Jörg Amelunxen on 04.01.15.
  */
 
-controllersModule.controller('DropUploadCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+controllersModule.controller('DropUploadCtrl', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
     var that = this;
 
-    console.log("$scope::>");
-    console.log($scope.label); // this is working fine
-    console.log($scope.topic); // this is undefined
-
-    console.log("$rootScope::>")
-    console.log($rootScope.label); // this is working fine
-    console.log($rootScope.topic); // this is undefined
+    var targetTopic = "";
+    if($scope.topic != undefined){
+        // use scope variable
+        targetTopic = $scope.topic;
+    }else{
+        // fallback: Use routeParams for topicID
+        targetTopic = $routeParams.topicID;
+    }
 
     $scope.dropzoneConfig = {
         'options': { // passed into the Dropzone constructor
-            'url': '/admin/picture/'
+            'url': '/admin/picture/'+targetTopic
         },
         'eventHandlers': {
             'sending': function (file, xhr, formData) {

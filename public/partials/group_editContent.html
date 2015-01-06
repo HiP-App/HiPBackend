@@ -53,8 +53,11 @@
 
                     <!-- Picture upload -->
                     <h5 ng-bind="lc.getTerm('system_upload_header')"></h5>
+                    <div class="shift-left">
+                        <media-gallery files="tc.media"></media-gallery>
+                    </div>
                     <div class="shift-right">
-                        <upload-box label="lc.getTerm('system_upload')" topic="tc.currentTopic.uID"></upload-box>
+                        <upload-box label="lc.getTerm('system_upload')"></upload-box>
                     </div>
                     <div class="float-clear"></div>
                     <!-- END: Picture upload -->

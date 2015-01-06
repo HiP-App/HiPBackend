@@ -1,26 +1,23 @@
 package controllers
 
-import _root_.java.io.{FileInputStream, File}
-import _root_.java.text.SimpleDateFormat
-import _root_.java.util.{TimeZone, Date}
-import javax.inject.{Inject, Singleton}
+import java.io.{FileInputStream, File}
+import javax.inject.Singleton
 
-import com.nimbusds.jose.crypto.MACSigner
-import com.nimbusds.jose.{JWSHeader, Payload, JWSAlgorithm, JWSObject}
-import com.nimbusds.jwt.{SignedJWT, JWTClaimsSet}
+import models.MetadataModel
 import org.slf4j.{Logger, LoggerFactory}
-import play.api.libs.json.Json
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json._
 import play.api.mvc._
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
+import reactivemongo.api.Cursor
+
 import reactivemongo.api.gridfs.Implicits._
 import reactivemongo.api.gridfs.{ReadFile, DefaultFileToSave, GridFS}
 import reactivemongo.bson.{BSONDocument, BSONObjectID, BSONValue}
 import scala.concurrent.ExecutionContext.Implicits.global
-import securesocial.core._
 
 import scala.concurrent.Future
-import scala.util.parsing.json.JSONObject
 
 /**
  * Created by Jörg Amelunxen on 04.01.15.

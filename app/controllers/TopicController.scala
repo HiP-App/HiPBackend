@@ -7,10 +7,8 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc._
 import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.BSONFormats._
 import play.modules.reactivemongo.json.collection.JSONCollection
 import reactivemongo.api.Cursor
-import reactivemongo.bson.BSONDocument
 
 import scala.concurrent.Future
 
@@ -27,6 +25,8 @@ class TopicController extends Controller with MongoController {
   def topicCollection: JSONCollection = db.collection[JSONCollection]("topics")
 
   def footnoteCollection: JSONCollection = db.collection[JSONCollection]("footnotes")
+
+  def metaCollection: JSONCollection = db.collection[JSONCollection]("media.meta")
 
   import models.JsonFormats._
   import models._
@@ -224,6 +224,34 @@ class TopicController extends Controller with MongoController {
     topicCollection.remove(Json.obj("uID" -> uID)).map {
       lastError =>
         Created(s"Item removed")
+    }
+  }
+
+  /**
+   * This Action returns the media files for a given topic
+   * @param topicID
+   * @return
+   */
+  def getMediaForTopic(topicID: String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[MetadataModel] = metaCollection.
+      // find all
+      find(Json.obj("topic" -> topicID)).
+      // perform the query and get a cursor of JsObject
+      cursor[MetadataModel]
+
+    // gather all the JsObjects in a list
+    val futureTopicList: Future[List[MetadataModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { footnotes =>
+      Json.arr(footnotes)
+    }
+
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      footnotes =>
+        Ok(footnotes(0))
     }
   }
 }

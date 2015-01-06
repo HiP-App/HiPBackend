@@ -71,9 +71,15 @@ describe('Testsuite for the TopicController:', function () {
             linkedToTopic: "1"
         };
 
+        var media1 = {
+            uID: "media1",
+            topic: "1"
+        };
+
         return {demoTopic1: demoTopic1, demoTopic2: demoTopic2,
             demoSubTopic: demoSubTopic, demoConstraint: demoConstraint,
-            footnote1: footnote1, footnote2: footnote2};
+            footnote1: footnote1, footnote2: footnote2,
+            media1: media1};
     }
 
     var __ret           = initTestVariables();
@@ -85,6 +91,7 @@ describe('Testsuite for the TopicController:', function () {
 
     var demoFootnote1   = __ret.footnote1;
     var demoFootnote2   = __ret.footnote2;
+    var media1          = __ret.media1;
 
     beforeEach(function () {
         module('myApp.controllers');
@@ -147,6 +154,8 @@ describe('Testsuite for the TopicController:', function () {
 
         demoFootnote1       = __ret.footnote1;
         demoFootnote2       = __ret.footnote2;
+
+        media1              = __ret.media1;
     }));
 
     afterEach(function () {
@@ -155,6 +164,8 @@ describe('Testsuite for the TopicController:', function () {
     });
 
     function initController() {
+        $httpBackend.expectGET('/admin/pictureForTopic/1').respond(200,[media1]);
+
         $httpBackend.flush();
 
         /* check getTopicByTopicID */
@@ -525,5 +536,16 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectDELETE('/admin/footnote/footnote1').respond(200,{});
         $httpBackend.flush();
+    });
+
+    it('is able to fetch the Media list for a topic', function () {
+        initController();
+
+        /*
+         controller.getMediaForTopic(topicID); is implicitly done in the
+         init process */
+
+        // FIXME: create async test case -> this here takes way too long
+        //expect(controller.media.length).toBe(1);
     });
 });

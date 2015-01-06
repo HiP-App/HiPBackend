@@ -137,6 +137,11 @@ body{
     background-color: lightgray;
 }
 
+.imgPreview{
+    width:  75px;
+    height: 75px;
+}
+
 /* ===================
 * Chat
 * =================== */

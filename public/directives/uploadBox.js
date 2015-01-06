@@ -25,10 +25,6 @@ controllersModule.directive('uploadBox', function() {
             topic: '=topic',
             label: '=label'
         },
-        templateUrl: '/assets/directives/uploadBox.html',
-        link: function (scope) {
-            console.log("Console in link function for topic: "+scope.topic);
-            console.log("Console in link function for label: "+scope.label);
-        }
+        templateUrl: '/assets/directives/uploadBox.html'
     };
 });

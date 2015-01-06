@@ -1,7 +1,7 @@
 package models
 
 /**
- * Created by joerg on 04.11.2014.
+ * Created by Jörg Amelunxen on 04.11.2014.
  */
 case class MessageModel(uID: String,
                           receiver: String,

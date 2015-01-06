@@ -20,6 +20,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.currentUserTopics = [];
 
+    this.media = [];    // contains the list of media files for the current topic
+
     this.topicsByStatus = []; // contains topics as soon as they are fetched for a specific status via the getTopicsByStatus function
     this.constraintsForThisTopic = [];
 
@@ -543,11 +545,26 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    /**
+     * This function fetches the media files (e.g., images) of the current topic
+     * @param topicID
+     */
+    this.getMediaForTopic = function(topicID){
+        $http.get('/admin/pictureForTopic/'+topicID)
+            .success(function (data) {
+                that.media = data;
+        }).
+            error(function () {
+                console.log("error TopicController: Media list cannot get fetched");
+            });
+    };
+
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
         that.getTopicByTopicID($routeParams.topicID);
         that.getConstraintsForThisTopic($routeParams.topicID);
         that.getFootnotesForTopic($routeParams.topicID);
+        that.getMediaForTopic($routeParams.topicID);
     }
 
     if($routeParams.userID != undefined){
