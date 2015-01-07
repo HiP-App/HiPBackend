@@ -1,3 +1,15 @@
-<div class="shift-left">
-    <img class="imgPreview" ng-repeat="img in files" ng-src="/admin/picture/{{img.uID}}">
+<div class="shift-left" ng-controller="GalleryCtrl as gallery">
+    <div ng-repeat="img in files" class="shift-left" ng-style="{'margin-left': '10px'}">
+
+
+        <img class="imgPreview"  ng-src="/admin/picture/{{img.uID}}"
+             tooltip-html-unsafe="{{picturetooltip}}"
+             tooltip-trigger="mouseenter" tooltip-placement="top"
+             ng-click="gallery.sendTo(copyto, img.uID)">
+
+        <br>
+
+        <span ng-bind="deletetext" ng-click="gallery.deletePicture(img.uID)"></span>
+
+    </div>
 </div>

@@ -548,4 +548,15 @@ describe('Testsuite for the TopicController:', function () {
         // FIXME: create async test case -> this here takes way too long
         //expect(controller.media.length).toBe(1);
     });
+
+    it('is able to append a String to the current topic', function () {
+        initController();
+
+        var appendThis = "AppendMe";
+        var oldContent = demoTopic1.content;
+
+        controller.appendToContent(appendThis);
+
+        expect(controller.currentTopic.content).toBe(oldContent + appendThis);
+    });
 });

@@ -6,7 +6,10 @@ controllersModule.directive('mediaGallery', function() {
     return {
         restrict: 'E',
         scope: {
-            files: '=files'
+            files: '=files',
+            picturetooltip: '=picturetooltip',
+            deletetext: '=deletetext',
+            copyto: '=copyto'
         },
         templateUrl: '/assets/directives/mediaGallery.html'
     };

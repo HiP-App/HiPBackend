@@ -3,21 +3,17 @@ package controllers
 import java.io.{FileInputStream, File}
 import javax.inject.Singleton
 
-import models.MetadataModel
 import org.slf4j.{Logger, LoggerFactory}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc._
 import play.modules.reactivemongo.MongoController
 import play.modules.reactivemongo.json.collection.JSONCollection
-import reactivemongo.api.Cursor
 
 import reactivemongo.api.gridfs.Implicits._
 import reactivemongo.api.gridfs.{ReadFile, DefaultFileToSave, GridFS}
-import reactivemongo.bson.{BSONDocument, BSONObjectID, BSONValue}
+import reactivemongo.bson.{BSONDocument, BSONObjectID}
 import scala.concurrent.ExecutionContext.Implicits.global
-
-import scala.concurrent.Future
 
 /**
  * Created by Jörg Amelunxen on 04.01.15.
@@ -42,27 +38,27 @@ class FileController extends Controller with MongoController{
         val filename = photo.filename
         val contentType = photo.contentType
 
-        var newFile = new File("/tmp/picture/uploaded")
+        val newFile = new File("/tmp/picture/uploaded")
 
         if (newFile.exists())
           newFile.delete()
 
         photo.ref.moveTo(newFile)
 
-        var gridFS = new GridFS(db, "media")
+        val gridFS = new GridFS(db, "media")
         val fileToSave = DefaultFileToSave(filename, contentType)
 
         gridFS.writeFromInputStream(fileToSave, new FileInputStream(newFile))
 
         // include the additional data
-        var cleanedID = fileToSave.id.toString.split('"')(1)
+        val cleanedID = fileToSave.id.toString.split('"')(1)
 
         println("adding to topic: " + topicID)
 
         metaCollection.insert(Json.obj(
           "uID"   ->  cleanedID,
           "topic" ->  topicID
-        ));
+        ))
 
         Ok("File uploaded")
       case None => BadRequest("no media file")
@@ -75,8 +71,25 @@ class FileController extends Controller with MongoController{
    * @return
    */
   def getMediaFile(uID: String) = Action.async {
-      var gridFS = new GridFS(db, "media")
+      val gridFS = new GridFS(db, "media")
       val file = gridFS.find(BSONDocument("_id" -> new BSONObjectID(uID)))
       serve(gridFS, file)
+  }
+
+  /**
+   * This Action removes the media file (e.g., an image) from the database
+   * @param uID the uID of the media file that should be removed
+   * @return
+   */
+  def removeMediaFile(uID: String) = Action {
+    val gridFS = new GridFS(db, "media")
+
+    // remove file itself
+    val remove = gridFS.remove(new BSONObjectID(uID))
+
+    // also remove meta-data
+    metaCollection.remove(Json.obj("uID"   ->  uID))
+
+    Ok("file deleted")
   }
 }

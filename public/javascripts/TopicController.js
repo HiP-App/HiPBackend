@@ -559,6 +559,15 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             });
     };
 
+    /**
+     * This function appends a String to the content of the current topic
+     *
+     * @param whatToAppend      the String that should be appended
+     */
+    this.appendToContent = function(whatToAppend){
+        that.currentTopic.content += whatToAppend;
+    };
+
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
         that.getTopicByTopicID($routeParams.topicID);

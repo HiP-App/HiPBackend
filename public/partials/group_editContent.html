@@ -54,7 +54,10 @@
                     <!-- Picture upload -->
                     <h5 ng-bind="lc.getTerm('system_upload_header')"></h5>
                     <div class="shift-left">
-                        <media-gallery files="tc.media"></media-gallery>
+                        <media-gallery files="tc.media"
+                                       picturetooltip="lc.getTerm('tooltip_img_use')"
+                                       deletetext="lc.getTerm('tooltip_img_delete')"
+                                       copyto="tc"></media-gallery>
                     </div>
                     <div class="shift-right">
                         <upload-box label="lc.getTerm('system_upload')"></upload-box>
