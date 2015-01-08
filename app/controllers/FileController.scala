@@ -50,7 +50,6 @@ class FileController extends Controller with MongoController{
         if (newFile.exists())
           newFile.delete()
 
-
         photo.ref.moveTo(newFile)
 
         val gridFS = new GridFS(db, "media")

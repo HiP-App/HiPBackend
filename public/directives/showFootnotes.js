@@ -6,6 +6,10 @@ controllersModule.directive('showFootnotes', function() {
     return {
         restrict: 'E',
         transclude: true,
+        scope: {
+          uc: '=uc',
+          tc: '=tc'
+        },
         templateUrl: '/assets/directives/showFootnotes.html'
     };
 });
