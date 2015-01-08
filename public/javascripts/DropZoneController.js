@@ -5,7 +5,7 @@
 controllersModule.controller('DropUploadCtrl', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
     var that = this;
 
-    var targetTopic = "";
+    var targetTopic = "";   // stores the topic that is used to store/link the picture
     if($scope.topic != undefined){
         // use scope variable
         targetTopic = $scope.topic;

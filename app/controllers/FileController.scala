@@ -1,6 +1,10 @@
 package controllers
 
-import java.io.{FileInputStream, File}
+import java.awt.geom.AffineTransform
+import java.awt.{RenderingHints, Graphics2D}
+import java.awt.image.{AffineTransformOp, RenderedImage, BufferedImage}
+import java.io._
+import javax.imageio.ImageIO
 import javax.inject.Singleton
 
 import org.slf4j.{Logger, LoggerFactory}
@@ -28,13 +32,16 @@ class FileController extends Controller with MongoController{
   def metaCollection: JSONCollection = db.collection[JSONCollection]("media.meta")
 
   /**
-   * This Action is able to store a new picture in the database
+   * This Action is able to store a new picture in the database (it also generates a fitting thumbnail)
    *
    * @return
    */
   def upload(topicID: String) = Action(parse.multipartFormData) { request =>
     request.body.file("file") match {
       case Some(photo) =>
+        val TARGET_W = 64; // width of the thumbail
+        val TARGET_H = 64; // height of the thumbnail
+
         val filename = photo.filename
         val contentType = photo.contentType
 
@@ -43,21 +50,54 @@ class FileController extends Controller with MongoController{
         if (newFile.exists())
           newFile.delete()
 
+
         photo.ref.moveTo(newFile)
 
         val gridFS = new GridFS(db, "media")
         val fileToSave = DefaultFileToSave(filename, contentType)
 
+        /* create thumbnail */
+        val fileToSaveThumb = DefaultFileToSave("thumb_"+filename, contentType)
+
+        val os = new ByteArrayOutputStream()
+
+        // load image for scaling operation (needed to derive thumbnail)
+        var before = ImageIO.read(newFile)
+
+        // create scale operation
+        val wScale  = TARGET_W / before.getWidth().asInstanceOf[Double]
+        val hScale  = TARGET_H / before.getHeight().asInstanceOf[Double]
+
+        var at = new AffineTransform()
+        at.scale(wScale, hScale)
+        var scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR)
+
+        // create object that will contain the scaled image
+        val w = (before.getWidth() * wScale).asInstanceOf[Int]
+        val h = (before.getHeight() * hScale).asInstanceOf[Int]
+        var after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
+
+        // use scale operation
+        scaleOp.filter(before, after)
+
+        // write image to output stream
+        ImageIO.write(after,"png", os)
+
+        // derive FileInputStream
+        val fis = new ByteArrayInputStream(os.toByteArray())
+
+        /* write both files */
         gridFS.writeFromInputStream(fileToSave, new FileInputStream(newFile))
+        gridFS.writeFromInputStream(fileToSaveThumb, fis)
 
         // include the additional data
         val cleanedID = fileToSave.id.toString.split('"')(1)
-
-        println("adding to topic: " + topicID)
+        val cleanedIDThumb = fileToSaveThumb.id.toString.split('"')(1)
 
         metaCollection.insert(Json.obj(
           "uID"   ->  cleanedID,
-          "topic" ->  topicID
+          "topic" ->  topicID,
+          "thumbnailID" -> cleanedIDThumb
         ))
 
         Ok("File uploaded")

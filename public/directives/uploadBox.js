@@ -23,7 +23,8 @@ controllersModule.directive('uploadBox', function() {
         restrict: 'E',
         scope: {
             topic: '=topic',
-            label: '=label'
+            label: '=label',
+            tc: '=tc'
         },
         templateUrl: '/assets/directives/uploadBox.html'
     };

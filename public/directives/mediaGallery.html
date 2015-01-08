@@ -2,14 +2,14 @@
     <div ng-repeat="img in files" class="shift-left" ng-style="{'margin-left': '10px'}">
 
 
-        <img class="imgPreview"  ng-src="/admin/picture/{{img.uID}}"
+        <img class="imgPreview"  ng-src="/admin/picture/{{img.thumbnailID}}"
              tooltip-html-unsafe="{{picturetooltip}}"
              tooltip-trigger="mouseenter" tooltip-placement="top"
              ng-click="gallery.sendTo(copyto, img.uID)">
 
         <br>
 
-        <span ng-bind="deletetext" ng-click="gallery.deletePicture(img.uID)"></span>
+        <span ng-bind="deletetext" ng-click="gallery.deletePicture(img.uID); gallery.deletePicture(img.thumbnailID)"></span>
 
     </div>
 </div>

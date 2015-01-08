@@ -559,4 +559,16 @@ describe('Testsuite for the TopicController:', function () {
 
         expect(controller.currentTopic.content).toBe(oldContent + appendThis);
     });
+
+    it('is able to push a new media file to the controller', function () {
+        initController();
+
+        var mediaDummy = {uID: 'DummyMedia'};
+
+        controller.pushNewMedia(mediaDummy);
+
+        var upper  = controller.media.pop();
+
+        expect(upper.uID).toBe("DummyMedia");
+    });
 });

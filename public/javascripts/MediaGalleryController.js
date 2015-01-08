@@ -12,6 +12,8 @@ controllersModule.controller('GalleryCtrl', ['$scope','$http',function($scope,$h
      * @param uID   of the picture that should be removed
      */
     this.deletePicture = function(uID){
+        var thumbnailID = "";
+        /* delete picture itself */
         $http.delete('/admin/picture/'+uID)
             .success(function(data){
                 // delete also from file-list in frontend

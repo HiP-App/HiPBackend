@@ -568,6 +568,14 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         that.currentTopic.content += whatToAppend;
     };
 
+    /**
+     * This function is used to push a new medium to the media list
+     * @param medium
+     */
+    this.pushNewMedia = function(medium){
+        that.media.push(medium);
+    };
+
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
         that.getTopicByTopicID($routeParams.topicID);
