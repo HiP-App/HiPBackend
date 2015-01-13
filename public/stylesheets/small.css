@@ -1,3 +1,60 @@
-#body{
-    background-color: blue;
+#logo{
+    float: none;
+    margin-right: 50px;
+}
+
+#logo img{
+    width: 15%;
+}
+
+nav {
+    margin: 0px;
+    margin-top: 5px;
+    margin-right: 0px;
+
+    background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%);
+    background-repeat: repeat-x;
+
+    float: none;
+
+    border-radius: 5px;
+
+    min-width: 400px;
+    width: 40%;
+}
+
+#groups{
+    margin-top:	 	15px;
+    margin-right: 	15px;
+
+    float: none;
+
+    width: 180px;
+
+    min-height: 200px;
+
+    /* outline: 2px solid grey; */
+}
+
+.hide-mobile{
+    dispay: none;
+}
+
+#mainBox{
+    float: left;
+    width: 50%;
+}
+
+#mainSingleBox{
+    float: left;
+    width: 25%;
+
+    margin-top: 15px;
+}
+
+#mainSingleBoxBig{
+    float: left;
+    width: 25%;
+
+    margin-top: 15px;
 }
