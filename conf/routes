@@ -58,6 +58,9 @@ DELETE        /admin/picture/:uID                    @controllers.FileController
 GET           /admin/pictureForTopic/:topicID        @controllers.TopicController.getMediaForTopic(topicID: String)
 POST          /admin/picture/:topicID                @controllers.FileController.upload(topicID: String)
 
+GET           /admin/history/:topicID                @controllers.HistoryController.getHistoryForTopic(topicID: String)
+POST          /admin/history                         @controllers.HistoryController.storeHistoryEntry
+
 # SECURE SOCIAL
 # Login page
 GET           /login                                 securesocial.controllers.LoginPage.login

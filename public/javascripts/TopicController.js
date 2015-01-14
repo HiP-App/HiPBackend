@@ -31,6 +31,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     this.temporaryFootnote = {}; // stores a footnote that is going to be created
 
+    this.topicVersion       = -1; // this variable stores the current version number of the topic
+    this.historyEntries     = []; // stores the entries of the topic history
+
     this.modifyTopicID      = "";
     this.modifyTopicName    = "";
     this.modifyTopicContent = "";
@@ -71,6 +74,24 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     /**
+     * This function posts a new History Object to the server
+     * @param historyObject
+     */
+    this.postHistoryObject = function(historyObject){
+        $http.post('/admin/history',historyObject);
+    };
+
+    /**
+     * Sends an empty history object to the server. Used as a first history entry when a new topic gets created
+     * @param topicID
+     */
+    this.initHistory = function(topicID){
+        var historyObject = Tooling.createHistoryObject(topicID);
+
+        that.postHistoryObject(historyObject);
+    };
+
+    /**
      * Creates a new topic with the internally stored information and sends it to the server
      */
     this.createTopic = function(){
@@ -79,6 +100,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
         /* create corresponding chat system */
         Interface.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
+
+        /* create empty history */
+        that.initHistory(that.currentTopic.uID);
     };
 
     /**
@@ -230,6 +254,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         // updated the constraints - maybe their status has changed -
         that.updateConstraints();
 
+        // create a new history entry and send it
+        var hObj = Tooling.createHistoryObject(that.currentTopic.uID,
+                    that.currentTopic.content,
+                    $scope.uc.email,
+                    that.topicVersion+1);
+        that.postHistoryObject(hObj);
+
         // send the fitting alert
         this.sendAlert(ac, lc, msg);
 
@@ -288,6 +319,31 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
                 /* create the list of pictures of the topic */
                 that.preparePictureList();
+
+                /* get history entries */
+                $http.get('/admin/history/'+uIDOfTheTopic)
+                    .success(function(data){
+                        if(data != undefined){
+                            that.historyEntries = data;
+
+                            /* extract current version number */
+                            var max = -1;
+                            for(var i=0; i < that.historyEntries.length; i++){
+                                if(that.historyEntries[i].versionNumber > max){
+                                    max = that.historyEntries[i].versionNumber;
+                                }
+                            }
+                            that.topicVersion = max;
+                        }else{
+                            /* no history found for topic
+                                -> this is an error
+                                -> create fallback data instead */
+                            that.historyEntries.push(Tooling.createHistoryObject(uIDOfTheTopic));
+                            that.topicVersion = 1;
+                        }
+                    }).error(function(data){
+                        console.log("error TopicController: Cannot fetch history entries");
+                    });
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Topic cannot get pulled");
@@ -578,10 +634,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
     /* update parameter if needed */
     if($routeParams.topicID != undefined){
-        that.getTopicByTopicID($routeParams.topicID);
         that.getConstraintsForThisTopic($routeParams.topicID);
         that.getFootnotesForTopic($routeParams.topicID);
         that.getMediaForTopic($routeParams.topicID);
+        that.getTopicByTopicID($routeParams.topicID);
     }
 
     if($routeParams.userID != undefined){

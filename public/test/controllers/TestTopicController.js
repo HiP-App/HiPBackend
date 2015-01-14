@@ -76,10 +76,18 @@ describe('Testsuite for the TopicController:', function () {
             topic: "1"
         };
 
+        var historyObject = {
+            uID: "his1",
+            content: "Bla",
+            editor: "John Doe",
+            topicID: "1",
+            versionNumber: "2"
+        };
+
         return {demoTopic1: demoTopic1, demoTopic2: demoTopic2,
             demoSubTopic: demoSubTopic, demoConstraint: demoConstraint,
             footnote1: footnote1, footnote2: footnote2,
-            media1: media1};
+            media1: media1, historyObject: historyObject};
     }
 
     var __ret           = initTestVariables();
@@ -92,6 +100,7 @@ describe('Testsuite for the TopicController:', function () {
     var demoFootnote1   = __ret.footnote1;
     var demoFootnote2   = __ret.footnote2;
     var media1          = __ret.media1;
+    var historyObject   = __ret.historyObject;
 
     beforeEach(function () {
         module('myApp.controllers');
@@ -123,6 +132,9 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.when('GET','/admin/footnotesByTopic/1')
             .respond(200,[demoFootnote1,demoFootnote2]);
+
+        $httpBackend.when('GET','/admin/history/1')
+            .respond(200,[historyObject]);
 
         $scope = $rootScope.$new();
 
@@ -178,6 +190,9 @@ describe('Testsuite for the TopicController:', function () {
 
         /* check getConstraintsForThisTopic */
         expect(controller.constraintsForThisTopic[0].uID).toBe('constraintA');
+
+        /* check version number */
+        expect(controller.topicVersion).toBe('2');
     }
 
     it('fetches the topic data on init', function () {
@@ -239,6 +254,9 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectPUT('/admin/constraints')
             .respond(200,{});
+
+        $httpBackend.expectPOST('/admin/history').respond(200,{});
+
         $httpBackend.flush();
 
         expect(mockAC.addAlert).toHaveBeenCalled();
@@ -297,6 +315,8 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectPOST('/admin/chat/true',expectedChat).respond(200,{});
 
+        /* expect creation of the history object */
+        $httpBackend.expectPOST('/admin/history').respond(200,{});
         $httpBackend.flush();
     });
 
@@ -429,6 +449,9 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectPUT('/admin/constraints')
             .respond(200,{});
+
+        $httpBackend.expectPOST('/admin/history').respond(200,{});
+
         $httpBackend.flush();
 
         expect(mockAC.addAlert).toHaveBeenCalled();
@@ -512,8 +535,7 @@ describe('Testsuite for the TopicController:', function () {
          controller.getFootnotes(uID); is implicitly done in the
          init process */
 
-        // FIXME: create async test case -> this here takes way too long
-        //expect(controller.footnotes.length).toBe(2);
+        expect(controller.footnotes.length).toBe(2);
     });
 
     it('is able to save a new footnote', function () {
@@ -545,8 +567,7 @@ describe('Testsuite for the TopicController:', function () {
          controller.getMediaForTopic(topicID); is implicitly done in the
          init process */
 
-        // FIXME: create async test case -> this here takes way too long
-        //expect(controller.media.length).toBe(1);
+        expect(controller.media.length).toBe(1);
     });
 
     it('is able to append a String to the current topic', function () {
@@ -570,5 +591,15 @@ describe('Testsuite for the TopicController:', function () {
         var upper  = controller.media.pop();
 
         expect(upper.uID).toBe("DummyMedia");
+    });
+
+    it('is able to create a new/empty history for a given topicID', function () {
+        initController();
+
+        var topicID = "1";
+        controller.initHistory(topicID);
+
+        $httpBackend.expectPOST('/admin/history').respond(200,{});
+        $httpBackend.flush();
     });
 });

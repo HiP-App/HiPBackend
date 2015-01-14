@@ -7,6 +7,7 @@ var DEBUG = false;
 var Interface = {};
 var Tooling = {};
 Tooling.lastGeneratedRandomUID = "";
+Tooling.lastUsedTimeStamp = "";
 
 Interface.possibleContraints = ["character_limitation","img_limitation"];
 
@@ -56,6 +57,41 @@ Tooling.createMessageObject = function(uID, receiver, sender, title, content){
         title:      title,
         content:    content
     };
+};
+
+/**
+ * The function creates an empty history object
+ * @param topicID the topic ID of the topic that is used for this history object
+ * @param content
+ * @param editor
+ * @param versionNumber
+ * @returns {{uID: string, content: string, editor: string, topicID: *, versionNumber: string, timeStamp: string}}
+ */
+Tooling.createHistoryObject = function(topicID, content, editor, versionNumber){
+    Tooling.lastUsedTimeStamp = new Date().getTime();
+
+    var returnObject = {
+        uID: Tooling.generateUID(topicID),
+        content: "",
+        editor: "System",
+        topicID: topicID,
+        versionNumber: "1",
+        timeStamp: Tooling.lastUsedTimeStamp
+    };
+
+    if(content != undefined){
+        returnObject.content = content;
+    }
+
+    if(editor != undefined){
+        returnObject.editor = editor;
+    }
+
+    if(versionNumber != undefined){
+        returnObject.versionNumber = versionNumber;
+    }
+
+    return returnObject;
 };
 
 /**

@@ -18,5 +18,5 @@ object JsonFormats {
   implicit val constraintFormat = Json.format[ConstraintModel]
   implicit val footnoteFormat = Json.format[FootnoteModel]
   implicit val metadataFormat = Json.format[MetadataModel]
-
+  implicit val historyFormat = Json.format[HistoryModel]
 }
