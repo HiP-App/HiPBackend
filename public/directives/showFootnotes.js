@@ -8,7 +8,8 @@ controllersModule.directive('showFootnotes', function() {
         transclude: true,
         scope: {
           uc: '=uc',
-          tc: '=tc'
+          tc: '=tc',
+          gc: '=gc'
         },
         templateUrl: '/assets/directives/showFootnotes.html'
     };
