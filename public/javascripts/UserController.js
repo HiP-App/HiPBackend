@@ -12,11 +12,11 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
         sender:"System"
     };
 
-    this.userList   = "unset";
+    this.userList   = "unset";          // list stores all users in the system
 
-    this.email      = $attrs.mail;
-    this.firstname  = $attrs.firstname;
-    this.role       = "unset";
+    this.email      = $attrs.mail;      // email address of the current user
+    this.firstname  = $attrs.firstname; // firstname of the current user
+    this.role       = "unset";          // role of the current user
 
     if(that.debug)
         console.log("info UserCtrl: init with email " + this.email);

@@ -76,7 +76,7 @@ Tooling.createHistoryObject = function(topicID, content, editor, versionNumber){
         editor: "System",
         topicID: topicID,
         versionNumber: "1",
-        timeStamp: Tooling.lastUsedTimeStamp
+        timeStamp: Tooling.lastUsedTimeStamp+""
     };
 
     if(content != undefined){

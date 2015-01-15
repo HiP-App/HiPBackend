@@ -60,6 +60,7 @@ POST          /admin/picture/:topicID                @controllers.FileController
 
 GET           /admin/history/:topicID                @controllers.HistoryController.getHistoryForTopic(topicID: String)
 POST          /admin/history                         @controllers.HistoryController.storeHistoryEntry
+DELETE        /admin/history/:topicID                @controllers.HistoryController.deleteHistory(topicID: String)
 
 # SECURE SOCIAL
 # Login page

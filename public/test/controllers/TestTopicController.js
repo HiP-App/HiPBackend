@@ -23,7 +23,7 @@ describe('Testsuite for the TopicController:', function () {
                 "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
             status: "wip",
             constraints: ["constraintA"],
-            deadline : "2015-01-14T23:00:00.000Z"
+            deadline : "2020-01-14T23:00:00.000Z"
         };
 
         var demoTopic2 = {
@@ -277,16 +277,24 @@ describe('Testsuite for the TopicController:', function () {
         $httpBackend.expectDELETE('/admin/topic/'+demoTopic1.uID)
             .respond(200,{});
 
-        /* expect deletion of chat system */
-        $httpBackend.expectDELETE('/admin/chat/'+demoTopic1.uID)
-            .respond(200,{});
-
         /* expect deletion of subtopic and the chat system */
         $httpBackend.expectDELETE('/admin/topic/'+demoSubTopic.uID)
             .respond(200,{});
 
         /* expect deletion of chat system */
+        $httpBackend.expectDELETE('/admin/chat/'+demoTopic1.uID)
+            .respond(200,{});
+
+        /* expect deletion of history */
+        $httpBackend.expectDELETE('/admin/history/'+demoTopic1.uID)
+            .respond(200,{});
+
+        /* expect deletion of chat system */
         $httpBackend.expectDELETE('/admin/chat/'+demoSubTopic.uID)
+            .respond(200,{});
+
+        /* expect deletion of history */
+        $httpBackend.expectDELETE('/admin/history/'+demoSubTopic.uID)
             .respond(200,{});
 
         $httpBackend.flush();
@@ -600,6 +608,16 @@ describe('Testsuite for the TopicController:', function () {
         controller.initHistory(topicID);
 
         $httpBackend.expectPOST('/admin/history').respond(200,{});
+        $httpBackend.flush();
+    });
+
+
+    it('is able to remove the history of a topic', function () {
+        initController();
+
+        controller.deleteHistory('1');
+
+        $httpBackend.expectDELETE('/admin/history/1').respond(200,{});
         $httpBackend.flush();
     });
 });

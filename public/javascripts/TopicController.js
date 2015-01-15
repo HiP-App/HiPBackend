@@ -258,7 +258,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         var hObj = Tooling.createHistoryObject(that.currentTopic.uID,
                     that.currentTopic.content,
                     $scope.uc.email,
-                    that.topicVersion+1);
+                    parseInt(that.topicVersion)+1+"");
         that.postHistoryObject(hObj);
 
         // send the fitting alert
@@ -323,7 +323,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                 /* get history entries */
                 $http.get('/admin/history/'+uIDOfTheTopic)
                     .success(function(data){
-                        if(data != undefined){
+                        if(data != undefined && data.length > 0){
                             that.historyEntries = data;
 
                             /* extract current version number */
@@ -332,6 +332,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                                 if(that.historyEntries[i].versionNumber > max){
                                     max = that.historyEntries[i].versionNumber;
                                 }
+
+                                // btw: cast the value to a number
+                                that.historyEntries[i].versionNumber = Number(that.historyEntries[i].versionNumber);
                             }
                             that.topicVersion = max;
                         }else{
@@ -500,6 +503,20 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     };
 
     /**
+     * Function deletes the history of the given topic
+     *
+     * @param topicID {String}: uID of the topic which history should be deleted
+     */
+    this.deleteHistory = function(topicID){
+        $http.delete('/admin/history/'+topicID).
+            success(function () {
+            }).
+            error(function () {
+                console.log("error TopicController: History cannot get removed");
+            });
+    };
+
+    /**
      * Deletes the current topic AND every attached subtopic (i.e., a topic that is
      * 'createdBy' this uID).
      *
@@ -509,12 +526,15 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         function deletingProcedure(deleteThis) {
             $http.delete('/admin/topic/' + deleteThis).
                 success(function (data, status, headers, config) {
+                    // remove corresponding chat system
+                    Interface.deleteChat($http, deleteThis);
+
+                    // remove corresponding history
+                    that.deleteHistory(deleteThis);
                 }).
                 error(function (data, status, headers, config) {
                     console.log("error TopicController: Topic cannot get removed");
                 });
-            // remove corresponding chat system
-            Interface.deleteChat($http, deleteThis);
         }
 
         /* delete the sub-topics and their chat systems */

@@ -3,10 +3,12 @@
         <div class="panel-heading" ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
             <div class="shift-left">
                 <a ng-href="/#/group/view/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
-                <a ng-click="showDiv = 1">{{lc.getTerm('system_edit_header')}}: {{ tc.currentTopic.name }}</a>
+                <a ng-click="showDiv = 1">{{lc.getTerm('system_edit_header')}}:
+                    {{ tc.currentTopic.name }} (V. {{ tc.topicVersion }})</a>
             </div>
 
             <div class="shift-right">
+                <a ng-click="showDiv = 3"> {{lc.getTerm('system_open_topicHistory')}} </a> |
                 <a ng-click="showDiv = 2"> {{lc.getTerm('system_open_chat')}} </a>
             </div>
 
@@ -128,8 +130,18 @@
             </div>
 
 
+            <!--
+            Show the chatBox
+            -->
             <div class="col-sm-offset-1 col-sm-10" ng-show="showDiv == 2">
                 <chat-box-big></chat-box-big>
+            </div>
+
+            <!--
+            Show the history of the topic
+            -->
+            <div class="col-sm-offset-1 col-sm-10" ng-show="showDiv == 3">
+                <topic-history languagecontroller="lc" topiccontroller="tc" usercontroller="uc"></topic-history>
             </div>
         </div>
 

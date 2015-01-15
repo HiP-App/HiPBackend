@@ -22,6 +22,11 @@ class HistoryController extends Controller with MongoController {
   import models.JsonFormats._
   import models._
 
+  /**
+   * Action returns the history of a given topic
+   * @param topicID
+   * @return
+   */
   def getHistoryForTopic(topicID: String) = Action.async {
     // let's do our query
     val cursor: Cursor[HistoryModel] = collection.find(Json.obj("topicID" -> topicID)).cursor[HistoryModel]
@@ -41,6 +46,11 @@ class HistoryController extends Controller with MongoController {
     }
   }
 
+  /**
+   * Action stores a new history entry
+   *
+   * @return
+   */
   def storeHistoryEntry = Action.async(parse.json) {
     request =>
       request.body.validate[HistoryModel].map {
@@ -53,5 +63,18 @@ class HistoryController extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  /**
+   * Action deletes the history of a given topic
+   *
+   * @param topicID
+   * @return
+   */
+  def deleteHistory(topicID : String) = Action.async {
+    /* delete from DB */
+    collection.remove(Json.obj("topicID" -> topicID)).map {
+      lastError =>
+        Created(s"Item removed")
+    }
+  }
 }
 

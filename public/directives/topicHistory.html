@@ -1,0 +1,33 @@
+<div ng-controller="HistoryCtrl as hc">
+    <h4 ng-bind="lc.getTerm('system_history_header')"></h4>
+
+    <div class="row">
+        <div class="col-md-4">
+            <i ng-bind="lc.getTerm('from')"></i>:
+            <input type="text" class="form-control" placeholder="0"
+                    ng-model="hc.from" tooltip-html-unsafe="{{lc.getTerm('tooltip_history_from')}}"
+                    tooltip-trigger="focus" tooltip-placement="top">
+        </div>
+
+        <div class="col-md-4">
+            <i ng-bind="lc.getTerm('to')"></i>:
+            <input type="text" class="form-control" placeholder="25"
+                   ng-model="hc.to" tooltip-html-unsafe="{{lc.getTerm('tooltip_history_to')}}"
+                   tooltip-trigger="focus" tooltip-placement="top">
+        </div>
+
+        <div class="col-md-4">
+            <i ng-bind="lc.getTerm('by')"></i>:
+            <input type="text" class="form-control" placeholder="JaneDoe@unknown.com"
+                   ng-model="hc.user" tooltip-html-unsafe="{{lc.getTerm('tooltip_history_user')}}"
+                   typeahead="user.userid for user in uc.userList | filter:$viewValue | limitTo:8"
+                   tooltip-trigger="focus" tooltip-placement="top">
+        </div>
+    </div>
+
+    <div ng-repeat="entry in listRange(hc.from,hc.to,hc.user,tc.historyEntries) track by entry.versionNumber">
+        <b> Version: {{entry.versionNumber}} {{lc.getTerm('by')}} {{entry.editor}}</b>
+        <div ng-bind-html="entry.content"></div>
+        <hr>
+    </div>
+</div>
