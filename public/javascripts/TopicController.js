@@ -88,7 +88,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.initHistory = function(topicID){
         var historyObject = Tooling.createHistoryObject(topicID);
 
-        that.postHistoryObject(historyObject);
+        $http.post('/admin/history',historyObject);
     };
 
     /**
@@ -100,9 +100,6 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
         /* create corresponding chat system */
         Interface.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
-
-        /* create empty history */
-        that.initHistory(that.currentTopic.uID);
     };
 
     /**
@@ -260,6 +257,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                     $scope.uc.email,
                     parseInt(that.topicVersion)+1+"");
         that.postHistoryObject(hObj);
+
+        // update also the GUI
+        that.historyEntries.push(hObj);
+        that.topicVersion++;
 
         // send the fitting alert
         this.sendAlert(ac, lc, msg);

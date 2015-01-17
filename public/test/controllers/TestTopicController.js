@@ -127,8 +127,8 @@ describe('Testsuite for the TopicController:', function () {
         $httpBackend.when('POST','/admin/constraints')
             .respond(200,{});
 
-        $httpBackend.when('POST','/admin/topic')
-            .respond(200,{});
+        //$httpBackend.when('POST','/admin/topic')
+        //    .respond(200,{});
 
         $httpBackend.when('GET','/admin/footnotesByTopic/1')
             .respond(200,[demoFootnote1,demoFootnote2]);
@@ -313,6 +313,11 @@ describe('Testsuite for the TopicController:', function () {
 
         expect(gc.createNotificationAtGroupAndSetTopic).toHaveBeenCalled();
 
+        /* create both topics */
+        $httpBackend.expectPOST('/admin/topic').respond(200,{});
+        $httpBackend.expectPOST('/admin/topic').respond(200,{});
+
+
         /* expect the creation of the chat */
         var expectedChat = {
             uID     : demoTopic1.uID,
@@ -323,9 +328,11 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectPOST('/admin/chat/true',expectedChat).respond(200,{});
 
-        /* expect creation of the history object */
+        /* expect creation of both history objects */
+        $httpBackend.expectPOST('/admin/history').respond(200,{});
         $httpBackend.expectPOST('/admin/history').respond(200,{});
         $httpBackend.flush();
+
     });
 
     it('checks if the Group id of the currently loaded topic is set with the' +

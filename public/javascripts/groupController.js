@@ -514,6 +514,18 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     this.deleteGroup = function(uID){
         $http.delete('/admin/group/'+uID, this.currentGroup).
             success(function(data, status, headers, config) {
+                // remove from GUI
+                var targetPos = -1;
+                for(var i=0; i < that.groupsCreatedByThisUserOrUserIsMemberOfGroup.length; i++){
+                    if(that.groupsCreatedByThisUserOrUserIsMemberOfGroup[i].uID == uID){
+                        targetPos = i;
+                    }
+                }
+
+                if(targetPos != -1){
+                    // it has been found => remove it
+                    that.groupsCreatedByThisUserOrUserIsMemberOfGroup.splice(targetPos,1);
+                }
             }).
             error(function(data, status, headers, config) {
             });

@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 12.12.14.
+ * Created by Jörg Amelunxen on 12.12.14.
  */
 
 var demoGroup = {
@@ -73,6 +73,10 @@ describe('Testsuite for the GroupController:', function () {
             .respond(200,{});
 
         $httpBackend.when('POST','/admin/topic')
+            .respond(200,{});
+
+        /* creation of the history object */
+        $httpBackend.when('POST','/admin/history')
             .respond(200,{});
 
         /* -------

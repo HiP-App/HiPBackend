@@ -259,6 +259,9 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
 
             $http.post('/admin/topic', subTopicJSON).
                 success(function (data, status, headers, config) {
+                    /* create empty history */
+                    var historyObject = Tooling.createHistoryObject(currentSubTopicID);
+                    $http.post('/admin/history',historyObject);
                 }).
                 error(function (data, status, headers, config) {
                 });
@@ -276,8 +279,9 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
     // post
     $http.post('/admin/topic', topic).
         success(function (data, status, headers, config) {
-            // this callback will be called asynchronously
-            // when the response is available
+            /* create empty history */
+            var historyObject = Tooling.createHistoryObject(currentTopicID);
+            $http.post('/admin/history',historyObject);
         }).
         error(function (data, status, headers, config) {
             // called asynchronously if an error occurs
