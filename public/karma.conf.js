@@ -12,7 +12,6 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
-
     // list of files / patterns to load in the browser
     files: [
         'javascripts/vendor/jquery_211.js',
@@ -34,7 +33,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
     	'../app/assets/javascripts/app.coffee' : ['coffee'],
-    	'*.js': ['coverage']
+    	'**/javascripts/*.js': 'coverage'
   		//'**/*.coffee': ['coffee']
     },
 
