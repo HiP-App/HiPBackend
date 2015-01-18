@@ -36,7 +36,8 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', 'commonTa
         readableBy: []
     };
 
-    this.aggregatedNotifications = []; // contains the aggregated notifications of a couple of specified groups
+    this.aggregatedFilter = undefined;  // contains the current filter for the aggregated notifications
+    this.aggregatedNotifications = [];  // contains the aggregated notifications of a couple of specified groups
 
     this.currentGroupTopic = {};
 

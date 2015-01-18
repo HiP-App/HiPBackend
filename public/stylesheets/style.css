@@ -21,6 +21,10 @@ body{
     text-align:left;
 }
 
+.li-no-dec{
+    list-style-type: none;
+}
+
 .hip-button-red {
     background: #c12e2a;
     color: ghostwhite;

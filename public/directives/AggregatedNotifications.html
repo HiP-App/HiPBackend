@@ -1,0 +1,39 @@
+<div class="panel panel-default"
+     ng-class="{'almost-3quarter-right': uc.isStudent(),
+                          'almost-half': uc.isSupervisor()}">
+
+
+    <div class="panel-heading">
+        <div class="shift-left" ng-bind="lc.getTerm('system_group_notification')"></div>
+
+        <div class="shift-right">
+            <li class="dropdown li-no-dec">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-cog pull-right"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a ng-click="gc.aggregatedFilter = undefined" ng-bind="lc.getTerm('showAll')">Clear</a></li>
+                    <li class="divider"></li>
+                    <li ng-repeat="gr in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
+                        <a ng-click="gc.aggregatedFilter = gr.name" ng-bind="gr.name"></a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <div class="float-clear"></div>
+    </div>
+
+    <div class="panel-body scroll max400">
+        <div  class="alert alert-info" role="alert"
+              ng-repeat="message in showGroup(gc.aggregatedFilter,gc.aggregatedNotifications)">
+
+            <a ng-href="/#/group/view/{{message.groupID}}" ng-show="uc.isStudent()">
+                {{message.group}}: {{lc.getNotification(message.notification)}}
+            </a>
+
+            <a ng-href="/#/group/viewexternal/{{message.groupID}}" ng-show="uc.isSupervisor()">
+                {{message.group}}: {{lc.getNotification(message.notification)}}
+            </a>
+        </div>
+
+    </div>
+
+</div>

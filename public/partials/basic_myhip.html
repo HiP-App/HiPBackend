@@ -52,24 +52,11 @@
                 </div>
             </div>
 
-            <div class="panel panel-default"
-                 ng-class="{'almost-3quarter-right': uc.isStudent(),
-                            'almost-half': uc.isSupervisor()}">
 
-                <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
-                <div class="panel-body scroll max400">
+            <aggregated-notifications groupcontroller="gc"
+                                      languagecontroller="lc"
+                                      usercontroller="uc""></aggregated-notifications>
 
-                    <div  class="alert alert-info" role="alert" ng-repeat="message in gc.aggregatedNotifications">
-                        <a ng-href="/#/group/view/{{message.groupID}}" ng-show="uc.isStudent()">
-                            {{message.group}}: {{lc.getNotification(message.notification)}}
-                        </a>
-
-                        <a ng-href="/#/group/viewexternal/{{message.groupID}}" ng-show="uc.isSupervisor()">
-                            {{message.group}}: {{lc.getNotification(message.notification)}}
-                        </a>
-                    </div>
-                </div>
-            </div>
 
             <div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()">
                 <div class="panel-heading"> {{lc.getTerm('system_supervisor_templates')}} </div>

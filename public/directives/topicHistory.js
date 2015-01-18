@@ -1,5 +1,5 @@
 /**
- * Created by jorgamelunxen on 15.01.15.
+ * Created by Jörg Amelunxen on 15.01.15.
  */
 controllersModule.directive('topicHistory', function() {
     return {
