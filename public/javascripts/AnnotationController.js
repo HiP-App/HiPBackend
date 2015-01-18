@@ -5,7 +5,7 @@
  *
  * The Annotation Controller starts the AnnotateIt Plugin
  */
-controllersModule.controller('AnnotationCtrl', [, function() {
+controllersModule.controller('AnnotationCtrl',[ function() {
     var that = this;
 
     /**
