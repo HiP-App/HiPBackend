@@ -6,8 +6,7 @@
  * This is the major controller of the backend. It handles the change of topics, media entries, footnotes, etc.
  * Note that it needs the existence of an user controller (uc) in the current scope to work properly.
  */
-controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService',
-        function($scope,$http,$routeParams,commonTaskService) {
+controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService', function($scope,$http,$routeParams,commonTaskService) {
     var that = this;
 
     this.debug = false;

@@ -19,7 +19,7 @@ dependencies = [
 app = angular.module('myApp', dependencies)
 
 angular.module('myApp.routeConfig', ['ngRoute'])
-    .config ($routeProvider, $locationProvider, commonTaskServiceProvider) ->
+    .config ($routeProvider, $locationProvider) ->
         #$locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
