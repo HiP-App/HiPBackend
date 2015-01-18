@@ -1,7 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 05.11.2014.
+ *
+ * @class angular_module.controllersModule.MessageCtrl
+ *
+ * This controller implements the functions for receiving and sending private messages
  */
-
 controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 

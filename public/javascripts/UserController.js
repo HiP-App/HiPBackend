@@ -1,7 +1,11 @@
 /**
  * Created by Jörg Amelunxen on 09.11.14.
+ *
+ * @class angular_module.controllersModule.UserCtrl
+ *
+ * This controller stores information about the current users. Furthermore, it can be used to evaluate the role
+ * of the currently active user.
  */
-
 controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($scope,$http,$attrs) {
     var that = this;
 

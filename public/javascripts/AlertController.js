@@ -1,7 +1,11 @@
 /**
  * Created by Jörg Amelunxen on 28.11.14.
+ *
+ *
+ * @class angular_module.alertModule.AlertCtrl
+ *
+ * The Alert Controller is used to drive the AlertBox directive.
  */
-
 alertModule.controller('AlertCtrl', ['$scope',function($scope) {
     var that = this;
 

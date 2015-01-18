@@ -1,5 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 29.10.2014.
+ *
+ * @class angular_module.groupModule.GroupCtrl
+ *
+ * This controller implements the complete group management functionality.
+ * Note that the GroupCtrl needs an Usercontroller as uc within its scope to be used.
  */
 groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
@@ -263,13 +268,10 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         var currentGroupUID = that.bufferedGroup.uID;
 
         $http.post('/admin/readRight/'+currentGroupUID+"/"+uIDOfTheGroupThatShouldGetTheReadRight).
-            success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
+            success(function() {
             }).
-            error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+            error(function() {
+                console.log("Error GroupCtrl: Could not set read rights");
             });
     };
 
@@ -282,7 +284,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     this.setTopicAtGroup = function(groupID,currentTopicID){
         // get group that should be changed
         $http.get('/admin/group/'+groupID).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 var changeGroup = data[0];
                 changeGroup.topic = currentTopicID;
 
@@ -293,11 +295,11 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                         // when the response is available
                     }).
                     error(function(data, status, headers, config) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
+                        console.log("Error GroupCtrl: Could not set a topic");
                     });
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
+                console.log("Error GroupCtrl: Could not fetch the group for changing the topic");
             });
     };
 
@@ -359,16 +361,14 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
 
                 // send data back to the server
                 $http.post('/admin/modify/group', changeGroup).
-                    success(function(data, status, headers, config) {
-                        // this callback will be called asynchronously
-                        // when the response is available
+                    success(function() {
                     }).
-                    error(function(data, status, headers, config) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
+                    error(function() {
+                        console.log("Error GroupCtrl: Could not modify the notifications");
                     });
             }).
             error(function(data, status, headers, config) {
+                console.log("Error GroupCtrl: Could not fetch the group for modifying the notifications");
             });
     };
 
@@ -496,6 +496,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             success(function(data, status, headers, config) {
             }).
             error(function(data, status, headers, config) {
+                console.log("Error GroupCtrl: Could not create the group");
             });
 
         /* create corresponding chat system */
@@ -542,7 +543,6 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
     }
 
     if(that.groups[0] == "initMe"){
-        //FIXME don't use the scope
         that.getGroups($scope.uc.email);
     }
 }]);

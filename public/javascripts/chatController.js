@@ -1,5 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 29.10.2014.
+ *
+ * @class angular_module.chatModule.ChatCtrl
+ *
+ * The Chat controller manages all needed functions for the ChatBox directive. It is able to create a new
+ * chat in the backend and is able to post messages.
  */
 chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
@@ -67,15 +72,15 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
                 }
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+                that.chat.message.push("Error: Connection error");
+                that.chat.sender.push("System");
             });
     };
 
     /**
      * Creates a new message array (that.messagesJSON) that contains the chat messages
      * in reverse order
-     * @returns {*}     the chat messages
+     * @returns {Array[String]}     the chat messages
      */
     this.prepareChatMessages = function(){
         if( that.chat.message != undefined ){

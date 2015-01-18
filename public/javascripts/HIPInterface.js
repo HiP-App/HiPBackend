@@ -1,7 +1,6 @@
 /**
  * Created by Jörg Amelunxen on 28.11.14.
  */
-    //FIXME put this into services
 var DEBUG = false;
 
 var Interface = {};
@@ -284,8 +283,7 @@ Interface.createTopic = function (topicname, subTopicsAsString, groupID, refToGr
             $http.post('/admin/history',historyObject);
         }).
         error(function (data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+            console.log("Error Interface: Could not create history entry");
         });
 
     if (groupID != "" || groupID != "undefined") {

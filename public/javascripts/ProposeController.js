@@ -1,7 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 05.11.2014.
+ *
+ * @class angular_module.controllersModule.ProposeCtrl
+ *
+ * This controller is needed to use the functions for proposing a new/specific topic.
  */
-
 controllersModule.controller('ProposeCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
@@ -28,13 +31,10 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', function($scope,$
             that.propose.name, that.propose.content);
 
         $http.post('/admin/messages', proposement).
-            success(function(data, status, headers, config) {
-                // this callback will be called asynchronously
-                // when the response is available
+            success(function() {
             }).
-            error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+            error(function() {
+                console.log("Error ProposeCtrl: Could not propose a topic");
             });
     }
 }]);

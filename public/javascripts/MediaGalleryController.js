@@ -1,7 +1,11 @@
 /**
  * Created by Jörg Amelunxen on 07.01.15.
+ *
+ * @class angular_module.controllersModule.GalleryCtrl
+ *
+ * This controller is used within the mediaGallery directive. It implements the function for deleting images in the
+ * backend.
  */
-
 controllersModule.controller('GalleryCtrl', ['$scope','$http',function($scope,$http) {
     var that = this;
 

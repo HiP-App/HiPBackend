@@ -1,7 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 20.11.14.
+ *
+ * @class angular_module.controllersModule.RoleCtrl
+ *
+ * This controller is needed for role management. Is offers an interface for changing roles.
  */
-
 controllersModule.controller('RoleCtrl', ['$scope','$http', function($scope,$http) {
     var that = this;
 
@@ -37,8 +40,7 @@ controllersModule.controller('RoleCtrl', ['$scope','$http', function($scope,$htt
                 // when the response is available
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+                console.log("Error RoleCtrl: Could not update a role");
             });
     }
 }]);

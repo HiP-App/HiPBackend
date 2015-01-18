@@ -1,7 +1,11 @@
 /**
  * Created by Jörg Amelunxen on 11.11.14.
+ *
+ * @class angular_module.controllersModule.TopicCtrl
+ *
+ * This is the major controller of the backend. It handles the change of topics, media entries, footnotes, etc.
+ * Note that it needs the existence of an user controller (uc) in the current scope to work properly.
  */
-
 controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
     var that = this;
 

@@ -1,7 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 28.11.14.
+ *
+ * @class angular_module.overlayModule.OverlayCtrl
+ *
+ * This controller is needed to toggle the overlay. It is used within the fullscreen overlay directive.
  */
-
 overlayModule.controller('OverlayCtrl', ['$scope', function($scope) {
     var that = this;
 

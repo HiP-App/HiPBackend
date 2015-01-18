@@ -1,8 +1,11 @@
 /**
  * Created by Jörg Amelunxen on 07.12.14.
+ *
+ * @class angular_module.controllersModule.AnnotationCtrl
+ *
+ * The Annotation Controller starts the AnnotateIt Plugin
  */
-
-controllersModule.controller('AnnotationCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+controllersModule.controller('AnnotationCtrl', [, function() {
     var that = this;
 
     /**

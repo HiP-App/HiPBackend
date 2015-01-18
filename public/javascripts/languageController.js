@@ -1,7 +1,11 @@
 /**
  * Created by Jörg Amelunxen on 29.10.2014.
+ *
+ * @class angular_module.controllersModule.LangCtrl
+ *
+ * This controller implements the complete translation functionality. It is able to retrieve terms, load
+ * dictionaries, etc.
  */
-
 controllersModule.controller('LangCtrl', ['$http', function($http) {
     this.debug = false;
     var errorString = "not fetched yet: ";
