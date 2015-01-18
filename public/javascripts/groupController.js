@@ -6,7 +6,7 @@
  * This controller implements the complete group management functionality.
  * Note that the GroupCtrl needs an Usercontroller as uc within its scope to be used.
  */
-groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', 'commonTaskService', function($scope,$http,$routeParams, commonTaskService) {
     var that = this;
 
     /*
@@ -247,12 +247,12 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
                         content:    messageContent + buttonHTML
                     };
 
-                    var uID = Tooling.generateUID(messageData.title + messageData.receiver + messageData.content);
+                    var uID = commonTaskService.generateUID(messageData.title + messageData.receiver + messageData.content);
 
-                    var tempMessage = Tooling.createMessageObject(uID, messageData.receiver, emailOfTheSender,
+                    var tempMessage = commonTaskService.createMessageObject(uID, messageData.receiver, emailOfTheSender,
                         messageData.title, messageData.content);
 
-                    Interface.sendPrivateMessage($http, tempMessage, that.debug);
+                    commonTaskService.sendPrivateMessage($http, tempMessage, that.debug);
                 });
             }
         });
@@ -480,7 +480,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         }
 
         /* generate uID and other communication stuff */
-        that.currentGroup.uID = Tooling.generateUID(that.currentGroup.name);
+        that.currentGroup.uID = commonTaskService.generateUID(that.currentGroup.name);
         that.groups.push(this.currentGroup);
         that.groupsCreatedByThisUser.push(this.currentGroup);
         that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(this.currentGroup);
@@ -500,10 +500,10 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
             });
 
         /* create corresponding chat system */
-        Interface.createChat($http, that.currentGroup.uID, that.currentGroup.name + " Chat");
+        commonTaskService.createChat($http, that.currentGroup.uID, that.currentGroup.name + " Chat");
 
         /* create the fitting topics */
-        Interface.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
+        commonTaskService.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
             $scope.gc, $scope.uc.email, $http, that.currentGroupTopic.deadline)
     };
 
@@ -534,7 +534,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', function(
         that.getGroups();
 
         // remove corresponding chat system
-        Interface.deleteChat($http, uID);
+        commonTaskService.deleteChat($http, uID);
     };
 
     /* update parameter if needed */

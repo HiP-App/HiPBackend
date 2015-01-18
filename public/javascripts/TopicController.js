@@ -6,7 +6,8 @@
  * This is the major controller of the backend. It handles the change of topics, media entries, footnotes, etc.
  * Note that it needs the existence of an user controller (uc) in the current scope to work properly.
  */
-controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService',
+        function($scope,$http,$routeParams,commonTaskService) {
     var that = this;
 
     this.debug = false;
@@ -73,7 +74,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             that.modifyTopicConstraints = topicConstraints;
         }
         else{
-            Interface.initConstraintArray(that.modifyTopicConstraints);
+            commonTaskService.initConstraintArray(that.modifyTopicConstraints);
         }
     };
 
@@ -90,7 +91,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * @param topicID
      */
     this.initHistory = function(topicID){
-        var historyObject = Tooling.createHistoryObject(topicID);
+        var historyObject = commonTaskService.createHistoryObject(topicID);
 
         $http.post('/admin/history',historyObject);
     };
@@ -99,11 +100,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * Creates a new topic with the internally stored information and sends it to the server
      */
     this.createTopic = function(){
-        Interface.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
+        commonTaskService.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
             $scope.gc, $scope.uc.email, $http);
 
         /* create corresponding chat system */
-        Interface.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
+        commonTaskService.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
     };
 
     /**
@@ -112,7 +113,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      */
     this.prepareANewFootnote = function(){
         that.temporaryFootnote = {
-            uID: Tooling.generateUID($scope.uc.email),
+            uID: commonTaskService.generateUID($scope.uc.email),
             creator: $scope.uc.email,
             linkedToTopic: that.currentTopic.uID
         };
@@ -231,7 +232,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
      * @param msg   the message that should be contained in the alert
      */
     this.updateStatus = function(ac, lc, msg){
-        var topic = Tooling.createTopicObject(that.currentTopic.uID,
+        var topic = commonTaskService.createTopicObject(that.currentTopic.uID,
             that.currentTopic.name,
             that.currentTopic.group,
             that.currentTopic.createdBy,
@@ -242,7 +243,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
 
         var constraintsAreInitialized = that.currentTopic.constraints[0] != "" || that.currentTopic.constraints != undefined;
         if(!constraintsAreInitialized){
-            Interface.initConstraintArray(that.currentTopic.constraints);
+            commonTaskService.initConstraintArray(that.currentTopic.constraints);
         }
 
         $http.put('/admin/topic', topic).
@@ -256,7 +257,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
         that.updateConstraints();
 
         // create a new history entry and send it
-        var hObj = Tooling.createHistoryObject(that.currentTopic.uID,
+        var hObj = commonTaskService.createHistoryObject(that.currentTopic.uID,
                     that.currentTopic.content,
                     $scope.uc.email,
                     parseInt(that.topicVersion)+1+"");
@@ -346,7 +347,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
                             /* no history found for topic
                                 -> this is an error
                                 -> create fallback data instead */
-                            that.historyEntries.push(Tooling.createHistoryObject(uIDOfTheTopic));
+                            that.historyEntries.push(commonTaskService.createHistoryObject(uIDOfTheTopic));
                             that.topicVersion = 1;
                         }
                     }).error(function(data){
@@ -532,7 +533,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
             $http.delete('/admin/topic/' + deleteThis).
                 success(function (data, status, headers, config) {
                     // remove corresponding chat system
-                    Interface.deleteChat($http, deleteThis);
+                    commonTaskService.deleteChat($http, deleteThis);
 
                     // remove corresponding history
                     that.deleteHistory(deleteThis);
@@ -580,7 +581,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams', fun
     this.storeFootnote = function(note){
         if(note == undefined){
             note = {
-                uID: Tooling.generateUID(that.temporaryFootnote.content),
+                uID: commonTaskService.generateUID(that.temporaryFootnote.content),
                 content: that.temporaryFootnote.content,
                 creator: that.temporaryFootnote.creator,
                 linkedToTopic: that.temporaryFootnote.linkedToTopic

@@ -44,7 +44,7 @@ var demoUser = {
 };
 
 describe('Testsuite for the GroupController:', function () {
-    var controller = null, $scope = null, $httpBackend = null;
+    var controller = null, $scope = null, $httpBackend = null, neededService = null;
     var gc = {};
     var routeParams = {};
     routeParams.uID = 1;
@@ -107,6 +107,11 @@ describe('Testsuite for the GroupController:', function () {
             $scope: $scope,
             $routeParams: routeParams
         });
+
+        // get the needed Service
+        var $injector = angular.injector([ 'myApp.services' ]);
+        neededService = $injector.get( 'commonTaskService' );
+
     }));
 
     afterEach(function () {
@@ -316,7 +321,7 @@ describe('Testsuite for the GroupController:', function () {
         var buttonHTML = '<br><a href="/#/group/rights/' + '1' + '" id="btn_send_request" ' +
             'class="btn btn-info">' + "undefined" + '</a>';
 
-        var tempMessage = Tooling.createMessageObject(getUID,"someOne", "sender", "title:Dummy", "content"+buttonHTML);
+        var tempMessage = neededService.createMessageObject(getUID,"someOne", "sender", "title:Dummy", "content"+buttonHTML);
 
         $httpBackend.expectPOST('/admin/messages', tempMessage).respond(200,{});
         $httpBackend.flush();

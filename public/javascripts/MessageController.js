@@ -5,7 +5,7 @@
  *
  * This controller implements the functions for receiving and sending private messages
  */
-controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', function($scope,$http,$routeParams) {
+controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams','commonTaskService', function($scope,$http,$routeParams,commonTaskService) {
     var that = this;
 
     this.debug = false;
@@ -75,13 +75,13 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams', f
      * @param emailOfTheSender  the uID resp. email address of the sender
      */
     this.sendMessage = function(emailOfTheSender){
-        var uID = Tooling.generateUID(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
+        var uID = commonTaskService.generateUID(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
             that.messageThatGetsCurrentlyCreated.content);
 
-        var tempMessage = Tooling.createMessageObject(uID,that.messageThatGetsCurrentlyCreated.receiver, emailOfTheSender,
+        var tempMessage = commonTaskService.createMessageObject(uID,that.messageThatGetsCurrentlyCreated.receiver, emailOfTheSender,
         that.messageThatGetsCurrentlyCreated.title, that.messageThatGetsCurrentlyCreated.content);
 
-        Interface.sendPrivateMessage($http, tempMessage, that.debug);
+        commonTaskService.sendPrivateMessage($http, tempMessage, that.debug);
     };
 
     /**

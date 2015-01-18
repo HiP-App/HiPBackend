@@ -3,12 +3,12 @@ dependencies = [
     'ngRoute',
     'ui.bootstrap',
     'textAngular',
+    'myApp.services',
     'myApp.alerts',
     'myApp.chat',
     'myApp.groups',
     'myApp.overlay',
     'myApp.filters',
-    'myApp.services',
     'myApp.controllers',
     'myApp.directives',
     'myApp.common',
@@ -19,7 +19,7 @@ dependencies = [
 app = angular.module('myApp', dependencies)
 
 angular.module('myApp.routeConfig', ['ngRoute'])
-    .config ($routeProvider, $locationProvider) ->
+    .config ($routeProvider, $locationProvider, commonTaskServiceProvider) ->
         #$locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
@@ -82,13 +82,13 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .otherwise({redirectTo: '/'})
 
 @commonModule = angular.module('myApp.common', [])
-@controllersModule = angular.module('myApp.controllers', [])
 @servicesModule = angular.module('myApp.services', [])
+@controllersModule = angular.module('myApp.controllers', ['myApp.services'])
 @modelsModule = angular.module('myApp.models', [])
 @directivesModule = angular.module('myApp.directives', [])
 @filtersModule = angular.module('myApp.filters', [])
 
 @alertModule = angular.module('myApp.alerts', [])
 @chatModule = angular.module('myApp.chat', [])
-@groupModule = angular.module('myApp.groups', [])
+@groupModule = angular.module('myApp.groups', ['myApp.services'])
 @overlayModule = angular.module('myApp.overlay', [])

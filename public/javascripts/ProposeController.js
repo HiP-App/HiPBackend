@@ -5,7 +5,7 @@
  *
  * This controller is needed to use the functions for proposing a new/specific topic.
  */
-controllersModule.controller('ProposeCtrl', ['$scope','$http', function($scope,$http) {
+controllersModule.controller('ProposeCtrl', ['$scope','$http','commonTaskService', function($scope,$http,commonTaskService) {
     var that = this;
 
     this.debug = false;
@@ -25,9 +25,9 @@ controllersModule.controller('ProposeCtrl', ['$scope','$http', function($scope,$
      * @param proposeString language specific prefix for the title of the message
      */
     this.proposeTopic = function(receiver,sender,proposeString){
-        var currentPropID = Tooling.generateUID(that.propose.name);
+        var currentPropID = commonTaskService.generateUID(that.propose.name);
 
-        var proposement = Tooling.createMessageObject(currentPropID, receiver, sender, proposeString + " " +
+        var proposement = commonTaskService.createMessageObject(currentPropID, receiver, sender, proposeString + " " +
             that.propose.name, that.propose.content);
 
         $http.post('/admin/messages', proposement).

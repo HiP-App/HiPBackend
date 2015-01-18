@@ -3,7 +3,7 @@
  */
 
 describe('Testsuite for the TopicController:', function () {
-    var controller = null, $scope = null, $httpBackend = null;
+    var controller = null, $scope = null, $httpBackend = null, neededService = null;
     var gc = {};
     var routeParams = {};
     routeParams.topicID = 1;
@@ -157,6 +157,10 @@ describe('Testsuite for the TopicController:', function () {
             $scope: $scope,
             $routeParams: routeParams
         });
+
+        // get the needed Service
+        var $injector = angular.injector([ 'myApp.services' ]);
+        neededService = $injector.get( 'commonTaskService' );
 
         var __ret           = initTestVariables();
         demoTopic1          = __ret.demoTopic1;
@@ -557,7 +561,7 @@ describe('Testsuite for the TopicController:', function () {
         initController();
 
         var contentOfTheFootnote = "I am a footnote";
-        var note = Tooling.createFootnote(Tooling.generateUID(contentOfTheFootnote), contentOfTheFootnote,
+        var note = neededService.createFootnote(neededService.generateUID(contentOfTheFootnote), contentOfTheFootnote,
                                             "dummy@dummy.com","1");
 
         controller.storeFootnote(note);
