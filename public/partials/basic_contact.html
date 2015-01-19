@@ -1,9 +1,9 @@
 <div ng-controller="GroupCtrl as gc">
     <div id="mainSingleBoxBig" class="panel panel-default" ng-controller="MessageCtrl as mc">
-        <div class="panel-heading"> {{lc.getTerm('system_contact_head')}} </div>
+        <div class="panel-heading" ng-bind="lc.getTerm('system_contact_head')"> </div>
         <div>
             <div class="panel-body">
-                <h4>{{lc.getTerm('system_contact_subheader')}}</h4>
+                <h4 ng-bind="lc.getTerm('system_contact_subheader')"></h4>
 
                 <br>
 

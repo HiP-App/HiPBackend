@@ -22,8 +22,7 @@
                         <div class="float-clear"></div>
                     </div>
                     <div class="panel-footer">
-                        <div class="shift-left">
-                            {{lc.getTerm('system_group_member')}}
+                        <div class="shift-left" ng-bind="lc.getTerm('system_group_member')">
                         </div>
 
                         <div class="shift-left">
@@ -38,7 +37,7 @@
 
                 <div id="contentBox">
                     <div class="panel panel-default almost-3quarter">
-                        <div class="panel-heading"> {{lc.getTerm('system_group_listOfTopics')}} </div>
+                        <div class="panel-heading" ng-bind="lc.getTerm('system_group_listOfTopics')"> </div>
                         <div class="panel-body">
                             <div ng-controller="TopicCtrl as tc">
                                 <topic-list topic="gc.bufferedGroup.topic"></topic-list>

@@ -10,7 +10,7 @@
             <div class="panel-body">
                 <form id="SendMessageForm" name="SendMessageForm" class="form-horizontal" role="form"
                       ng-submit="mc.sendMessage(uc.email)">
-                    <h4> {{lc.getTerm('system_sendMessage_information')}}</h4>
+                    <h4 ng-bind="lc.getTerm('system_sendMessage_information')"></h4>
 
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-10">
@@ -22,9 +22,7 @@
                                     </span>
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="user in uc.userList">
-                                            <a ng-click="mc.messageThatGetsCurrentlyCreated.receiver = user.email">
-                                                {{user.email}}
-                                            </a>
+                                            <a ng-click="mc.messageThatGetsCurrentlyCreated.receiver = user.email" ng-bind="user.email"></a>
                                         </li>
                                     </ul>
                                 </span>
@@ -32,12 +30,10 @@
                                 <input type="text" class="form-control" name="rec" id="rec" placeholder=""
                                        ng-model="mc.messageThatGetsCurrentlyCreated.receiver">
 
-
-                                </div>
-
+                            </div>
 
                             <div class="input-group">
-                                <span class="input-group-addon">{{lc.getTerm('system_sendMessage_title')}}</span>
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_sendMessage_title')"></span>
                                 <input type="text" class="form-control" name="messageTitle" id="messageTitle" placeholder=""
                                        ng-model="mc.messageThatGetsCurrentlyCreated.title">
                             </div>

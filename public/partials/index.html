@@ -2,21 +2,19 @@
     <div id="groups" class="panel panel-default">
 
         <div class="panel-heading">
-            <div>{{lc.getTerm('system_start_whatis')}}</div>
+            <div ng-bind="lc.getTerm('system_start_whatis')"></div>
         </div>
 
-        <div class="panel-body">
-            {{lc.getTerm('system_start_whatistext')}}
-        </div>
+        <div class="panel-body" ng-bind="lc.getTerm('system_start_whatistext')"></div>
 
         <div class="float-clear"></div>
     </div>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="MessageCtrl as mc">
-        <div class="panel-heading"> {{lc.getTerm('system_start_loggedIn_head')}} </div>
+        <div class="panel-heading" ng-bind="lc.getTerm('system_start_loggedIn_head')"></div>
         <div>
             <div class="panel-body">
-                <h4>{{lc.getTerm('system_start_loggedIn_subheader')}}</h4>
+                <h4 ng-bind="lc.getTerm('system_start_loggedIn_subheader')"></h4>
 
                 <br>
 

@@ -2,7 +2,7 @@
     <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="MessageCtrl as mc">
-        <div class="panel-heading"> {{lc.getTerm('system_messages_head')}} </div>
+        <div class="panel-heading" ng-bind="lc.getTerm('system_messages_head')"> </div>
         <div>
             <div class="panel-body">
                     <h4>{{lc.getTerm('system_messages_yourMessages')}} {{uc.email}}</h4>
@@ -13,15 +13,15 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>{{lc.getTerm('system_messages_sender')}}</th>
-                                    <th>{{lc.getTerm('system_messages_messageName')}}</th>
-                                    <th>{{lc.getTerm('system_messages_options')}}</th>
+                                    <th ng-bind="lc.getTerm('system_messages_sender')"></th>
+                                    <th ng-bind="lc.getTerm('system_messages_messageName')"></th>
+                                    <th ng-bind="lc.getTerm('system_messages_options')"></th>
                                 </tr>
                             </thead>
                             <tr ng-repeat="m in mc.messages">
-                                <td class="td-small"> {{ m.sender }} </td>
+                                <td class="td-small" ng-bind="m.sender"> </td>
                                 <td class="td-big">
-                                    <a ng-href="/#/messages/view/{{m.uID}}">  {{ m.title }} </a>
+                                    <a ng-href="/#/messages/view/{{m.uID}}" ng-bind="m.title"> </a>
                                 </td>
                                 <td class="td-big">
                                     [<span ng-click="mc.deleteMessage(m.uID)" class="glyphicon glyphicon-trash">]
@@ -36,7 +36,7 @@
 
                     <div class="col-sm-offset-3 col-sm-6 text-right">
                         <a href="/#/messages/send">
-                            <button ng-href="" type="submit" class="btn btn-success" id="btn_create">{{lc.getTerm('system_messages_write')}}</button>
+                            <button ng-href="" type="submit" class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('system_messages_write')"></button>
                         </a>
                     </div>
 

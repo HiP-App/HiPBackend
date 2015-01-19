@@ -21,17 +21,15 @@
                         </div>
                         <div class="shift-right" >
                             {{lc.getTerm('system_group_topic_header')}}
-                            <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">{{gc.bufferedTopic.name}}</a>
+                            <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}" ng-bind="gc.bufferedTopic.name"></a>
                             <a ng-click="   tc.getSubTopicByTopicID(gc.bufferedGroup.topic);
-                                            oc.toggleOverlay()">
-                                {{lc.getTerm('system_group_topic_header_ext')}}
-                            </a>
+                                            oc.toggleOverlay()"
+                               ng-bind="lc.getTerm('system_group_topic_header_ext')"></a>
                         </div>
                         <div class="float-clear"></div>
                     </div>
                     <div class="panel-footer">
-                        <div class="shift-left">
-                            {{lc.getTerm('system_group_member')}}
+                        <div class="shift-left" ng-bind="lc.getTerm('system_group_member')">
                         </div>
 
                         <div class="shift-left">
@@ -46,25 +44,23 @@
 
                 <div id="contentBox">
                     <div class="panel panel-default quarter-left" ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID)">
-                        <div class="panel-heading"> {{lc.getTerm('system_group_navigation')}} </div>
+                        <div class="panel-heading" ng-bind="lc.getTerm('system_group_navigation')"> </div>
                         <div class="panel-body">
                             <ul>
-                                <li> <a href="/#/group/propose"> {{lc.getTerm('system_group_navigation_proposeTopic')}} </a> </li>
-                                <li> <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}">
-                                    {{lc.getTerm('system_group_navigation_editContentOfTopic')}}
-                                </a> </li>
-                                <li> <a ng-href="/#/group/rights/{{gc.bufferedGroup.uID}}"> {{lc.getTerm('system_group_navigation_inviteRead')}} </a> </li>
-                                <li> <a ng-href="/#/group/3d/{{gc.bufferedGroup.uID}}"> {{lc.getTerm('system_group_navigation_3d_data')}} </a> </li>
+                                <li> <a href="/#/group/propose" ng-bind="lc.getTerm('system_group_navigation_proposeTopic')"> </a> </li>
+                                <li> <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}" ng-bind="lc.getTerm('system_group_navigation_editContentOfTopic')"></a> </li>
+                                <li> <a ng-href="/#/group/rights/{{gc.bufferedGroup.uID}}" ng-bind="lc.getTerm('system_group_navigation_inviteRead')"></a> </li>
+                                <li> <a ng-href="/#/group/3d/{{gc.bufferedGroup.uID}}" ng-bind="lc.getTerm('system_group_navigation_3d_data')"> </a> </li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="panel panel-default almost-half"
                          ng-show="gc.userIDIsMemberOfGrp(uc.email,gc.bufferedGroup.uID) || gc.userIDIsReaderOfGrp(uc.email,gc.bufferedGroup.uID)">
-                        <div class="panel-heading"> {{lc.getTerm('system_group_notification')}} </div>
+                        <div class="panel-heading" ng-bind="lc.getTerm('system_group_notification')"> </div>
                         <div class="panel-body scroll max400">
-                                <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications track by $index">
-                                    {{lc.getNotification(message)}}
+                                <div  class="alert alert-info" role="alert" ng-repeat="message in gc.bufferedGroup.revertedNotifications track by $index"
+                                        ng-bind="lc.getNotification(message)">
                                 </div>
                         </div>
                     </div>

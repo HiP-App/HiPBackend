@@ -5,12 +5,12 @@
         <div class="panel-heading">
             <div class="shift-left">
                 <a ng-href="/#/group/viewexternal/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
-                <a ng-click="showDiv = 1"> {{lc.getTerm('system_topic_detail_head')}}</a>
-                <a ng-click="showDiv = 3"> {{lc.getTerm('system_topic_detail_pictures')}}</a>
+                <a ng-click="showDiv = 1" ng-bind="lc.getTerm('system_topic_detail_head')"></a>
+                <a ng-click="showDiv = 3" ng-bind="lc.getTerm('system_topic_detail_pictures')"></a>
             </div>
 
             <div class="shift-right">
-                <a ng-click="showDiv = 2"> {{lc.getTerm('system_open_chat')}} </a>
+                <a ng-click="showDiv = 2" ng-bind="lc.getTerm('system_open_chat')"> </a>
             </div>
 
             <div class="float-clear"></div>
@@ -31,8 +31,7 @@
 
                     <div class="shift-right">
                         <button ng-click="annoCtrl.startAnnotation('#concreteContent')"
-                                class="btn btn-success" id="btn_create">
-                            {{lc.getTerm('start_annotation')}}
+                                class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('start_annotation')">
                         </button>
                     </div>
 
@@ -60,9 +59,7 @@
                                             {{ lc.getTerm(constraint.languageTerm) }}
                                         </span>
                                         <div class="input-group">
-                                            <span class="input-group-addon">
-                                                {{ lc.getTerm(constraint.languageTerm) }}
-                                            </span>
+                                            <span class="input-group-addon" ng-bind="lc.getTerm(constraint.languageTerm)"></span>
 
                                             <input type="text" class="form-control" name="conValue" id="conValue" placeholder=""
                                                    ng-model="constraint.valueInTopic" tooltip="{{lc.getTerm('tooltip_constraint')}}"
@@ -70,9 +67,7 @@
                                         </div>
 
                                         <div class="input-group">
-                                            <span class="input-group-addon">
-                                                {{ lc.getTerm(constraint.name) }}
-                                            </span>
+                                            <span class="input-group-addon" ng-bind="lc.getTerm(constraint.name)"></span>
 
                                             <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
                                                    ng-model="constraint.value" tooltip="{{lc.getTerm('tooltip_constraint')}}"

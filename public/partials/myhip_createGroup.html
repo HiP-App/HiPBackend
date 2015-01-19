@@ -2,7 +2,7 @@
     <group-box></group-box>
 
     <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
-        <div class="panel-heading"> {{lc.getTerm('system_groups_header')}} </div>
+        <div class="panel-heading" ng-bind="lc.getTerm('system_groups_header')"></div>
         <div >
 
 
@@ -12,23 +12,23 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-10">
-                            <h4>{{lc.getTerm('system_groups_information')}}</h4>
+                            <h4 ng-bind="lc.getTerm('system_groups_information')"></h4>
                             <div class="input-group">
-                                <span class="input-group-addon">{{lc.getTerm('system_groups_form_name')}}</span>
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_groups_form_name')"></span>
                                 <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
                                     ng-model="gc.currentGroup.name" tooltip="{{lc.getTerm('tooltip_createGroup_name')}}"
                                     tooltip-trigger="focus" tooltip-placement="right">
                             </div>
 
                             <div class="input-group">
-                                <span class="input-group-addon">{{lc.getTerm('system_groups_form_topic')}}</span>
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_groups_form_topic')"></span>
                                 <input type="text" class="form-control" name="groupTopic" id="groupTopic" placeholder=""
                                        ng-model="gc.currentGroupTopic.topic" tooltip="{{lc.getTerm('tooltip_createGroup_mainTopic')}}"
                                        tooltip-trigger="focus" tooltip-placement="right">
                             </div>
 
                             <div class="input-group">
-                                <span class="input-group-addon">{{lc.getTerm('system_groups_form_subtopic')}}</span>
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_groups_form_subtopic')"></span>
                                 <input type="text" class="form-control" name="groupSubTopic" id="groupSubTopic" placeholder=""
                                        ng-model="gc.currentGroupTopic.subtopics" tooltip-html-unsafe="{{lc.getTerm('tooltip_createGroup_subTopic')}}"
                                        tooltip-trigger="focus" tooltip-placement="right">

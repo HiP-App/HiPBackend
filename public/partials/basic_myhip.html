@@ -8,7 +8,7 @@
 
             <div id="welcomeBox" class="panel-heading">
                 <div ng-show="uc.isSupervisor()">
-                {{lc.getTerm('system_supervisor_welcome')}} {{uc.firstname}}
+                    {{lc.getTerm('system_supervisor_welcome')}} {{uc.firstname}}
                 </div>
 
                 <div ng-show="uc.isStudent()">
@@ -16,37 +16,31 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <div ng-show="uc.isSupervisor()">
-                    {{lc.getTerm('system_supervisor_datareview')}}
-                </div>
+                <div ng-show="uc.isSupervisor()" ng-bind="lc.getTerm('system_supervisor_datareview')"></div>
             </div>
         </div>
 
         <div id="contentBox">
             <div class="panel panel-default quarter-left">
                 <div class="panel-heading">
-                    <div ng-show="uc.isSupervisor()">
-                    {{lc.getTerm('system_supervisor_navigation')}}
-                    </div>
+                    <div ng-show="uc.isSupervisor()"    ng-bind="lc.getTerm('system_supervisor_navigation')"></div>
 
-                    <div ng-show="uc.isStudent()">
-                        {{lc.getTerm('system_student_navigation')}}
-                    </div>
+                    <div ng-show="uc.isStudent()"       ng-bind="lc.getTerm('system_student_navigation')"></div>
                 </div>
                 <div class="panel-body">
 
                     <div ng-show="uc.isSupervisor()">
                         <ul>
-                            <li> <a href="/#/topic/create"> {{lc.getTerm('system_supervisor_navigation_addTopic')}} </a> </li>
-                            <li> <a ng-href="/#/topic/modify/{{ uc.email }}"> {{lc.getTerm('system_supervisor_navigation_modifyTopic')}} </a> </li>
-                            <li> <a href="/#/group/create"> {{lc.getTerm('system_supervisor_navigation_addGroup')}} </a> </li>
-                            <li> <a href="/#/browse"> {{lc.getTerm('system_navigation_browse')}} </a> </li>
+                            <li> <a href="/#/topic/create" ng-bind="lc.getTerm('system_supervisor_navigation_addTopic')"> </a> </li>
+                            <li> <a ng-href="/#/topic/modify/{{ uc.email }}" ng-bind="lc.getTerm('system_supervisor_navigation_modifyTopic')"> </a> </li>
+                            <li> <a href="/#/group/create" ng-bind="lc.getTerm('system_supervisor_navigation_addGroup')"> </a> </li>
+                            <li> <a href="/#/browse" ng-bind="lc.getTerm('system_navigation_browse')"> </a> </li>
                         </ul>
                     </div>
 
                     <div ng-show="uc.isStudent()">
                         <ul>
-                            <li> <a href="/#/browse"> {{lc.getTerm('system_navigation_browse')}} </a> </li>
+                            <li> <a href="/#/browse" ng-bind="lc.getTerm('system_navigation_browse')"> </a> </li>
                         </ul>
                     </div>
                 </div>
@@ -55,11 +49,11 @@
 
             <aggregated-notifications groupcontroller="gc"
                                       languagecontroller="lc"
-                                      usercontroller="uc""></aggregated-notifications>
+                                      usercontroller="uc"></aggregated-notifications>
 
 
             <div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()">
-                <div class="panel-heading"> {{lc.getTerm('system_supervisor_templates')}} </div>
+                <div class="panel-heading" ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
                 <div class="panel-body">  </div>
             </div>
 

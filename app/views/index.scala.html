@@ -38,15 +38,15 @@
                 <div class="navbar-left">
                     <ul class="nav nav-pills">
                         <li class="inner-nav"> <a href="#"> Home </a> </li>
-                        <li class="inner-nav"> <a ng-href="/#/myhip"> {{lc.getTerm('system_navi_myhip')}} </a> </li>
-                        <li class="inner-nav"> <a ng-href="/#/messages/all/{{uc.email}}"> {{lc.getTerm('system_navi_messages')}} </a> </li>
-                        <li class="inner-nav"> <a ng-href="/#/contact"> {{lc.getTerm('system_navi_contact')}} </a> </li>
+                        <li class="inner-nav"> <a ng-href="/#/myhip" ng-bind="lc.getTerm('system_navi_myhip')"> </a> </li>
+                        <li class="inner-nav"> <a ng-href="/#/messages/all/{{uc.email}}" ng-bind="lc.getTerm('system_navi_messages')"></a> </li>
+                        <li class="inner-nav"> <a ng-href="/#/contact" ng-bind="lc.getTerm('system_navi_contact')"> </a> </li>
                     </ul>
                 </div>
 
                 <div class="navbar-right">
                     <ul class="nav nav-pills">
-                        <li class="inner-nav"> <a href="/logout"> {{lc.getTerm('system_lang_logout')}} </a> </li>
+                        <li class="inner-nav"> <a href="/logout" ng-bind="lc.getTerm('system_lang_logout')"></a> </li>
                         <li class="inner-nav"> <a ng-click="lc.getLanguage('eng')">   <img src='assets/images/eng.png' alt="english" width="16"> </a> </li>
                         <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/de.png' alt="german" width="16"> </a> </li>
                         <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/help.png' alt="help" width="16"> </a> </li>
