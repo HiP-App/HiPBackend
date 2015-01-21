@@ -14,6 +14,7 @@ controllersModule.directive('topicHistory', function() {
             scope.listRange = function(from, to, user, entries) {
                 var result = {};
 
+                /* filter data entries */
                 angular.forEach(entries, function(entry, key) {
                     if ((entry.versionNumber >= from && entry.versionNumber <= to) || entry.editor == user) {
                         result[key] = entry;
@@ -25,6 +26,15 @@ controllersModule.directive('topicHistory', function() {
         }
 
     };
+});
+
+/**
+ * Filter converts the AngularJS Data-Objects to an Array
+ */
+controllersModule.filter('toArray', function() {
+    return function(data) {
+
+    }
 });
 
 /**

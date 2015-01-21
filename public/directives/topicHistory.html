@@ -26,8 +26,8 @@
     </div>
 
     <div ng-repeat="entry in listRange(hc.from,hc.to,hc.user,tc.historyEntries) track by entry.versionNumber">
-        <b> Version: {{entry.versionNumber}} {{lc.getTerm('by')}} {{entry.editor}}</b>
-        <div ng-bind-html="entry.content"></div>
+        <b ng-bind-template="Version: {{entry.versionNumber}} {{lc.getTerm('by')}} {{entry.editor}}"></b>
+        <div ng-bind-html="entry.diff"></div>
         <hr>
     </div>
 </div>

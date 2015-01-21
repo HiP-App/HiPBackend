@@ -7,6 +7,14 @@ body{
 	margin: auto;
 }
 
+del{
+    color: red;
+}
+
+ins{
+    color:green;
+}
+
 .userAvatars{
     margin-left: 5px;
 }

@@ -331,11 +331,17 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                         if(data != undefined && data.length > 0){
                             that.historyEntries = data;
 
-                            /* extract current version number */
+                            /* extract current version number and create modification markup */
                             var max = -1;
                             for(var i=0; i < that.historyEntries.length; i++){
                                 if(that.historyEntries[i].versionNumber > max){
                                     max = that.historyEntries[i].versionNumber;
+                                }
+
+                                /* add diff markup */
+                                if(i >=1 ){
+                                    that.historyEntries[i].diff = diffString(that.historyEntries[i-1].content,
+                                        that.historyEntries[i].content)
                                 }
 
                                 // btw: cast the value to a number
@@ -349,6 +355,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                             that.historyEntries.push(commonTaskService.createHistoryObject(uIDOfTheTopic));
                             that.topicVersion = 1;
                         }
+
+                        /* now: revert order for output */
+                        that.historyEntries.reverse();
                     }).error(function(data){
                         console.log("error TopicController: Cannot fetch history entries");
                     });
