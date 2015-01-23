@@ -9,8 +9,8 @@ servicesModule.service('commonTaskService', function(){
 
     var DEBUG = false;
 
-    this.possibleContraints = ["character_limitation","img_limitation"]; // holds the used constraints in the system
-
+    this.possibleContraints = ["character_limitation","img_limitation",
+                                "max_character_limitation"]; // holds the used constraints in the system
 
     /**
      * Generates a uID for a given input String
@@ -20,6 +20,12 @@ servicesModule.service('commonTaskService', function(){
      */
     this.generateUID = function(inputString){
         var timestamp = Math.round(new Date().getTime() / 1000);
+
+        if(inputString == undefined){
+            console.log("Warning: undefined input String in generateUID function. Using " +
+                "static seed.");
+            inputString = "seed";
+        }
 
         var uID = Sha1.hash(inputString + Math.floor((Math.random() * 100000) + 1) + timestamp);
         Tooling.lastGeneratedRandomUID = uID;
@@ -136,6 +142,8 @@ servicesModule.service('commonTaskService', function(){
             constraintJSON.languageTerm = 'system_amount_chars';
         } else if (constraintJSON.name == 'img_limitation') {
             constraintJSON.languageTerm = 'system_amount_pics';
+        } else if (constraintJSON.name == 'max_character_limitation') {
+            constraintJSON.languageTerm = 'system_amount_maxchars';
         }
     };
 
@@ -207,6 +215,58 @@ servicesModule.service('commonTaskService', function(){
                 error(function (data, status, headers, config) {
                 });
         });
+    };
+
+
+    /**
+     * Create only missing constraints for the given topicID. Furthermore, it returns the
+     * created constraints.
+     *
+     * @param $http
+     * @param constraints
+     * @param topicID
+     * @returns {Array}
+     */
+    this.createMissingConstraint = function($http, constraints, topicID){
+        var createdConstraints = [];
+
+        that.possibleContraints.forEach(function(con){
+            var found = false;
+            for(var i=0; i < constraints.length; i++){
+                if(constraints[i].name == con){
+                    found = true;
+                }
+            }
+
+            if(!found){
+                /* create it */
+                var constraintJSON = {
+                    uID: that.generateUID(topicID),
+                    name: con,
+                    topic: topicID,
+                    valueInTopic: "0",
+                    value: "0",
+                    fulfilled: true
+                };
+
+                that.addLanguageTermToConstraint(constraintJSON);
+
+                createdConstraints.push(constraintJSON);
+
+                if (DEBUG){
+                    console.log("info CTS: posting constraint ");
+                    console.log(constraintJSON);
+                }
+
+                $http.post('/admin/constraints', constraintJSON).
+                    success(function (data, status, headers, config) {
+                    }).
+                    error(function (data, status, headers, config) {
+                    });
+            }
+        });
+
+        return createdConstraints;
     };
 
     /**

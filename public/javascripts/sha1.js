@@ -25,6 +25,10 @@ var Sha1 = {};
  */
 Sha1.hash = function(msg) {
     // convert string to UTF-8, as SHA only deals with byte-streams
+    if(typeof msg != String){
+        //console.log("WARNING: CONVERTING "+msg+"TO STRING");
+        msg = ""+msg;
+    }
     msg = msg.utf8Encode();
 
     // constants [§4.2.1]

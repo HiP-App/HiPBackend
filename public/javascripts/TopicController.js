@@ -28,6 +28,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     this.topicsByStatus = []; // contains topics as soon as they are fetched for a specific status via the getTopicsByStatus function
     this.constraintsForThisTopic = [];
+    this.maxchar = -1;  // contains the value of the maximal amount of characters
 
     this.listOfPictures = [];   // contains a list of all pictures that are used resp. shown in this topic
 
@@ -190,7 +191,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
             // general check function
             var checkConstraint = function () {
-                if (parseInt(constraintJSON.valueInTopic) < parseInt(constraintJSON.value)) {
+                if ((constraintJSON.name.indexOf("max_") == -1 && parseInt(constraintJSON.valueInTopic) < parseInt(constraintJSON.value)) ||
+                    (constraintJSON.name.indexOf("max_") >= 0 && parseInt(constraintJSON.valueInTopic) > parseInt(constraintJSON.value))) {
                     constraintJSON.fulfilled = false;
                     theArray[index].fulfilled = false;
 
@@ -207,6 +209,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                 checkConstraint();
             }else if (constraintJSON.name == 'img_limitation') {
                 constraintJSON.valueInTopic = ""+(that.currentTopic.content.split('<img').length-1);
+                checkConstraint();
+            }else if (constraintJSON.name == 'max_character_limitation') {
+                constraintJSON.valueInTopic = ""+that.currentTopic.content.length;
                 checkConstraint();
             }
 
@@ -406,14 +411,30 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     /**
      * Fetches the constraints for this topic and stores them internally
-     * in that.constraintsForThisTopic
+     * in that.constraintsForThisTopic. Automatically creates missing constraints.
      *
      * @param topicID of the topic that should be searched for constraints
      */
     this.getConstraintsForThisTopic = function(topicID){
         $http.get('/admin/constraints/' + topicID).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 that.constraintsForThisTopic = data;
+
+                /* extract information about maximal characters */
+                for(var i=0; i < that.constraintsForThisTopic.length; i++){
+                    if(that.constraintsForThisTopic[i].name == 'max_character_limitation'){
+                        that.maxchar = that.constraintsForThisTopic[i].value;
+                    }
+                }
+
+                /* check if every constraint is existing
+                * => create it, if it is missing*/
+                var created = commonTaskService.createMissingConstraint($http, that.constraintsForThisTopic, topicID);
+                if(created.length > 0){
+                    for(var i = 0; i < created.length; i++){
+                        that.constraintsForThisTopic.push(created[i]);
+                    }
+                }
             }).
             error(function(data, status, headers, config) {
                 console.log("error TopicController: Constraints cannot get pulled");
@@ -664,6 +685,27 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      */
     this.pushNewMedia = function(medium){
         that.media.push(medium);
+    };
+
+    /**
+     * Evaluates the status of the current max character constraints. Returns a String to signalize the status.
+     * @returns {string}: 'green' if current content length is < 80% of the max value. 'Yellow' if current length is
+     * between 80% and the max value and 'red' if current value is higher than max value.
+     */
+    this.evaluateMaxCharConstraint = function(){
+        if(that.currentTopic.content == undefined){
+            return "no init yet";
+        }
+
+        var valueInTopic = that.currentTopic.content.length;
+
+        if(valueInTopic > that.maxchar || that.maxchar < 0){
+            return "red";
+        }else if(valueInTopic >= 0.8 * that.maxchar){
+            return "yellow"
+        }else{
+            return "green"
+        }
     };
 
     /* update parameter if needed */

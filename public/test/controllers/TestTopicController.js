@@ -57,6 +57,24 @@ describe('Testsuite for the TopicController:', function () {
             fulfilled: true
         };
 
+        var demoConstraint2 = {
+            uID: "constraintB",
+            name: "max_character_limitation",
+            topic: "1",
+            valueInTopic: "0",
+            value: "0",
+            fulfilled: true
+        };
+
+        var demoConstraint3 = {
+            uID: "constraintC",
+            name: "img_limitation",
+            topic: "1",
+            valueInTopic: "0",
+            value: "0",
+            fulfilled: true
+        };
+
         var footnote1 = {
             uID: "footnote1",
             content: "Foot1",
@@ -87,7 +105,9 @@ describe('Testsuite for the TopicController:', function () {
         return {demoTopic1: demoTopic1, demoTopic2: demoTopic2,
             demoSubTopic: demoSubTopic, demoConstraint: demoConstraint,
             footnote1: footnote1, footnote2: footnote2,
-            media1: media1, historyObject: historyObject};
+            media1: media1, historyObject: historyObject,
+            demoConstraint2: demoConstraint2,
+            demoConstraint3: demoConstraint3};
     }
 
     var __ret           = initTestVariables();
@@ -95,6 +115,8 @@ describe('Testsuite for the TopicController:', function () {
     var demoTopic2      = __ret.demoTopic2;
     var demoSubTopic    = __ret.demoSubTopic;
     var demoConstraint  = __ret.demoConstraint;
+    var demoConstraint2 = __ret.demoConstraint2;
+    var demoConstraint3 = __ret.demoConstraint3;
     var demoTopicList   = [demoTopic1, demoTopic2];
 
     var demoFootnote1   = __ret.footnote1;
@@ -122,9 +144,12 @@ describe('Testsuite for the TopicController:', function () {
             .respond([demoTopic1]);
 
         $httpBackend.when('GET', '/admin/constraints/1')
-            .respond([demoConstraint]);
+            .respond([demoConstraint, demoConstraint2, demoConstraint3]);
 
         $httpBackend.when('POST','/admin/constraints')
+            .respond(200,{});
+
+        $httpBackend.when('PUT','/admin/constraints')
             .respond(200,{});
 
         //$httpBackend.when('POST','/admin/topic')
@@ -630,5 +655,57 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectDELETE('/admin/history/1').respond(200,{});
         $httpBackend.flush();
+    });
+
+    it('is able to evaluate the green max_character_constraint', function () {
+        initController();
+
+        /* set */
+        controller.maxchar = 600;
+
+        /* use */
+        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+
+        /* evaluate */
+        expect(maxCharStatus).toBe("green")
+    });
+
+    it('is able to evaluate the yellow max_character_constraint', function () {
+        initController();
+
+        /* set */
+        controller.maxchar = 400;
+
+        /* use */
+        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+
+        /* evaluate */
+        expect(maxCharStatus).toBe("yellow")
+    });
+
+    it('is able to evaluate the red max_character_constraint', function () {
+        initController();
+
+        /* set */
+        controller.maxchar = 378;
+
+        /* use */
+        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+
+        /* evaluate */
+        expect(maxCharStatus).toBe("red")
+    });
+
+    it('is able to evaluate the red max_character_constraint with a negative number', function () {
+        initController();
+
+        /* set */
+        controller.maxchar = -10;
+
+        /* use */
+        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+
+        /* evaluate */
+        expect(maxCharStatus).toBe("red")
     });
 });

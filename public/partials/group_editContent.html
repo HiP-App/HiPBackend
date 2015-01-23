@@ -25,9 +25,16 @@
                     'overflow': 'scroll', 'max-height':'550px'}"></div>
                 </fullscreen-overlay>
 
-                <h4 ng-bind="lc.getTerm('system_edit_status')"></h4>
+                <h4>
+                    {{lc.getTerm('system_edit_status')}}
+                    <span class="pull-right label" ng-class="{'label-success':tc.evaluateMaxCharConstraint() == 'green',
+                                                              'label-warning':tc.evaluateMaxCharConstraint() == 'yellow',
+                                                              'label-danger':tc.evaluateMaxCharConstraint() == 'red'}">
 
-                <span>Deadline: {{ tc.getDateAsString() }}</span>
+                        {{lc.getTerm("chars_remaining")}}: {{tc.maxchar - tc.currentTopic.content.length}}</span>
+                </h4>
+
+                <span ng-bind-template="Deadline: {{ tc.getDateAsString() }}"></span>
 
                 <alert-box ac="ac"></alert-box>
 
