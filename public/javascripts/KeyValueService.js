@@ -23,10 +23,15 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
 
                 data.forEach(function(item){
                     var token = item.split("#");
+
+                    // add key and value to JSON object
                     JSON[token[0]] = token[1];
+
+                    // add to key list
                     keys.push(token[0]);
                 });
 
+                JSON.uID = uID;
                 JSON.keys = keys;
                 JSON.length = keys.length;
 
@@ -108,7 +113,8 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
      * creates the needed fields and sends them to the backend.
      *
      * @param uID       uID of the checked store
-     * @param doSth     callback function. The function contains a list of the created fields as a parameter
+     * @param doSth     callback function. The function contains a list of the created fields as a first parameter
+     *                  and the complete object as the second one
      */
     this.checkFieldsForTypeAndCreateIfNeeded = function(uID, doSth){
         that.getKVStore(uID, function(store){
@@ -131,8 +137,29 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
                 }
             });
 
-            doSth(created);
+            doSth(created, store);
         });
+    };
+
+    /**
+     * Updates a KV-Store on the server side
+     *
+     * @param store     The store with the new values
+     */
+    this.updateKVStore = function(store){
+        var postThis = {
+            uID: store.uID,
+            list: ["type#"+store.type]
+        };
+
+        // serialize the keys and values
+        var keys = store.keys;
+
+        keys.forEach(function(key){
+            postThis.list.push(key+"#"+store[key]);
+        });
+
+        $http.put('/admin/kv',postThis);
     };
 
 }]);

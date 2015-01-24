@@ -9,8 +9,7 @@ servicesModule.service('commonTaskService', function(){
 
     var DEBUG = false;
 
-    this.possibleContraints = ["character_limitation","img_limitation",
-                                "max_character_limitation"]; // holds the used constraints in the system
+    this.possibleContraints = Config.possibleContraints;
 
     /**
      * Generates a uID for a given input String

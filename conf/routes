@@ -64,6 +64,7 @@ DELETE        /admin/history/:topicID                @controllers.HistoryControl
 
 GET           /admin/kv/:uID                         @controllers.KeyValueController.getKeyValueList(uID: String)
 POST          /admin/kv                              @controllers.KeyValueController.createKeyValueList
+PUT           /admin/kv                              @controllers.KeyValueController.modifyKVStore
 PUT           /admin/kv/:uID/:kv                     @controllers.KeyValueController.addKV(uID: String, kv: String)
 DELETE        /admin/kv/:uID                         @controllers.KeyValueController.deleteKV(uID: String)
 

@@ -11,6 +11,8 @@ Tooling.lastUsedTimeStamp = "";
 
 var Config = {};
 
+Config.possibleContraints = ["character_limitation","img_limitation","max_character_limitation"]; // holds the used constraints in the system
+
 /* KV Stores: needed fields */
 Config.neededFieldsForKVStoreWithType_test  = ["key1"];
 Config.neededFieldsForKVStoreWithType_test2 = ["key1", "test2"];

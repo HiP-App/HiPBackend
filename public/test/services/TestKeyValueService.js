@@ -116,4 +116,23 @@ describe('Testsuite for the KeyValueService:', function () {
         $httpBackend.flush();
     });
 
+    it('is able to update a KV-Store', function () {
+        var store = {
+            uID: "uID_1",
+            type: "test",
+            keys: ["key1"],
+            key1: "value4"
+        };
+
+        service.updateKVStore(store);
+
+        var versionInBackend = {
+            uID: "uID_1",
+            list: ["type#test","key1#value4"]
+        };
+
+        $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, keyvalueList);
+        $httpBackend.flush();
+    });
+
 });

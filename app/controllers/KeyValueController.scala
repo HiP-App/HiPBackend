@@ -68,6 +68,20 @@ class KeyValueController extends Controller with MongoController {
     }
   }
 
+  def modifyKVStore = Action.async(parse.json){
+    request =>
+      request.body.validate[KeyValueModel].map {
+        store =>
+          val modifier    =   Json.obj( "$set" -> Json.obj("list" -> store.list));
+
+          collection.update(Json.obj("uID" -> store.uID), modifier).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"KV store has been changed")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
   def deleteKV(uID : String) = Action.async {
     /* delete from DB */
     collection.remove(Json.obj("uID" -> uID)).map {
