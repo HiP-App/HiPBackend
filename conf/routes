@@ -62,6 +62,11 @@ GET           /admin/history/:topicID                @controllers.HistoryControl
 POST          /admin/history                         @controllers.HistoryController.storeHistoryEntry
 DELETE        /admin/history/:topicID                @controllers.HistoryController.deleteHistory(topicID: String)
 
+GET           /admin/kv/:uID                         @controllers.KeyValueController.getKeyValueList(uID: String)
+POST          /admin/kv                              @controllers.KeyValueController.createKeyValueList
+PUT           /admin/kv/:uID/:kv                     @controllers.KeyValueController.addKV(uID: String, kv: String)
+DELETE        /admin/kv/:uID                         @controllers.KeyValueController.deleteKV(uID: String)
+
 # SECURE SOCIAL
 # Login page
 GET           /login                                 securesocial.controllers.LoginPage.login

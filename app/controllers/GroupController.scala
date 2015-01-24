@@ -58,10 +58,7 @@ class GroupController extends Controller with MongoController {
     request =>
       request.body.validate[NotificationModel].map {
         notification =>
-          // `notification` is an instance of the case class `models.NotificationModel`
           val modifier    =   Json.obj("$push" -> Json.obj("notifications" -> notification.notification))
-
-          println("updating uID " + notification.groupID + " with message " + notification.notification)
 
           collection.update(Json.obj("uID" -> notification.groupID), modifier).map {
             lastError =>

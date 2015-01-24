@@ -19,4 +19,5 @@ object JsonFormats {
   implicit val footnoteFormat = Json.format[FootnoteModel]
   implicit val metadataFormat = Json.format[MetadataModel]
   implicit val historyFormat = Json.format[HistoryModel]
+  implicit val keyValueFormat = Json.format[KeyValueModel]
 }

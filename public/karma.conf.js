@@ -26,7 +26,8 @@ module.exports = function(config) {
         'javascripts/vendor/angular-mocks.js',
       	'../app/assets/javascripts/app.coffee',
       	'javascripts/*.js',
-      	'test/controllers/*.js'
+      	'test/controllers/*.js',
+        'test/services/*.js'
     ],
 
 
