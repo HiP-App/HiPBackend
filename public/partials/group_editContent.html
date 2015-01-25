@@ -18,14 +18,14 @@
         <!--
         GROUP MEMBER VIEW
         -->
-        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
+        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = false">
             <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
                 <fullscreen-overlay>
                     <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
                     'overflow': 'scroll', 'max-height':'550px'}"></div>
                 </fullscreen-overlay>
 
-                <h4>
+                <h4 ng-click="status = !status">
                     {{lc.getTerm('system_edit_status')}}
                     <span class="pull-right label" ng-class="{'label-success':tc.evaluateMaxCharConstraint() == 'green',
                                                               'label-warning':tc.evaluateMaxCharConstraint() == 'yellow',
@@ -34,25 +34,30 @@
                         {{lc.getTerm("chars_remaining")}}: {{tc.maxchar - tc.currentTopic.content.length}}</span>
                 </h4>
 
-                <span ng-bind-template="Deadline: {{ tc.getDateAsString() }}"></span>
+                <div collapse="status">
+                    <div class="well well-lg">
+                        <span ng-bind-template="Deadline: {{ tc.getDateAsString() }}"></span>
 
-                <alert-box ac="ac"></alert-box>
+                        <alert-box ac="ac"></alert-box>
 
-                <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
-                    <label>
-                        <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
-                    </label>
+                        <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                            <label>
+                                <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
+                            </label>
+                        </div>
+                        <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                            <label>
+                                <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir">{{lc.getTerm('system_ir')}}
+                            </label>
+                        </div>
+                        <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                            <label>
+                                <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done">{{lc.getTerm('system_done')}}
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
-                    <label>
-                        <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir">{{lc.getTerm('system_ir')}}
-                    </label>
-                </div>
-                <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
-                    <label>
-                        <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done">{{lc.getTerm('system_done')}}
-                    </label>
-                </div>
+
                 <hr>
 
                 <!--
@@ -61,19 +66,22 @@
                 <div ng-show="tc.currentTopic.status == 'wip'">
 
                     <!-- Picture upload -->
-                    <h5 ng-bind="lc.getTerm('system_upload_header')"></h5>
-                    <div class="shift-left">
-                        <media-gallery files="tc.media"
-                                       picturetooltip="lc.getTerm('tooltip_img_use')"
-                                       deletetext="lc.getTerm('tooltip_img_delete')"
-                                       opentext="lc.getTerm('open_image_meta')"
-                                       sendmetadata="lc.getTerm('send_metadata')"
-                                       copyto="tc"></media-gallery>
+                    <h5 ng-bind="lc.getTerm('system_upload_header')" ng-click="picUpload = !picUpload"></h5>
+
+                    <div collapse="picUpload">
+                            <div class="shift-left">
+                                <media-gallery files="tc.media"
+                                               picturetooltip="lc.getTerm('tooltip_img_use')"
+                                               deletetext="lc.getTerm('tooltip_img_delete')"
+                                               opentext="lc.getTerm('open_image_meta')"
+                                               sendmetadata="lc.getTerm('send_metadata')"
+                                               copyto="tc"></media-gallery>
+                            </div>
+                            <div class="shift-right">
+                                <upload-box label="lc.getTerm('system_upload')" tc="tc"></upload-box>
+                            </div>
+                            <div class="float-clear"></div>
                     </div>
-                    <div class="shift-right">
-                        <upload-box label="lc.getTerm('system_upload')" tc="tc"></upload-box>
-                    </div>
-                    <div class="float-clear"></div>
                     <!-- END: Picture upload -->
 
                     <hr>
@@ -102,13 +110,15 @@
 
                     <hr>
 
-                    <h5 ng-bind="lc.getTerm('system_edit_footnotes')"></h5>
+                    <h5 ng-bind="lc.getTerm('system_edit_footnotes')" ng-click="footnotes = !footnotes"></h5>
 
-                    <!-- show footnotes -->
-                    <show-footnotes uc="uc" tc="tc" gc="gc"></show-footnotes>
+                    <div collapse="footnotes">
+                            <!-- show footnotes -->
+                            <show-footnotes uc="uc" tc="tc" gc="gc"></show-footnotes>
 
-                    <!-- Footnote creation -->
-                    <create-footnotes></create-footnotes>
+                            <!-- Footnote creation -->
+                            <create-footnotes></create-footnotes>
+                    </div>
 
                 </div>
 
