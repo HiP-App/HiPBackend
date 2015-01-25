@@ -5,4 +5,5 @@ package models
  */
 case class MetadataModel(uID: String,
                           topic: String,
-                          thumbnailID: String)
+                          thumbnailID: String,
+                          kvStore: String)

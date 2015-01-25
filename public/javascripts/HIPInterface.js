@@ -17,6 +17,8 @@ Config.possibleContraints = ["character_limitation","img_limitation","max_charac
 Config.neededFieldsForKVStoreWithType_test  = ["key1"];
 Config.neededFieldsForKVStoreWithType_test2 = ["key1", "test2"];
 
+Config.neededFieldsForKVStoreWithType_img   = ["Source","Description"];
+
 /* Helper functions */
 Config.returnNeededFieldsForType = function(type){
     var completeNameOfTheField = "neededFieldsForKVStoreWithType_"+type;

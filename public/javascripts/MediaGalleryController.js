@@ -6,8 +6,51 @@
  * This controller is used within the mediaGallery directive. It implements the function for deleting images in the
  * backend.
  */
-controllersModule.controller('GalleryCtrl', ['$scope','$http',function($scope,$http) {
+controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService' ,function($scope,$http, keyValueService) {
     var that = this;
+
+    $scope.collapse = [];
+
+    this.store = ""; // contains the currently open key value store
+
+    /**
+     * This functions opens the meta-data panel for the given picture
+     *
+     * @param uIDOfThePicture           uID of the checked picture
+     * @param uIDOfTheKeyValueStore     uId of the key value store. If this value is -1 the function will create
+     *                                  a new store.
+     */
+    this.openMetaData = function(uIDOfThePicture, uIDOfTheKeyValueStore){
+        if(uIDOfTheKeyValueStore != "-1"){
+            /* load it */
+            keyValueService.getKVStore(uIDOfTheKeyValueStore, function(store){
+                /* use store */
+                that.store = store;
+            });
+        }else{
+            /* create it */
+            var store = keyValueService.createEmptyStoreAccordingToType('img');
+
+            /* modify picture kvStore */
+            $http.put('/admin/picturekv/'+uIDOfThePicture+'/'+store.uID);
+
+            /* use store */
+            that.store = store;
+        }
+
+        /* trigger view */
+        $scope.collapse[uIDOfThePicture] = !$scope.collapse[uIDOfThePicture];
+    };
+
+    /**
+     * This function saves the currently opened store in the backend.
+     */
+    this.saveMetaData = function(uIDOfThePicture){
+        keyValueService.updateKVStore(that.store);
+
+        /* trigger view */
+        $scope.collapse[uIDOfThePicture] = !$scope.collapse[uIDOfThePicture];
+    };
 
     /**
      * This function deletes the picture on the server side (i.e., it sends the deletion request) and

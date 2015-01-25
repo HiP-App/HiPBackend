@@ -10,6 +10,35 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
     this.downloadedKVStore = [];
 
     /**
+     * This function wrapps the serialized from from the Backend to the JSON format of a Key/Value-Store
+     * @param uID                   uID of the used KV-Store
+     * @param listOfKeysAndValues   the list of the keys and values
+     * @returns {{}}                the JSON format of the KV-Store
+     */
+    function serializedFormToJSON(uID, listOfKeysAndValues) {
+        var JSON = {};
+        var keys = [];
+        listOfKeysAndValues.forEach(function(item) {
+            var token = item.split("#");
+
+            // add key and value to JSON object
+            if(token[0] != "type"){
+                JSON[token[0]] = token[1];
+
+                // add to key list
+                keys.push(token[0]);
+            }else{
+                JSON.type = token[1];
+            }
+        });
+
+        JSON.uID = uID;
+        JSON.keys = keys;
+        JSON.length = keys.length;
+        return JSON;
+    }
+
+    /**
      * Fetches a new Key/Value store from the backend.
      *
      * @param uID {String}:         The uID of the KV-Store that should be fetched
@@ -18,23 +47,9 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
     this.getKVStore = function(uID, doSth){
         $http.get('/admin/kv/'+uID)
             .success(function(data){
-                var JSON = {};
-                var keys = [];
+                var JSON = serializedFormToJSON(uID, data[0].list);
 
-                data.forEach(function(item){
-                    var token = item.split("#");
-
-                    // add key and value to JSON object
-                    JSON[token[0]] = token[1];
-
-                    // add to key list
-                    keys.push(token[0]);
-                });
-
-                JSON.uID = uID;
-                JSON.keys = keys;
-                JSON.length = keys.length;
-
+                that.downloadedKVStore = JSON;
                 doSth(JSON);
             }).error(function(){
                 console.log("Error while loading KV store");
@@ -55,6 +70,7 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
      * Creates a new KV store in the Backend
      *
      * @param list {Array[String]}: A ist containing all keys and values encoded like ["key#value",'key2#value2']
+     * @return                      The created KV-Store in JSON Format
      */
     this.createKVStore = function(list){
         var uID = commonTaskService.generateUID(list.toString());
@@ -64,7 +80,30 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
             list: list
         };
 
-        $http.post('/admin/kv/'+uID, post);
+        $http.post('/admin/kv', post);
+
+        return serializedFormToJSON(uID,post.list);
+    };
+
+    /**
+     * Creates an empty KV-Store with fields according to the given type
+     *
+     * @param type {String}:    The chosen type for the KV-Store
+     * @return                  The created KV-Store in JSON Format
+     */
+    this.createEmptyStoreAccordingToType = function(type){
+        var keys = Config.returnNeededFieldsForType(type);
+        var list = [];
+
+        /* add type value */
+        list.push("type#"+type);
+
+        /* create list */
+        keys.forEach(function(key){
+            list.push(key+"#initMe");
+        });
+
+        return that.createKVStore(list);
     };
 
     /**
@@ -144,7 +183,7 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
     /**
      * Updates a KV-Store on the server side
      *
-     * @param store     The store with the new values
+     * @param store     The store with the new values as JSON container
      */
     this.updateKVStore = function(store){
         var postThis = {
@@ -159,7 +198,11 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
             postThis.list.push(key+"#"+store[key]);
         });
 
-        $http.put('/admin/kv',postThis);
+        $http.put('/admin/kv',postThis).success(function(){
+
+        }).error(function(){
+            console.log("Error while updating the kvStore...")
+        });
     };
 
 }]);

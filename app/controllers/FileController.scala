@@ -96,7 +96,8 @@ class FileController extends Controller with MongoController{
         metaCollection.insert(Json.obj(
           "uID"   ->  cleanedID,
           "topic" ->  topicID,
-          "thumbnailID" -> cleanedIDThumb
+          "thumbnailID" -> cleanedIDThumb,
+          "kvStore" -> "-1"
         ))
 
         Ok("File uploaded")

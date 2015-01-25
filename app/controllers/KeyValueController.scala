@@ -72,7 +72,9 @@ class KeyValueController extends Controller with MongoController {
     request =>
       request.body.validate[KeyValueModel].map {
         store =>
-          val modifier    =   Json.obj( "$set" -> Json.obj("list" -> store.list));
+          val modifier    =   Json.obj( "$set" -> Json.obj("list" -> store.list))
+
+          println("setting " + store.list + " on UID " + store.uID)
 
           collection.update(Json.obj("uID" -> store.uID), modifier).map {
             lastError =>

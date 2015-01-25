@@ -254,4 +254,23 @@ class TopicController extends Controller with MongoController {
         Ok(footnotes(0))
     }
   }
+
+  /**
+   * This Action changes the store ID of the used KV-Store
+   *
+   * @param uID       of the image/media file
+   * @param storeID
+   * @return
+   */
+  def updateKVStore(uID: String, storeID: String) = Action.async {
+    val modifier    =   Json.obj("$set" -> Json.obj("kvStore" -> storeID))
+
+    metaCollection.update(Json.obj("uID" -> uID), modifier).map {
+      lastError =>
+        logger.debug(s"Successfully inserted with LastError: $lastError")
+        Created(s"StoreID has been changed")
+
+        Ok("");
+    }
+  }
 }

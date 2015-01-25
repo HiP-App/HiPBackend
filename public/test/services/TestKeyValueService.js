@@ -7,6 +7,8 @@ describe('Testsuite for the KeyValueService:', function () {
 
     var keyvalueList    = [];
 
+    var storageObject   = "";
+
     beforeEach(function () {
         module('myApp.services');
     });
@@ -16,6 +18,11 @@ describe('Testsuite for the KeyValueService:', function () {
         service         =   keyValueService;
 
         keyvalueList    = ["type#test","key1#value1","key2#value2"];
+
+        storageObject = [{
+            uID: "uID_1",
+            list: keyvalueList
+        }];
     }));
 
     afterEach(function () {
@@ -26,12 +33,12 @@ describe('Testsuite for the KeyValueService:', function () {
 
     it('is able to get a new key value store', function () {
         var check = function(data){
-            expect(data.length).toBe(3);
+            expect(data.length).toBe(2);
         };
 
         service.getKVStore("UID_1", check);
 
-        $httpBackend.expect("GET","/admin/kv/UID_1").respond(200, keyvalueList);
+        $httpBackend.expect("GET","/admin/kv/UID_1").respond(200, storageObject);
         $httpBackend.flush();
     });
 
@@ -50,7 +57,7 @@ describe('Testsuite for the KeyValueService:', function () {
             list: keyvalueList
         };
 
-        $httpBackend.expect("POST","/admin/kv/"+Tooling.lastGeneratedRandomUID, expectKV).respond(200, {});
+        $httpBackend.expect("POST","/admin/kv", expectKV).respond(200, {});
         $httpBackend.flush();
     });
 
@@ -62,7 +69,7 @@ describe('Testsuite for the KeyValueService:', function () {
             list: []
         };
 
-        $httpBackend.expect("POST","/admin/kv/"+Tooling.lastGeneratedRandomUID, expectKV).respond(200, {});
+        $httpBackend.expect("POST","/admin/kv", expectKV).respond(200, {});
         $httpBackend.flush();
     });
 
@@ -81,7 +88,19 @@ describe('Testsuite for the KeyValueService:', function () {
             list: keyvalueList
         };
 
-        $httpBackend.expect("POST","/admin/kv/"+Tooling.lastGeneratedRandomUID, expectKV).respond(200, {});
+        $httpBackend.expect("POST","/admin/kv", expectKV).respond(200, {});
+        $httpBackend.flush();
+    });
+
+    it('is able to create a KV-Store according to a given type', function () {
+        service.createEmptyStoreAccordingToType("test");
+
+        var expectKV = {
+            uID: Tooling.lastGeneratedRandomUID,
+            list: ["type#test","key1#initMe"]
+        };
+
+        $httpBackend.expect("POST","/admin/kv", expectKV).respond(200, {});
         $httpBackend.flush();
     });
 
@@ -90,7 +109,7 @@ describe('Testsuite for the KeyValueService:', function () {
             expect(type).toBe("test");
         });
 
-        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, keyvalueList);
+        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, storageObject);
         $httpBackend.flush();
     });
 
@@ -99,7 +118,7 @@ describe('Testsuite for the KeyValueService:', function () {
             expect(createdFields.length).toBe(0);
         });
 
-        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, keyvalueList);
+        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, storageObject);
         $httpBackend.flush();
     });
 
@@ -111,7 +130,7 @@ describe('Testsuite for the KeyValueService:', function () {
             expect(createdFields.length).toBe(1);
         });
 
-        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, keyvalueList);
+        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, storageObject);
         $httpBackend.expect("PUT","/admin/kv/uID_1/test2#initMe").respond(200, keyvalueList);
         $httpBackend.flush();
     });

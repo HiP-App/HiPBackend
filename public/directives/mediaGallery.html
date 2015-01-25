@@ -1,5 +1,5 @@
 <div class="shift-left" ng-controller="GalleryCtrl as gallery">
-    <div ng-repeat="img in files" class="shift-left" ng-style="{'margin-left': '10px'}">
+    <div ng-repeat="img in files" class="shift-left" ng-style="{'margin-left': '10px'}" ng-init="collapse[img.uID] = true">
 
 
         <img class="imgPreview"  ng-src="/admin/picture/{{img.thumbnailID}}"
@@ -9,7 +9,25 @@
 
         <br>
 
-        <span ng-bind="deletetext" ng-click="gallery.deletePicture(img.uID); gallery.deletePicture(img.thumbnailID)"></span>
+        <span ng-bind="deletetext"  ng-click="gallery.deletePicture(img.uID); gallery.deletePicture(img.thumbnailID)"></span>
+
+        <br>
+
+        <span ng-bind="opentext"    ng-click="gallery.openMetaData(img.uID, img.kvStore)"></span>
+
+        <!--
+            Collapsed view for meta-data
+        -->
+        <div collapse="collapse[img.uID]">
+            <div class="well well-lg">
+                <div ng-repeat="key in gallery.store.keys">
+                    <small ng-bind="key"></small>
+                    <input type="text" class="form-control" placeholder="key" ng-model="gallery.store[key]">
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm" ng-bind="sendmetadata" ng-click="gallery.saveMetaData(img.uID)"></button>
+            </div>
+        </div>
 
     </div>
 </div>

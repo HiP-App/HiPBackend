@@ -9,7 +9,9 @@ controllersModule.directive('mediaGallery', function() {
             files: '=files',
             picturetooltip: '=picturetooltip',
             deletetext: '=deletetext',
-            copyto: '=copyto'
+            copyto: '=copyto',
+            opentext: '=opentext',
+            sendmetadata: '=sendmetadata'
         },
         templateUrl: '/assets/directives/mediaGallery.html'
     };

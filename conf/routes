@@ -56,6 +56,7 @@ DELETE        /admin/footnote/:uID                   @controllers.TopicControlle
 GET           /admin/picture/:uID                    @controllers.FileController.getMediaFile(uID: String)
 DELETE        /admin/picture/:uID                    @controllers.FileController.removeMediaFile(uID: String)
 GET           /admin/pictureForTopic/:topicID        @controllers.TopicController.getMediaForTopic(topicID: String)
+PUT           /admin/picturekv/:uID/:storeID         @controllers.TopicController.updateKVStore(uID: String, storeID: String)
 POST          /admin/picture/:topicID                @controllers.FileController.upload(topicID: String)
 
 GET           /admin/history/:topicID                @controllers.HistoryController.getHistoryForTopic(topicID: String)
