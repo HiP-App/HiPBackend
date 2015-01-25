@@ -276,7 +276,7 @@ nav {
 }
 
 .quarter-right{
-    float:left;
+    float:right;
     width: 25%;
 
     min-height: 450px;

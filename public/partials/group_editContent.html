@@ -96,15 +96,25 @@
                     <div class="float-clear"></div>
                     <!-- END: Headline -->
 
-                    <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
-                          ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
+                    <form ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
+                        <div class="shift-left" ng-style="{'max-width':'80%'}">
+                            <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
+                                'overflow': 'scroll'}">
 
-                    <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
-                    'overflow': 'scroll'}"></div>
+                            </div>
+                        </div>
+                        <div class="shift-right">
+                            <div class="panel panel-default pull-right">
+                                <div class="panel-heading" ng-bind="lc.getTerm('system_supervisor_templates')"></div>
+                                <div class="panel-body">ABC</div>
+                            </div>
+                        </div>
 
-                    <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
-                                    submit="lc.getTerm('system_edit_form_create')">
-                    </cancel-submit>
+                        <div class="float-clear"></div>
+
+                        <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
+                                        submit="lc.getTerm('system_edit_form_create')">
+                        </cancel-submit>
                     </form>
                     <div class="float-clear"></div>
 

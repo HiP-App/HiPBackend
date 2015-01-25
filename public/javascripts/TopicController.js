@@ -339,7 +339,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                             /* extract current version number and create modification markup */
                             var max = -1;
                             for(var i=0; i < that.historyEntries.length; i++){
-                                if(that.historyEntries[i].versionNumber > max){
+                                if(Number(that.historyEntries[i].versionNumber) > max){
                                     max = that.historyEntries[i].versionNumber;
                                 }
 

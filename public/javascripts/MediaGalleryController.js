@@ -53,13 +53,25 @@ controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService' 
     };
 
     /**
+     * This function deletes the given store
+     *
+     * @param uIDOfTheStore     uID of the store that should be deleted
+     */
+    this.deleteKVStore = function(uIDOfTheStore){
+        if(uIDOfTheStore != -1){
+            $http.delete('/admin/kv/'+uIDOfTheStore);
+        }else{
+            $http.delete('/admin/kv/'+that.store.uID);
+        }
+    };
+
+    /**
      * This function deletes the picture on the server side (i.e., it sends the deletion request) and
      * removes the picture from the list on frontend side
      *
      * @param uID   of the picture that should be removed
      */
     this.deletePicture = function(uID){
-        var thumbnailID = "";
         /* delete picture itself */
         $http.delete('/admin/picture/'+uID)
             .success(function(data){
