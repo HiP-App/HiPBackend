@@ -19,10 +19,20 @@ Config.neededFieldsForKVStoreWithType_test2 = ["key1", "test2"];
 
 Config.neededFieldsForKVStoreWithType_img   = ["Source","Description"];
 
+Config.neededFieldsForKVStoreWithType_template      =   ["HowTo"];
+Config.neededValuesForKVStoreWithType_template      =   ["HowTo_Field_Value"];
+
 /* Helper functions */
 Config.returnNeededFieldsForType = function(type){
     var completeNameOfTheField = "neededFieldsForKVStoreWithType_"+type;
 
     return Config[completeNameOfTheField];
 };
+
+Config.returnValuesForType = function(type){
+    var completeNameOfTheField = "neededValuesForKVStoreWithType_"+type;
+
+    return Config[completeNameOfTheField];
+};
+
 

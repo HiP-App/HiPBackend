@@ -31,10 +31,10 @@
 
                     <div ng-show="uc.isSupervisor()">
                         <ul>
-                            <li> <a href="/#/topic/create" ng-bind="lc.getTerm('system_supervisor_navigation_addTopic')"> </a> </li>
+                            <li> <a href="/#/topic/create"  ng-bind="lc.getTerm('system_supervisor_navigation_addTopic')"> </a> </li>
                             <li> <a ng-href="/#/topic/modify/{{ uc.email }}" ng-bind="lc.getTerm('system_supervisor_navigation_modifyTopic')"> </a> </li>
-                            <li> <a href="/#/group/create" ng-bind="lc.getTerm('system_supervisor_navigation_addGroup')"> </a> </li>
-                            <li> <a href="/#/browse" ng-bind="lc.getTerm('system_navigation_browse')"> </a> </li>
+                            <li> <a href="/#/group/create"  ng-bind="lc.getTerm('system_supervisor_navigation_addGroup')"> </a> </li>
+                            <li> <a href="/#/browse"        ng-bind="lc.getTerm('system_navigation_browse')"> </a> </li>
                         </ul>
                     </div>
 
@@ -54,7 +54,20 @@
 
             <div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()">
                 <div class="panel-heading" ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
-                <div class="panel-body">  </div>
+                <div class="panel-body">
+                        <!--
+                            0) Create TemplateController:
+                            1) get templates from UserAdd via keyValueService
+                            2) ng-repeat="template in userAdd.templates" {{show}}
+
+                            If templates in UserADD == -1 -> create a new empty KV Store for templates
+                            Type of these KV-Stores is template
+                        -->
+                    <hr>
+
+                    <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('newTemplate')"></button>
+
+                </div>
             </div>
 
             <div class="float-clear"></div>

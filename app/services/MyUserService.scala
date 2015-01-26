@@ -97,12 +97,13 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
       val saveadd = Json.obj(
         "userid" -> user.identityId.userId,
         "email" -> email,
-        "role" -> role
+        "role" -> role,
+        "templates" -> "-1"
       )
 
       // insert only if it is not there
       val cursor  = collection.find(Json.obj( "userid"->user.identityId.userId,
-                                                 "provider"->"userPassword")).cursor[JsObject]
+                                              "provider"->"userPassword")).cursor[JsObject]
       cursor.headOption.map {
         case Some(user) => {
          
@@ -110,7 +111,6 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
         case None => {
           collection.insert(savejson)
           addCollection.insert(saveadd)
-
         }
       }
 
