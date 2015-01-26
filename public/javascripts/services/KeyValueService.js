@@ -205,4 +205,26 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
         });
     };
 
+    /**
+     * This function copies a key with its value from one store to another store
+     *
+     * @param fromStore     the uID of the source store
+     * @param key           the key that should be copied
+     * @param toStore       the uID of the destination store
+     */
+    this.transferKey = function(fromStore, key, toStore){
+        that.getKVStore(fromStore, function(store){
+           var copyValue = store[key];
+
+            that.getKVStore(toStore, function(secondStore){
+                /* add key to second store */
+                secondStore.keys.push(key);
+                secondStore[key] = copyValue;
+
+                /* send store back */
+                that.updateKVStore(secondStore);
+            });
+        });
+    };
+
 }]);

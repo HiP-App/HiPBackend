@@ -8,6 +8,7 @@ describe('Testsuite for the KeyValueService:', function () {
     var keyvalueList    = [];
 
     var storageObject   = "";
+    var storageObject2  = "";
 
     beforeEach(function () {
         module('myApp.services');
@@ -22,6 +23,11 @@ describe('Testsuite for the KeyValueService:', function () {
         storageObject = [{
             uID: "uID_1",
             list: keyvalueList
+        }];
+
+        storageObject2 = [{
+            uID: "uID_2",
+            list: ["type#test"]
         }];
     }));
 
@@ -150,6 +156,27 @@ describe('Testsuite for the KeyValueService:', function () {
             list: ["type#test","key1#value4"]
         };
 
+        $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, keyvalueList);
+        $httpBackend.flush();
+    });
+
+    it('is able to send a key to another store', function () {
+        var fromStore = "uID_1";
+        var key = "key1";
+        var toStore = "uID_2";
+
+        service.transferKey(fromStore, key, toStore);
+
+        /* fetch both stores */
+        $httpBackend.expect("GET","/admin/kv/uID_1").respond(200, storageObject);
+        $httpBackend.expect("GET","/admin/kv/uID_2").respond(200, storageObject2);
+
+        var versionInBackend = {
+            uID: "uID_2",
+            list: ["type#test","key1#value1"]
+        };
+
+        /* send modified store back */
         $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, keyvalueList);
         $httpBackend.flush();
     });
