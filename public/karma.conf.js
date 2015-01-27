@@ -24,8 +24,10 @@ module.exports = function(config) {
     	'javascripts/vendor/angular.js',
         'javascripts/vendor/angular-route.js',
         'javascripts/vendor/angular-mocks.js',
+        'javascripts/vendor/sha1.js',
       	'../app/assets/javascripts/app.coffee',
         'javascripts/services/*.js',
+        'javascripts/controller/*.js',
       	'javascripts/*.js',
       	'test/controllers/*.js',
         'test/services/*.js'
