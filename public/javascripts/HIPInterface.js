@@ -6,6 +6,7 @@
 
 var Tooling = {};
 
+Tooling.secondlastGeneratedRandomUID = "";
 Tooling.lastGeneratedRandomUID = "";
 Tooling.lastUsedTimeStamp = "";
 
@@ -15,7 +16,9 @@ Config.possibleContraints = ["character_limitation","img_limitation","max_charac
 
 /* KV Stores: needed fields */
 Config.neededFieldsForKVStoreWithType_test  = ["key1"];
+
 Config.neededFieldsForKVStoreWithType_test2 = ["key1", "test2"];
+Config.neededValuesForKVStoreWithType_test2 = ["defaultValue", "defaultValue2"];
 
 Config.neededFieldsForKVStoreWithType_img   = ["Source","Description"];
 

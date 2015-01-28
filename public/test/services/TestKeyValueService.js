@@ -110,6 +110,18 @@ describe('Testsuite for the KeyValueService:', function () {
         $httpBackend.flush();
     });
 
+    it('is able to create a KV-Store according to a given type: even with values', function () {
+        service.createEmptyStoreAccordingToType("test2");
+
+        var expectKV = {
+            uID: Tooling.lastGeneratedRandomUID,
+            list: ["type#test2","key1#defaultValue","test2#defaultValue2"]
+        };
+
+        $httpBackend.expect("POST","/admin/kv", expectKV).respond(200, {});
+        $httpBackend.flush();
+    });
+
     it('is able to check if the kv store includes the type key', function () {
         service.checkType("uID_1", function(type){
             expect(type).toBe("test");

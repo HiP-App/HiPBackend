@@ -27,6 +27,8 @@ servicesModule.service('commonTaskService', function(){
         }
 
         var uID = Sha1.hash(inputString + Math.floor((Math.random() * 100000) + 1) + timestamp);
+
+        Tooling.secondlastGeneratedRandomUID = Tooling.lastGeneratedRandomUID;
         Tooling.lastGeneratedRandomUID = uID;
         return uID;
     };

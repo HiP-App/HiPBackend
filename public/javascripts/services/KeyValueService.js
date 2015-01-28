@@ -92,15 +92,22 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
      * @return                  The created KV-Store in JSON Format
      */
     this.createEmptyStoreAccordingToType = function(type){
-        var keys = Config.returnNeededFieldsForType(type);
-        var list = [];
+        var keys    = Config.returnNeededFieldsForType(type);
+        var values  = Config.returnValuesForType(type);
+        var list    = [];
 
         /* add type value */
         list.push("type#"+type);
 
         /* create list */
         keys.forEach(function(key){
-            list.push(key+"#initMe");
+            var keyHasADefaultValue = (jQuery.inArray(key, keys) != -1);
+
+            if(!keyHasADefaultValue || values == undefined){
+                list.push(key+"#initMe");
+            }else{
+                list.push(key+"#"+values[jQuery.inArray(key, keys )]);
+            }
         });
 
         return that.createKVStore(list);

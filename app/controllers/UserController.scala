@@ -78,4 +78,23 @@ class UserController extends Controller with MongoController {
     }
   }
 
+  /**
+   * This Action changes the store ID of the used KV-Store
+   *
+   * @param uID       of the user in the system
+   * @param storeID   the new ID of the kvStore
+   * @return
+   */
+  def updateKVStore(uID: String, storeID: String) = Action.async {
+    val modifier    =   Json.obj("$set" -> Json.obj("kvStore" -> storeID))
+
+    collectionAdd.update(Json.obj("uID" -> uID), modifier).map {
+      lastError =>
+        logger.debug(s"Successfully inserted with LastError: $lastError")
+        Created(s"StoreID has been changed")
+
+        Ok("");
+    }
+  }
+
 }
