@@ -128,4 +128,40 @@ describe('Testsuite for the TemplateController:', function () {
 
         expect(resultString).toBe("abcvalue1");
     });
+
+    it('is able to add a new template to the current store', function () {
+        initController();
+
+        var key     = "LOREM";
+        var value   = "IPSUM";
+        controller.addTemplateToStore(key, value);
+
+        $httpBackend.expect("GET","/admin/kv/ksUID").respond(200, [store]);
+
+        var versionInBackend = {
+            uID: "ksUID",
+            list: ["type#test","key1#value1", "LOREM#IPSUM"]
+        };
+
+        /* send modified store back */
+        $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, {});
+        $httpBackend.flush();
+    });
+
+    it('is able to delete a template from the current store', function () {
+        initController();
+
+        controller.removeTemplateFromStore("key1");
+
+        $httpBackend.expect("GET","/admin/kv/ksUID").respond(200, [store]);
+
+        var versionInBackend = {
+            uID: "ksUID",
+            list: ["type#test"]
+        };
+
+        /* send modified store back */
+        $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, {});
+        $httpBackend.flush();
+    });
 });

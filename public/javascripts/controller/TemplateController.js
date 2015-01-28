@@ -84,6 +84,40 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','keyValueService'
         return appendTo;
     };
 
+    /**
+     * This function adds a new template to the current store
+     *
+     * @param key       the name of the template
+     * @param value     the template itself
+     */
+    this.addTemplateToStore = function(key, value){
+        keyValueService.getKVStore(that.storeUID, function(store){
+            store.keys.push(key);
+            store[key] = value;
+
+            /* send */
+            keyValueService.updateKVStore(store);
+
+            /* store also for the frontend */
+            that.templates[key] = value;
+        });
+    };
+
+    /**
+     * This function removes the given template from the store of the current user
+     *
+     * @param key       the key of the template that should be removed
+     */
+    this.removeTemplateFromStore = function(key){
+        keyValueService.getKVStore(that.storeUID, function(store){
+            var position = jQuery.inArray( key, store.keys );
+            store.keys.splice(position,1);
+
+            /* send */
+            keyValueService.updateKVStore(store);
+        });
+    };
+
     if(that.templates == "initMe"){
         that.getTemplates();
     }
