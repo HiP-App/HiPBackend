@@ -14,7 +14,7 @@ var Config = {};
 
 Config.possibleContraints = ["character_limitation","img_limitation","max_character_limitation"]; // holds the used constraints in the system
 
-/* KV Stores: needed fields */
+/* KV Stores: needed fields => this specifies the 'types' of the KV-Stores*/
 Config.neededFieldsForKVStoreWithType_test  = ["key1"];
 
 Config.neededFieldsForKVStoreWithType_test2 = ["key1", "test2"];

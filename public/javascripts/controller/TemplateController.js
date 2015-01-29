@@ -74,6 +74,24 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','keyValueService'
     };
 
     /**
+     * This function sends the given key to every member of the group
+     * @param key           the key/template that should be copied
+     * @param groupUID      the uID of the user that should receive the template
+     */
+    this.transferKeyToAnotherGroup = function(key, groupUID){
+        $http.get('/admin/group/'+groupUID).
+            success(function(data) {
+                var group = data[0];
+
+                var member = group.member.split(',');
+
+                member.forEach(function(userID){
+                   that.transferKeyToAnotherStore(key, userID);
+                });
+            });
+    };
+
+    /**
      * This function attaches the value of the current template key to the appendTo String
      * @param key       the key of the template that should be used
      * @param appendTo  appendTo this String
@@ -110,6 +128,7 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','keyValueService'
      */
     this.removeTemplateFromStore = function(key){
         keyValueService.getKVStore(that.storeUID, function(store){
+            /* delete from the store */
             var position = jQuery.inArray( key, store.keys );
             store.keys.splice(position,1);
 

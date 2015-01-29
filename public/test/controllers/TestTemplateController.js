@@ -9,6 +9,7 @@ describe('Testsuite for the TemplateController:', function () {
     var userObject2 = undefined;
     var store       = undefined;
     var store2      = undefined;
+    var group       = undefined;
 
     beforeEach(function () {
         module('myApp.controllers');
@@ -49,6 +50,11 @@ describe('Testsuite for the TemplateController:', function () {
             uID: "ksUID2",
             list: ["type#test","key4#value1"]
         };
+
+        group = {
+            uID: "groupUID",
+            member: "JaneDoe@doe.com,JohnDoe@doe.com"
+        }
     });
 
     afterEach(function () {
@@ -117,6 +123,27 @@ describe('Testsuite for the TemplateController:', function () {
         $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, {});
         $httpBackend.flush();
 
+    });
+
+    it('is able to transfer one template to a whole group', function () {
+        initController();
+
+        controller.transferKeyToAnotherGroup("key1","groupUID");
+
+        /* fetch needed data */
+        $httpBackend.expect("GET","/admin/group/groupUID").respond(200, [group]);
+        $httpBackend.expect("GET","/admin/role/JaneDoe@doe.com").respond(200, [userObject2]);
+        $httpBackend.expect("GET","/admin/role/JohnDoe@doe.com").respond(200, [userObject]);
+
+        $httpBackend.expect("GET","/admin/kv/ksUID").respond(200, [store]);
+        $httpBackend.expect("GET","/admin/kv/ksUID").respond(200, [store]);
+        $httpBackend.expect("GET","/admin/kv/ksUID2").respond(200, [store2]);
+        $httpBackend.expect("GET","/admin/kv/ksUID").respond(200, [store]);
+
+        /* store both groups */
+        $httpBackend.expect("PUT","/admin/kv").respond(200, {});
+        $httpBackend.expect("PUT","/admin/kv").respond(200, {});
+        $httpBackend.flush();
     });
 
     it('is able to append a given template to a given content', function () {
