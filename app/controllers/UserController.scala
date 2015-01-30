@@ -86,9 +86,9 @@ class UserController extends Controller with MongoController {
    * @return
    */
   def updateKVStore(uID: String, storeID: String) = Action.async {
-    val modifier    =   Json.obj("$set" -> Json.obj("kvStore" -> storeID))
+    val modifier    =   Json.obj("$set" -> Json.obj("templates" -> storeID))
 
-    collectionAdd.update(Json.obj("uID" -> uID), modifier).map {
+    collectionAdd.update(Json.obj("userid" -> uID), modifier).map {
       lastError =>
         logger.debug(s"Successfully inserted with LastError: $lastError")
         Created(s"StoreID has been changed")

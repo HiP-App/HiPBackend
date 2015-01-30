@@ -31,13 +31,13 @@ describe('Testsuite for the TemplateController:', function () {
         userObject = {
             uID: $scope.uc.email,
             role: "supervisor",
-            kvStore: "ksUID"
+            templates: "ksUID"
         };
 
         userObject2 = {
             uID: "JaneDoe@doe.com",
             role: "student",
-            kvStore: "ksUID2"
+            templates: "ksUID2"
         };
 
 
@@ -68,7 +68,7 @@ describe('Testsuite for the TemplateController:', function () {
 
         /* expect the fetch of the corresponding KV-Store. It's uID was contained in the
          userData */
-        $httpBackend.expect('GET','/admin/kv/'+userObject.kvStore).respond(200,[store]);
+        $httpBackend.expect('GET','/admin/kv/'+userObject.templates).respond(200,[store]);
         $httpBackend.flush();
 
         expect(controller.templates.key1).toBe("value1");
@@ -84,7 +84,7 @@ describe('Testsuite for the TemplateController:', function () {
         controller.testing = true;
 
         /* manipulate normal init process */
-        userObject.kvStore = "-1";
+        userObject.templates = "-1";
 
         /* expect the fetch of the user data */
         $httpBackend.expect('GET','/admin/role/'+$scope.uc.email).respond(200,[userObject]);

@@ -52,9 +52,40 @@
                                       usercontroller="uc"></aggregated-notifications>
 
 
-            <div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()">
-                <div class="panel-heading" ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
+            <div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()" ng-controller="TemplateCtrl as templateC">
+                <div class="panel-heading"  ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
                 <div class="panel-body">
+                    <div class="menuEntry"  ng-repeat="template in templateC.templates.keys">
+                        <div class="shift-left">
+                            <a ng-href="/#/" ng-bind="template"></a>
+                        </div>
+
+                        <div class="shift-right">
+                            <li class="dropdown li-no-dec">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a ng-click="">
+                                          {{lc.getTerm('preview')}} <span class="glyphicon glyphicon-camera pull-right"></span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a ng-click="">
+                                        {{lc.getTerm('delete')}} <span class="glyphicon glyphicon-trash pull-right"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
+
+                        <div class="float-clear"></div>
+                    </div>
+
+                    <!-- collapsed previews -->
+                    <div>
+                        
+                    </div>
                         <!--
                             0) Create TemplateController:
                             1) get templates from UserAdd via keyValueService

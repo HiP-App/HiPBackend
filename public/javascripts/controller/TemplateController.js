@@ -22,16 +22,17 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','keyValueService'
     this.getTemplates = function(testing){
         $http.get('/admin/role/'+$scope.uc.email).
             success(function(data) {
-                that.storeUID = data[0].kvStore;
-
+                that.storeUID = data[0].templates;
                 /* is there already a store? */
                 if(that.storeUID != -1){
                     keyValueService.getKVStore(that.storeUID, function(store){
                         /* clear templates */
                         that.templates = {};
+                        that.templates.keys = [];
 
                         /* push to templates */
                         store.keys.forEach(function(key){
+                            that.templates.keys.push(key);
                             that.templates[key] = store[key];
                         });
                     });
@@ -41,9 +42,11 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','keyValueService'
 
                     /* clear templates */
                     that.templates = {};
+                    that.templates.keys = [];
 
                     /* push to templates */
                     store.keys.forEach(function(key){
+                        that.templates.keys.push(key);
                         that.templates[key] = store[key];
                     });
 
@@ -68,7 +71,7 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','keyValueService'
     this.transferKeyToAnotherStore = function(key, targetUser){
         $http.get('/admin/role/'+targetUser).
             success(function(data) {
-                var targetStore = data[0].kvStore;
+                var targetStore = data[0].templates;
                 keyValueService.transferKey(that.storeUID, key, targetStore);
             });
     };
