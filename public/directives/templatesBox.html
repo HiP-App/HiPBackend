@@ -1,0 +1,138 @@
+<div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()" ng-controller="TemplateCtrl as templateC">
+    <div class="panel-heading"  ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
+    <div class="panel-body">
+        <div   ng-repeat="template in templateC.templates.keys">
+            <div class="shift-left">
+                <a ng-href="/#/templates/edit/{{template}}" ng-bind="template"></a>
+            </div>
+
+            <div class="shift-right">
+                <li class="dropdown li-no-dec">
+                    <a  ng-click="templateC.frontendMenuForTemplate[template] = !templateC.frontendMenuForTemplate[template]">
+                        <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                </li>
+            </div>
+
+            <div class="float-clear"></div>
+
+            <!-- collapsed menu for the entry -->
+            <div collapse="templateC.frontendMenuForTemplate[template]">
+                <div class="well well-lg"
+                     ng-click="templateC.frontendMenuForTemplate[template] = !templateC.frontendMenuForTemplate[template]">
+
+                    <div class="menuEntry">
+                        <a ng-click="templateC.showPreview(template)" data-toggle="modal" data-target="#myModal">
+                            {{lc.getTerm('preview')}} <span class="glyphicon glyphicon-eye-open pull-right"></span>
+                        </a>
+                    </div>
+
+                    <div class="menuEntry">
+                        <a ng-href="/#/templates/edit/{{template}}">
+                            {{lc.getTerm('edit')}} <span class="glyphicon glyphicon-pencil pull-right"></span>
+                        </a>
+                    </div>
+
+                    <div class="menuEntry">
+                        <a ng-click="templateC.share(template, 'user')" data-toggle="modal" data-target="#myModal">
+                            {{lc.getTerm('share_user')}} <span class="glyphicon glyphicon-share-alt pull-right"></span>
+                        </a>
+                    </div>
+
+                    <div class="menuEntry">
+                        <a ng-click="templateC.share(template, 'group')" data-toggle="modal" data-target="#myModal">
+                            {{lc.getTerm('share_group')}} <span class="glyphicon glyphicon-share-alt pull-right"></span>
+                        </a>
+                    </div>
+
+                    <div class="menuEntry">
+                        <a ng-click="templateC.removeTemplateFromStore(template)">
+                            {{lc.getTerm('delete')}} <span class="glyphicon glyphicon-trash pull-right"></span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel" ng-bind-template="{{lc.getTerm('template')}}: {{templateC.chosenTemplate.name}}"></h4>
+                    </div>
+
+                    <!-- Share mode is off => We are in preview mode -->
+                    <div class="modal-body"  ng-show="templateC.shareMode==false" ng-bind-html="templateC.chosenTemplate.value"></div>
+
+                    <!-- Share mode is on -->
+                    <div class="modal-body"  ng-show="templateC.shareMode==true">
+
+                        <div ng-bind="lc.getTerm('choose_to_share')"></div>
+
+                        <br>
+
+                        <!-- Share to user -->
+                        <div ng-show="templateC.shareType == 'user'">
+                            <div class="input-group-btn">
+                                <button type="button"
+                                        ng-class="{     'btn-warning'       : templateC.shareTo == '',
+                                                        'btn-success'       : templateC.shareTo != ''}"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{lc.getTerm('system_share_to_user')}}
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="user in uc.userList">
+                                        <a ng-click="templateC.shareTo = user.email" ng-bind="user.email"></a>
+                                    </li>
+                                </ul>
+
+                                <input type="text" class="form-control" placeholder="{{lc.getTerm('chosen_user')}}" ng-model="templateC.shareTo" disabled>
+                            </div>
+                        </div>
+
+                        <!-- Share to group -->
+                        <div ng-show="templateC.shareType == 'group'">
+                            <div class="input-group-btn" ng-init="grpName = 'blabla'">
+                                <button type="button"
+                                        ng-class="{     'btn-warning'       : templateC.shareTo == '',
+                                                        'btn-success'       : templateC.shareTo != ''}"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{lc.getTerm('system_share_to_group')}}
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="group in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
+                                        <a ng-click="templateC.shareTo = group.uID" ng-bind="group.name"></a>
+                                    </li>
+                                </ul>
+
+                                <input type="text" class="form-control" placeholder="{{lc.getTerm('chosen_group')}}" ng-model="templateC.shareTo" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-bind="lc.getTerm('close')"></button>
+
+                        <a class="btn btn-success" data-dismiss="modal" ng-show="templateC.shareType=='group'"
+                           ng-bind="lc.getTerm('system_share_to_group')"
+                           ng-click="templateC.transferKeyToAnotherGroup(templateC.chosenTemplate.name,templateC.shareTo)"></a>
+
+                        <a class="btn btn-success" data-dismiss="modal" ng-show="templateC.shareType=='user'"
+                           ng-bind="lc.getTerm('system_share_to_user')"
+                           ng-click="templateC.transferKeyToAnotherStore(templateC.chosenTemplate.name,templateC.shareTo)"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Create new template button -->
+        <a ng-href="/#/templates/edit/" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('newTemplate')"></a>
+
+    </div>
+</div>

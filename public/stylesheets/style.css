@@ -412,3 +412,7 @@ nav {
     background-color:#fff;
     text-align:left;
 }
+
+.modal-backdrop {
+    z-index: -1;
+}

@@ -23,7 +23,7 @@ Config.neededValuesForKVStoreWithType_test2 = ["defaultValue", "defaultValue2"];
 Config.neededFieldsForKVStoreWithType_img   = ["Source","Description"];
 
 Config.neededFieldsForKVStoreWithType_template      =   ["HowTo"];
-Config.neededValuesForKVStoreWithType_template      =   ["HowTo_Field_Value"];
+Config.neededValuesForKVStoreWithType_template      =   ["<h3>Vorlagen</h3><p><br/></p><p>Die Vorlagen können benutzt werden, um wiederkehrende Situationen zu vereinfachen.</p>"];
 
 /* Helper functions */
 Config.returnNeededFieldsForType = function(type){

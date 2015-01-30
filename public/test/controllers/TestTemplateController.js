@@ -11,6 +11,9 @@ describe('Testsuite for the TemplateController:', function () {
     var store2      = undefined;
     var group       = undefined;
 
+    var routeParams = {};
+    routeParams.key = "ksUID";
+
     beforeEach(function () {
         module('myApp.controllers');
     });
@@ -23,11 +26,14 @@ describe('Testsuite for the TemplateController:', function () {
         $scope.uc.email = "JohnDoe@doe.com";
 
         controller = $controller('TemplateCtrl', {
-            $scope: $scope
+            $scope: $scope,
+            $routeParams: routeParams
         });
     }));
 
     beforeEach(function(){
+        routeParams.key = "ksUID";
+
         userObject = {
             uID: $scope.uc.email,
             role: "supervisor",
@@ -97,7 +103,8 @@ describe('Testsuite for the TemplateController:', function () {
         $httpBackend.flush();
 
         /* expect that the controller has been initialized correctly */
-        expect(controller.templates.HowTo).toBe('HowTo_Field_Value');
+        expect(controller.templates.HowTo)
+            .toBe('<h3>Vorlagen</h3><p><br/></p><p>Die Vorlagen können benutzt werden, um wiederkehrende Situationen zu vereinfachen.</p>');
     });
 
     it('is able to transfer one template to another user', function () {
@@ -185,6 +192,26 @@ describe('Testsuite for the TemplateController:', function () {
         var versionInBackend = {
             uID: "ksUID",
             list: ["type#test"]
+        };
+
+        /* send modified store back */
+        $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, {});
+        $httpBackend.flush();
+    });
+
+    it('is able to modify a template', function () {
+        initController();
+
+        controller.chosenTemplate.name = "modifyMe";
+        controller.templates["modifyMe"] = "HelloWorld";
+
+        controller.sendNewOrModifiedKey();
+
+        $httpBackend.expect("GET","/admin/kv/ksUID").respond(200, [store]);
+
+        var versionInBackend = {
+            uID: "ksUID",
+            list: ["type#test","key1#value1", "modifyMe#HelloWorld"]
         };
 
         /* send modified store back */

@@ -45,6 +45,7 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
      * @param doSth {function}:     The callback function. The data parameter holds the KV-Store as JSON Object.
      */
     this.getKVStore = function(uID, doSth){
+
         $http.get('/admin/kv/'+uID)
             .success(function(data){
                 var JSON = serializedFormToJSON(uID, data[0].list);

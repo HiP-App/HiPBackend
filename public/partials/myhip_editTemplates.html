@@ -1,0 +1,46 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TemplateCtrl as templateC">
+        <div class="panel-heading" ng-bind="lc.getTerm('system_template_header')"></div>
+        <div>
+            <div class="panel-body">
+                <form id="EditTemplateForm" name="EditTemplateForm" class="form-horizontal" role="form"
+                      ng-submit="templateC.sendNewOrModifiedKey()">
+
+                    <alert-box ac="ac"></alert-box>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <h4 ng-bind="lc.getTerm('system_template_header')"></h4>
+                            <div class="input-group">
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_template_name')"></span>
+                                <input type="text" class="form-control" name="tempName" id="tempName" placeholder=""
+                                       ng-model="templateC.chosenTemplate.name">
+                            </div>
+
+                            <br>
+
+                            <div class="input-group">
+                                <div text-angular ng-model="templateC.templates[templateC.chosenTemplate.name]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
+                                            submit="lc.getTerm('system_template_create')"
+                                            alertcontroller="ac"
+                                            languagecontroller="lc"
+                                            alertmsg="system_alert_template_created">
+                            </cancel-submit>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>
