@@ -27,6 +27,26 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','$routeParams','k
     this.testing    = false;                // variable is set to true if the function is under test
 
     /**
+     * This function removes duplicate keys from the given array
+     * @param a         The array that should be used to remove duplicates
+     * @returns {Array} The cleaned array
+     */
+    this.removeDuplicateKeys = function(a) {
+        var seen = {};
+        var out = [];
+        var len = a.length;
+        var j = 0;
+        for(var i = 0; i < len; i++) {
+            var item = a[i];
+            if(seen[item] !== 1) {
+                seen[item] = 1;
+                out[j++] = item;
+            }
+        }
+        return out;
+    };
+
+    /**
      * This function updates the controllers templates and may create a new storage
      * for templates if the current user has no templates at the current point in time
      */
@@ -43,6 +63,9 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','$routeParams','k
 
                 /* init frontend trigger */
                 that.frontendMenuForTemplate[key] = true;
+
+                /* remove double keys */
+                that.removeDuplicateKeys(that.templates.keys)
             });
         }
 

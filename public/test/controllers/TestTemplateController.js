@@ -223,4 +223,22 @@ describe('Testsuite for the TemplateController:', function () {
         $httpBackend.expect("PUT","/admin/kv", versionInBackend).respond(200, {});
         $httpBackend.flush();
     });
+
+    it('is able to merge two keys in the template list, if they are the same', function () {
+        initController();
+
+        /* ensure: one key1 */
+        expect(controller.templates.keys[0]).toBe('key1');
+
+        /* ensure: no second key */
+        expect(controller.templates.keys[1]).toBe(undefined);
+
+        /* push the second 'key1' */
+        controller.templates.keys.push('key1');
+
+        var cleanedArray = controller.removeDuplicateKeys(controller.templates.keys);
+
+        /* ensure: the second key to be undefined again */
+        expect(cleanedArray[1]).toBe(undefined);
+    });
 });
