@@ -97,15 +97,17 @@
                     <!-- END: Headline -->
 
                     <form ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
-                        <div class="shift-left" ng-style="{'max-width':'80%'}">
+                        <div class="shift-left" ng-style="{'max-width':'75%'}">
                             <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
                                 'overflow': 'scroll'}"></div>
                         </div>
                         <div class="shift-right">
-                            <div class="panel panel-default pull-right">
-                                <div class="panel-heading" ng-bind="lc.getTerm('system_supervisor_templates')"></div>
-                                <div class="panel-body">ABC</div>
-                            </div>
+                            <templates-box
+                                            languagecontroller="lc"
+                                            usercontroller="uc"
+                                            groupcontroller="gc"
+                                            showcondition="uc.isStudent()"
+                                            append="tc"></templates-box>
                         </div>
 
                         <div class="float-clear"></div>

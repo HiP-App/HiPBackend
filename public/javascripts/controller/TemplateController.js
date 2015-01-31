@@ -128,7 +128,11 @@ controllersModule.controller('TemplateCtrl', ['$scope','$http','$routeParams','k
      * @return          the final String
      */
     this.appendTemplateTo = function(key, appendTo){
-        appendTo += that.templates[key];
+        //appendTo += that.templates[key];
+        if(typeof appendTo != String){
+            appendTo.appendToContent(that.templates[key]);
+        }
+
         return appendTo;
     };
 

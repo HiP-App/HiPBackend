@@ -1,7 +1,7 @@
-<div class="panel panel-default quarter-right" ng-show="uc.isSupervisor()" ng-controller="TemplateCtrl as templateC">
+<div class="panel panel-default" ng-show="showcondition" ng-controller="TemplateCtrl as templateC">
     <div class="panel-heading"  ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
     <div class="panel-body">
-        <div   ng-repeat="template in templateC.templates.keys">
+        <div ng-repeat="template in templateC.templates.keys">
             <div class="shift-left">
                 <a ng-href="/#/templates/edit/{{template}}" ng-bind="template"></a>
             </div>
@@ -20,6 +20,12 @@
                 <div class="well well-lg"
                      ng-click="templateC.frontendMenuForTemplate[template] = !templateC.frontendMenuForTemplate[template]">
 
+                    <div class="menuEntry" ng-show="uc.isStudent()">
+                        <a ng-click="templateC.appendTemplateTo(template, tc)">
+                            {{lc.getTerm('use_template')}} <span class="glyphicon glyphicon-share-alt pull-right"></span>
+                        </a>
+                    </div>
+
                     <div class="menuEntry">
                         <a ng-click="templateC.showPreview(template)" data-toggle="modal" data-target="#myModal">
                             {{lc.getTerm('preview')}} <span class="glyphicon glyphicon-eye-open pull-right"></span>
@@ -32,13 +38,13 @@
                         </a>
                     </div>
 
-                    <div class="menuEntry">
+                    <div class="menuEntry" ng-show="uc.isSupervisor()">
                         <a ng-click="templateC.share(template, 'user')" data-toggle="modal" data-target="#myModal">
                             {{lc.getTerm('share_user')}} <span class="glyphicon glyphicon-share-alt pull-right"></span>
                         </a>
                     </div>
 
-                    <div class="menuEntry">
+                    <div class="menuEntry" ng-show="uc.isSupervisor()">
                         <a ng-click="templateC.share(template, 'group')" data-toggle="modal" data-target="#myModal">
                             {{lc.getTerm('share_group')}} <span class="glyphicon glyphicon-share-alt pull-right"></span>
                         </a>

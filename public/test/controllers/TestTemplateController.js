@@ -156,11 +156,16 @@ describe('Testsuite for the TemplateController:', function () {
     it('is able to append a given template to a given content', function () {
         initController();
 
-        var resultString = "abc";
+        var mocktc = {};
+        mocktc.currentTopic = {};
+        mocktc.currentTopic.content = "abc";
+        mocktc.appendToContent = function(key){
+            this.currentTopic.content += key;
+        };
 
-        resultString = controller.appendTemplateTo("key1",resultString);
+        controller.appendTemplateTo("key1",mocktc);
 
-        expect(resultString).toBe("abcvalue1");
+        expect(mocktc.currentTopic.content).toBe("abcvalue1");
     });
 
     it('is able to add a new template to the current store', function () {

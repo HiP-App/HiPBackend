@@ -52,9 +52,11 @@
                                       usercontroller="uc"></aggregated-notifications>
 
 
-            <templates-box  languagecontroller="lc"
+            <templates-box  ng-class="{'quarter-right' : uc.isSupervisor()}"
+                            languagecontroller="lc"
                             usercontroller="uc"
-                            groupcontroller="gc"></templates-box>
+                            groupcontroller="gc"
+                            showcondition="uc.isSupervisor()"></templates-box>
 
             <div class="float-clear"></div>
         </div>

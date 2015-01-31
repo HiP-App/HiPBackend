@@ -8,7 +8,9 @@ controllersModule.directive('templatesBox', function() {
         scope: {
             lc: '=languagecontroller',
             uc: '=usercontroller',
-            gc: '=groupcontroller'
+            gc: '=groupcontroller',
+            showcondition: '=showcondition',
+            tc: '=append'
         },
         templateUrl: '/assets/directives/templatesBox.html'
     };
