@@ -18,7 +18,7 @@
         <!--
         GROUP MEMBER VIEW
         -->
-        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = false; lTopics = false">
+        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = true; lTopics = true">
             <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
                 <fullscreen-overlay>
                     <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
@@ -26,7 +26,7 @@
                 </fullscreen-overlay>
 
                 <h4 ng-click="status = !status">
-                    {{lc.getTerm('system_edit_status')}}
+                    <collapse-triangle condition="status"></collapse-triangle> {{lc.getTerm('system_edit_status')}}
                     <span class="pull-right label" ng-class="{'label-success':tc.evaluateMaxCharConstraint() == 'green',
                                                               'label-warning':tc.evaluateMaxCharConstraint() == 'yellow',
                                                               'label-danger':tc.evaluateMaxCharConstraint() == 'red'}">
@@ -66,7 +66,9 @@
                 <div ng-show="tc.currentTopic.status == 'wip'">
 
                     <!-- Picture upload -->
-                    <h5 ng-bind="lc.getTerm('system_upload_header')" ng-click="picUpload = !picUpload"></h5>
+                    <h5 ng-click="picUpload = !picUpload">
+                        <collapse-triangle condition="picUpload"></collapse-triangle> {{lc.getTerm('system_upload_header')}}
+                    </h5>
 
                     <div collapse="picUpload">
                             <div class="shift-left">
@@ -120,7 +122,9 @@
 
                     <hr>
 
-                    <h5 ng-bind="lc.getTerm('system_edit_footnotes')" ng-click="footnotes = !footnotes"></h5>
+                    <h5 ng-click="footnotes = !footnotes">
+                        <collapse-triangle condition="footnotes"></collapse-triangle> {{lc.getTerm('system_edit_footnotes')}}
+                    </h5>
 
                     <div collapse="footnotes">
                             <!-- show footnotes -->
@@ -130,7 +134,9 @@
                             <create-footnotes></create-footnotes>
                     </div>
 
-                    <h5 ng-bind="lc.getTerm('system_edit_linked_topics')" ng-click="lTopics = !lTopics"></h5>
+                    <h5 ng-click="lTopics = !lTopics">
+                        <collapse-triangle condition="lTopics"></collapse-triangle> {{lc.getTerm('system_edit_linked_topics')}}
+                    </h5>
 
                     <div collapse="lTopics">
                         <!-- show linked topics -->
