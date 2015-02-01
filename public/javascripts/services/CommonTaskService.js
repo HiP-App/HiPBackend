@@ -128,7 +128,9 @@ servicesModule.service('commonTaskService', function(){
             content:    content,
             status:     topicStatus,
             constraints:constraintArray,
-            deadline:   deadline
+            deadline:   deadline,
+            tagStore:   "-1",
+            linkedTopics: []
         };
     };
 

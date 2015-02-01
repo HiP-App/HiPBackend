@@ -46,6 +46,12 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', 'commonTa
         name: "NaN"
     };
 
+
+    this.cachedGroupForUIDTranslation = {
+        uID: "-1",
+        name: "-1"
+    };
+
     /*
      * ----------------------
      * + HELPER FUNCTIONS   +
@@ -536,6 +542,26 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', 'commonTa
 
         // remove corresponding chat system
         commonTaskService.deleteChat($http, uID);
+    };
+
+
+    /**
+     * Translates a group UID to the fitting name
+     *
+     * @param uID           uID of the group that should be translated
+     * @returns {string}    the name if the group
+     */
+    this.nameOfGroup = function(uID){
+        if(uID != that.cachedGroupForUIDTranslation) {
+            /* find group and store it in cache */
+            for (var i = 0; i < that.groups.length; i++) {
+                if (that.groups[i].uID == uID) {
+                    that.cachedGroupForUIDTranslation.uID = uID;
+                    that.cachedGroupForUIDTranslation.name = that.groups[i].name;
+                }
+            }
+        }
+        return that.cachedGroupForUIDTranslation.name;
     };
 
     /* update parameter if needed */

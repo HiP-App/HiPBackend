@@ -1,0 +1,16 @@
+<div>
+    <ul>
+        <li class="footnote" ng-repeat="link in tc.linksOfThisTopic">
+            <div class="shift-left">
+                <a ng-href="{{tc.returnLink(link.uID)}}">{{link.name}}</a>
+            </div>
+
+            <div class="shift-right"
+                 ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
+
+                [<span ng-click="tc.removeLink(link.uID)" class="glyphicon glyphicon-trash">]</span>
+            </div>
+            <div class="float-clear"></div>
+        </li>
+    </ul>
+</div>

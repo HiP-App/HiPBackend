@@ -18,7 +18,7 @@
         <!--
         GROUP MEMBER VIEW
         -->
-        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = false">
+        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = false; lTopics = false">
             <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
                 <fullscreen-overlay>
                     <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
@@ -130,6 +130,19 @@
                             <create-footnotes></create-footnotes>
                     </div>
 
+                    <h5 ng-bind="lc.getTerm('system_edit_linked_topics')" ng-click="lTopics = !lTopics"></h5>
+
+                    <div collapse="lTopics">
+                        <!-- show linked topics -->
+                        <show-topic-links usercontroller="uc" topiccontroller="tc" groupcontroller="gc"></show-topic-links>
+
+                        <!-- Link creation -->
+                        <create-topic-links
+                                languagecontroller="lc"
+                                usercontroller="uc"
+                                groupcontroller="gc"
+                                topiccontroller="tc"></create-topic-links>
+                    </div>
                 </div>
 
 

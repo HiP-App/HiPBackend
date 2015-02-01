@@ -6,7 +6,7 @@
  * This is the major controller of the backend. It handles the change of topics, media entries, footnotes, etc.
  * Note that it needs the existence of an user controller (uc) in the current scope to work properly.
  */
-controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService', function($scope,$http,$routeParams,commonTaskService) {
+controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService','LinkCreator', function($scope,$http,$routeParams,commonTaskService, LinkCreator) {
     var that = this;
 
     this.debug = false;
@@ -16,6 +16,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         sender:"System"
     };
 
+    this.topics = [];           // contains every topic
+
     this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
 
     this.subtopics = [];
@@ -24,20 +26,23 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     this.currentUserTopics = [];
 
-    this.media = [];    // contains the list of media files for the current topic
+    this.media = [];            // contains the list of media files for the current topic
 
-    this.topicsByStatus = []; // contains topics as soon as they are fetched for a specific status via the getTopicsByStatus function
+    this.topicsByStatus = [];   // contains topics as soon as they are fetched for a specific status via the getTopicsByStatus function
     this.constraintsForThisTopic = [];
-    this.maxchar = -1;  // contains the value of the maximal amount of characters
+    this.maxchar = -1;          // contains the value of the maximal amount of characters
 
     this.listOfPictures = [];   // contains a list of all pictures that are used resp. shown in this topic
 
-    this.footnotes = []; // stores the footnotes of the current topic
+    this.footnotes = [];        // stores the footnotes of the current topic
 
     this.temporaryFootnote = {}; // stores a footnote that is going to be created
 
     this.topicVersion       = -1; // this variable stores the current version number of the topic
     this.historyEntries     = []; // stores the entries of the topic history
+    this.linksOfThisTopic   = []; // stores the links of this topic
+
+    this.newLink            = undefined; // contains temporary information if a new link to another topic is going to be generated
 
     this.modifyTopicID      = "";
     this.modifyTopicName    = "";
@@ -46,6 +51,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     this.modifyTopicCreatedBy   = "";
     this.modifyTopicContraints  = [];
     this.modifyTopicDeadline    = [];
+
+    this.cachedTopicForUIDTranslation = {
+        uID: "-1",
+        name: "-1"
+    };
 
     /**
      * Accepts a bunch of data for internal use. In general, this is only a string representation of the
@@ -281,6 +291,58 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Updates the topic with the given ID with the changes that are specified in the JavaScript Object
+     *
+     * @param uIDOfTheTopic     The topic that should be changed/updated
+     * @param changes           An JS-Object containing the changes. It structure is like:
+     *                          {
+     *                             keys: ["changeMe"],
+     *                             changeMe: "new Value"
+     *                          }
+     * @param append            true, if the value has to be pushed/removed to an array
+     *                          false, if the value should be overwritten
+     * @param deleteMode        if true -> changes are destructive the given keys are going to be deleted
+     */
+    this.updateTopicAndBypassHistory = function(uIDOfTheTopic, changes, append, deleteMode){
+        if(deleteMode == undefined || deleteMode == false){
+            $http.get('/admin/topic/'+uIDOfTheTopic)
+                .success(function(topic){
+                    var topic = topic[0];
+
+                    changes.keys.forEach(function(addKey){
+                        if(append){
+                            topic[addKey].push(changes[addKey]);
+                        }else{
+                            topic[addKey] = changes[addKey];
+                        }
+                    });
+
+                    /* send modified store back */
+                    $http.put('/admin/topic', topic);
+            });
+        }else{
+            /* DeleteMode is active */
+            $http.get('/admin/topic/'+uIDOfTheTopic)
+                .success(function(topic){
+                    var topic = topic[0];
+                    changes.keys.forEach(function(modifyKey){
+                        if(append){
+                            var pos = jQuery.inArray(changes[modifyKey], topic[modifyKey]);
+
+                            topic[modifyKey].splice(pos,1);
+
+                        }else{
+                            topic[modifyKey] = changes[modifyKey];
+                        }
+                    });
+
+                    /* send modified store back */
+                    $http.put('/admin/topic', topic);
+                });
+        }
+    };
+
+    /**
      * This function checks if the constraints are fulfilled
      * @returns {boolean}: true, if all constraint are fulfilled
      */
@@ -317,59 +379,116 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Translates a topic UID to the fitting name. The value can also be fetched via the cache afterwards.
+     * (that.cachedTopicForUIDTranslation)
+     *
+     * @param uID           uID of the topic that should be translated
+     * @param doSth         callback - 1. parameter => name of the group
+     * @param dataBasis     list of every topic. If undefined, the function will fetch the data iself -> slower
+     */
+    this.nameOfTopic = function(uID, doSth, dataBasis){
+        if(dataBasis == undefined){
+            if(uID != that.cachedTopicForUIDTranslation) {
+                /* find group and store it in cache */
+                $http.get('/admin/topic').success(function(topics){
+                    for (var i = 0; i < topics.length; i++) {
+                        if (topics[i].uID == uID) {
+                            that.cachedTopicForUIDTranslation.uID = uID;
+                            that.cachedTopicForUIDTranslation.name = topics[i].name;
+                        }
+                    }
+
+                    doSth(that.cachedTopicForUIDTranslation.name);
+                });
+            }else{
+                doSth(that.cachedTopicForUIDTranslation.name);
+            }
+        }else{
+            if(uID != that.cachedTopicForUIDTranslation) {
+                for (var i = 0; i < dataBasis.length; i++) {
+                    if (dataBasis[i].uID == uID) {
+                        that.cachedTopicForUIDTranslation.uID = uID;
+                        that.cachedTopicForUIDTranslation.name = dataBasis[i].name;
+                    }
+                }
+
+                doSth(that.cachedTopicForUIDTranslation.name);
+            }else{
+                doSth(that.cachedTopicForUIDTranslation.name);
+            }
+        }
+    };
+
+    /**
      * Requests the actual topic with the given uID as JSON object
      * and stores it internally in that.currentTopic
      *
      * @param uIDOfTheTopic of the topic
      */
     this.getTopicByTopicID = function(uIDOfTheTopic){
-        $http.get('/admin/topic/'+uIDOfTheTopic).
-            success(function(data, status, headers, config) {
-                that.currentTopic = data[0];
+        /* fetch data basis for post-processing */
+        $http.get('/admin/topic').success(function(topics){
+            that.topics = topics;
 
-                /* create the list of pictures of the topic */
-                that.preparePictureList();
+            /* fetch the concrete topic */
+            $http.get('/admin/topic/'+uIDOfTheTopic).
+                success(function(data) {
+                    that.currentTopic = data[0];
 
-                /* get history entries */
-                $http.get('/admin/history/'+uIDOfTheTopic)
-                    .success(function(data){
-                        if(data != undefined && data.length > 0){
-                            that.historyEntries = data;
+                    /* create the list of pictures of the topic */
+                    that.preparePictureList();
 
-                            /* extract current version number and create modification markup */
-                            var max = -1;
-                            for(var i=0; i < that.historyEntries.length; i++){
-                                if(Number(that.historyEntries[i].versionNumber) > max){
-                                    max = that.historyEntries[i].versionNumber;
-                                }
-
-                                /* add diff markup */
-                                if(i >=1 ){
-                                    that.historyEntries[i].diff = diffString(that.historyEntries[i-1].content,
-                                        that.historyEntries[i].content)
-                                }
-
-                                // btw: cast the value to a number
-                                that.historyEntries[i].versionNumber = Number(that.historyEntries[i].versionNumber);
-                            }
-                            that.topicVersion = max;
-                        }else{
-                            /* no history found for topic
-                                -> this is an error
-                                -> create fallback data instead */
-                            that.historyEntries.push(commonTaskService.createHistoryObject(uIDOfTheTopic));
-                            that.topicVersion = 1;
-                        }
-
-                        /* now: revert order for output */
-                        that.historyEntries.reverse();
-                    }).error(function(data){
-                        console.log("error TopicController: Cannot fetch history entries");
+                    /* get the links of this topic */
+                    that.currentTopic.linkedTopics.forEach(function(link){
+                        that.nameOfTopic(link, function(name){
+                            that.linksOfThisTopic.push({
+                                uID: link,
+                                name: name
+                            });
+                        }, that.topics);
                     });
-            }).
-            error(function(data, status, headers, config) {
-                console.log("error TopicController: Topic cannot get pulled");
-            });
+
+                    /* get history entries */
+                    $http.get('/admin/history/'+uIDOfTheTopic)
+                        .success(function(data){
+                            if(data != undefined && data.length > 0){
+                                that.historyEntries = data;
+
+                                /* extract current version number and create modification markup */
+                                var max = -1;
+                                for(var i=0; i < that.historyEntries.length; i++){
+                                    if(Number(that.historyEntries[i].versionNumber) > max){
+                                        max = that.historyEntries[i].versionNumber;
+                                    }
+
+                                    /* add diff markup */
+                                    if(i >=1 ){
+                                        that.historyEntries[i].diff = diffString(that.historyEntries[i-1].content,
+                                            that.historyEntries[i].content)
+                                    }
+
+                                    // btw: cast the value to a number
+                                    that.historyEntries[i].versionNumber = Number(that.historyEntries[i].versionNumber);
+                                }
+                                that.topicVersion = max;
+                            }else{
+                                /* no history found for topic
+                                    -> this is an error
+                                    -> create fallback data instead */
+                                that.historyEntries.push(commonTaskService.createHistoryObject(uIDOfTheTopic));
+                                that.topicVersion = 1;
+                            }
+
+                            /* now: revert order for output */
+                            that.historyEntries.reverse();
+                        }).error(function(data){
+                            console.log("error TopicController: Cannot fetch history entries");
+                        });
+                }).
+                error(function(data, status, headers, config) {
+                    console.log("error TopicController: Topic cannot get pulled");
+                });
+        });
     };
 
     /**
@@ -706,6 +825,63 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         }else{
             return "green"
         }
+    };
+
+    /**
+     * Function adds a link to another topic to the linkedTopics Array
+     * @param uID       The uID of the linked topic
+     */
+    this.addLink = function(uID){
+        /* prepare changes */
+        var changes = {
+          keys: ['linkedTopics'],
+          linkedTopics: uID
+        };
+
+        /* save for frontend usage */
+        that.nameOfTopic(uID,function(name){
+            that.linksOfThisTopic.push({
+                uID: uID,
+                name: name
+            })
+        }, that.topics);
+
+        /* do changes */
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, changes, true, false);
+    };
+
+    /**
+     * Function removes the given link from the topic
+     *
+     * @param uID       uID of the link that should be removed
+     */
+    this.removeLink = function(uID){
+        /* prepare changes */
+        var changes = {
+            keys: ['linkedTopics'],
+            linkedTopics: uID
+        };
+
+        /* remove from frontend */
+        var pos = -1;
+        for(var i=0; i < that.linksOfThisTopic.length; i++){
+         if(that.linksOfThisTopic[i].uID == uID){
+             pos = i;
+         }
+        }
+        that.linksOfThisTopic.splice(pos,1);
+
+        /* do changes */
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, changes, true, true);
+    };
+
+    /**
+     * Returns the URL for the given topic UID
+     * @param uID           the used topic as uID
+     * @returns {String}    the URL
+     */
+    this.returnLink = function(uID){
+      return LinkCreator.getLinkForTopic(uID);
     };
 
     /* update parameter if needed */

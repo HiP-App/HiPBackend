@@ -1,7 +1,7 @@
 package models
 
 /**
- * Created by jorgamelunxen on 11.11.14.
+ * Created by Jörg Amelunxen on 11.11.14.
  */
 case class TopicModel(uID: String,
                       name: String,
@@ -10,4 +10,6 @@ case class TopicModel(uID: String,
                       content: String,
                       status: String,
                       constraints: Array[String],
-                      deadline: String)
+                      deadline: String,
+                      tagStore: String,
+                      linkedTopics: Array[String])

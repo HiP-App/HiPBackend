@@ -1,0 +1,39 @@
+<div ng-init="open = false">
+    <div class="shift-right">
+        <a class="btn btn-success"
+           ng-click="open = !open"
+           ng-bind="lc.getTerm('button_link_new')"></a>
+    </div>
+    <div class="float-clear"></div>
+
+    <div ng-show="open">
+        <div class="input-group-btn" ng-init="grpName = 'blabla'">
+            <button type="button"
+                    ng-class="{     'btn-warning'       : tc.newLink == undefined,
+                                    'btn-success'       : tc.newLink != undefined}"
+                    class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                {{lc.getTerm('system_link_to_topic')}}
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="topic in tc.topics">
+                    <a ng-click="tc.newLink = topic" ng-bind="topic.name"></a>
+                </li>
+            </ul>
+
+            <input type="text" class="form-control" placeholder="{{lc.getTerm('chosen_topic')}}" ng-model="tc.newLink.name" disabled>
+        </div>
+
+        <div class="shift-left">
+            <a class="btn btn-danger"
+               ng-click="tc.temporaryFootnote = undefined"
+               ng-bind="lc.getTerm('button_footnote_cancel')"></a>
+        </div>
+
+        <div class="shift-right">
+            <a class="btn btn-success"
+               ng-click="tc.addLink(tc.newLink.uID); open = !open"
+               ng-bind="lc.getTerm('button_link_send')"></a>
+        </div>
+        <div class="float-clear"></div>
+    </div>
+</div>

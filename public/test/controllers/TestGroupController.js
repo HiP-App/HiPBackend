@@ -338,4 +338,12 @@ describe('Testsuite for the GroupController:', function () {
         expect(controller.aggregatedNotifications[1].notification).toBe("EFG (2011-05-11)");
         expect(controller.aggregatedNotifications[0].notification).toBe("HHG (2013-04-11)");
     });
+
+    it('is able to translate a group ID into its name', function () {
+        initController();
+
+        var name = controller.nameOfGroup("2");
+
+        expect(name).toBe("AnotherDummy");
+    });
 });

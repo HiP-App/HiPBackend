@@ -58,7 +58,9 @@ class TopicController extends Controller with MongoController {
                                         "$set" -> Json.obj("createdBy" -> topic.createdBy),
                                         "$set" -> Json.obj("content" -> topic.content),
                                         "$set" -> Json.obj("status" -> topic.status),
-                                        "$set" -> Json.obj("constraints" -> topic.constraints))
+                                        "$set" -> Json.obj("constraints" -> topic.constraints),
+                                        "$set" -> Json.obj("tagStore" -> topic.tagStore),
+                                        "$set" -> Json.obj("linkedTopics" -> topic.linkedTopics))
 
           topicCollection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>
@@ -89,6 +91,29 @@ class TopicController extends Controller with MongoController {
       Json.arr(topics)
     }
 
+    // everything's ok! Let's reply with the array
+    futurePersonsJsonArray.map {
+      topics =>
+        Ok(topics(0))
+    }
+  }
+
+  /**
+   * Returns every topic in the db
+   *
+   * @return a list that contains every topic as a JSON object
+   */
+  def getTopics = Action.async {
+    // let's do our query
+    val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj()).cursor[TopicModel]
+
+    // gather all the JsObjects in a list
+    val futureTopicsList: Future[List[TopicModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futurePersonsJsonArray: Future[JsArray] = futureTopicsList.map { topics =>
+      Json.arr(topics)
+    }
     // everything's ok! Let's reply with the array
     futurePersonsJsonArray.map {
       topics =>

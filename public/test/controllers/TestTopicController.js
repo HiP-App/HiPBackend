@@ -23,7 +23,9 @@ describe('Testsuite for the TopicController:', function () {
                 "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
             status: "wip",
             constraints: ["constraintA"],
-            deadline : "2020-01-14T23:00:00.000Z"
+            deadline : "2020-01-14T23:00:00.000Z",
+            tagStore: "-1",
+            linkedTopics: []
         };
 
         var demoTopic2 = {
@@ -34,7 +36,9 @@ describe('Testsuite for the TopicController:', function () {
             content: "...",
             status: "wip",
             constraints: ["constraintA"],
-            deadline : "2013-01-14T23:00:00.000Z"
+            deadline : "2013-01-14T23:00:00.000Z",
+            tagStore: "-1",
+            linkedTopics: ["someUID"]
         };
 
         var demoSubTopic = {
@@ -45,7 +49,9 @@ describe('Testsuite for the TopicController:', function () {
             content: "...",
             status: "done",
             constraints: ["constraintA"],
-            deadline : "2015-01-14T23:00:00.000Z"
+            deadline : "2015-01-14T23:00:00.000Z",
+            tagStore: "-1",
+            linkedTopics: []
         };
 
         var demoConstraint = {
@@ -130,6 +136,9 @@ describe('Testsuite for the TopicController:', function () {
 
     beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
         $httpBackend = _$httpBackend_;
+
+        $httpBackend.when('GET', '/admin/topic')
+            .respond(demoTopicList);
 
         $httpBackend.when('GET', '/admin/topicbyuser/anUser')
             .respond(demoTopicList);
@@ -707,5 +716,56 @@ describe('Testsuite for the TopicController:', function () {
 
         /* evaluate */
         expect(maxCharStatus).toBe("red")
+    });
+
+    it('is able to create a new link to a topic', function () {
+        initController();
+
+        var targetUID = "2";
+
+        controller.addLink(targetUID);
+
+        var modObj = jQuery.extend(true, {}, demoTopic1);
+        modObj.linkedTopics.push("2");
+
+        $httpBackend.expect('GET', '/admin/topic/1').respond(200,[demoTopic1]);
+        $httpBackend.expect('PUT','/admin/topic', modObj).respond(200,{});
+        $httpBackend.flush();
+    });
+
+    it('is able to remove a link from a topic', function () {
+        initController();
+
+        controller.currentTopic = demoTopic2;
+
+        controller.linksOfThisTopic.push({
+            uID: "SomeUID",
+            name: "FollowTheWhiteRabbit"
+        });
+
+        var targetUID = "SomeUID";
+
+        controller.removeLink(targetUID);
+
+        var goal = jQuery.extend(true, {}, demoTopic2);
+        goal.linkedTopics = [];
+
+        $httpBackend.expect('GET', '/admin/topic/2').respond(200,[demoTopic2]);
+        $httpBackend.expect('PUT','/admin/topic',goal).respond(200,{});
+        $httpBackend.flush();
+
+        expect(controller.linksOfThisTopic.length).toBe(0);
+    });
+
+    it('is able to translate a topic ID into its name', function () {
+        initController();
+
+        controller.nameOfTopic("2", function(name){
+            expect(name).toBe("aTopic2");
+        });
+
+        $httpBackend.expect('GET','/admin/topic').respond(200,[demoTopic1,demoTopic2]);
+        $httpBackend.flush();
+
     });
 });

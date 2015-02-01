@@ -28,6 +28,7 @@ DELETE        /admin/chat/:uID                       @controllers.ChatController
 GET           /admin/languages/:lang                 @controllers.LanguageController.getLanguageDataForClient(lang: String)
 POST          /admin/languages                       @controllers.LanguageController.postTerm
 
+GET           /admin/topic                           @controllers.TopicController.getTopics
 GET           /admin/topic/:uID                      @controllers.TopicController.getTopic(uID: String)
 GET           /admin/topicbyuser/:uID                @controllers.TopicController.getTopicByUser(uID: String)
 GET           /admin/topicbystatus/:status           @controllers.TopicController.getTopicByStatus(status: String)
