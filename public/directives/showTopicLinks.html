@@ -2,7 +2,8 @@
     <ul>
         <li class="footnote" ng-repeat="link in tc.linksOfThisTopic">
             <div class="shift-left">
-                <a ng-href="{{tc.returnLink(link.uID)}}">{{link.name}}</a>
+                <a ng-click="tc.appendToContent('<a href='+tc.returnLink(link.uID)+'>'+ link.name
+                        +'</a>')">{{link.name}}</a>
             </div>
 
             <div class="shift-right"
