@@ -67,9 +67,9 @@ describe('Testsuite for the TopicController:', function () {
             uID: "constraintB",
             name: "max_character_limitation",
             topic: "1",
-            valueInTopic: "0",
-            value: "0",
-            fulfilled: true
+            valueInTopic: "1000",
+            value: "100",
+            fulfilled: false
         };
 
         var demoConstraint3 = {

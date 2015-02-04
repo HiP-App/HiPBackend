@@ -13,6 +13,7 @@ Tooling.lastUsedTimeStamp = "";
 var Config = {};
 
 Config.possibleContraints = ["character_limitation","img_limitation","max_character_limitation"]; // holds the used constraints in the system
+Config.constraintsThatDoesNotMatterForSaving = ["max_character_limitation"]; // every constraint listed here does not need to be fulfilled for the topic to be saved
 
 /* KV Stores: needed fields => this specifies the 'types' of the KV-Stores*/
 Config.neededFieldsForKVStoreWithType_test  = ["key1"];

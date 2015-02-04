@@ -350,8 +350,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         var fulfilled = true;
 
         that.constraintsForThisTopic.forEach(function (constraintToValidate) {
-            if(constraintToValidate.fulfilled == false)
-            fulfilled = false;
+            if(constraintToValidate.fulfilled == false){
+                /* check if we can drop this constraint */
+                var drop = (jQuery.inArray(constraintToValidate.name, Config.constraintsThatDoesNotMatterForSaving) >= 0);
+                if(!drop){
+                    fulfilled = false;
+                }
+            }
         });
 
         return fulfilled;
