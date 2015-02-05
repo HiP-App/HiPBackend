@@ -2,6 +2,7 @@
 dependencies = [
     'ngRoute',
     'ui.bootstrap',
+    'ui.slider',
     'textAngular',
     'myApp.services',
     'myApp.alerts',

@@ -673,10 +673,10 @@ describe('Testsuite for the TopicController:', function () {
         controller.maxchar = 600;
 
         /* use */
-        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+        var maxCharStatus   = controller.evaluateMaxCharConstraint(80);
 
         /* evaluate */
-        expect(maxCharStatus).toBe("green")
+        expect(maxCharStatus).toBe("yellow")
     });
 
     it('is able to evaluate the yellow max_character_constraint', function () {
@@ -686,10 +686,10 @@ describe('Testsuite for the TopicController:', function () {
         controller.maxchar = 400;
 
         /* use */
-        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+        var maxCharStatus   = controller.evaluateMaxCharConstraint(80);
 
         /* evaluate */
-        expect(maxCharStatus).toBe("yellow")
+        expect(maxCharStatus).toBe("green")
     });
 
     it('is able to evaluate the red max_character_constraint', function () {
@@ -699,10 +699,23 @@ describe('Testsuite for the TopicController:', function () {
         controller.maxchar = 378;
 
         /* use */
-        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+        var maxCharStatus   = controller.evaluateMaxCharConstraint(80);
 
         /* evaluate */
         expect(maxCharStatus).toBe("red")
+    });
+
+    it('is able to evaluate the green max_character_constraint with modified treshold', function () {
+        initController();
+
+        /* set */
+        controller.maxchar = 600;
+
+        /* use */
+        var maxCharStatus   = controller.evaluateMaxCharConstraint(10);
+
+        /* evaluate */
+        expect(maxCharStatus).toBe("green")
     });
 
     it('is able to evaluate the red max_character_constraint with a negative number', function () {
@@ -712,7 +725,7 @@ describe('Testsuite for the TopicController:', function () {
         controller.maxchar = -10;
 
         /* use */
-        var maxCharStatus   = controller.evaluateMaxCharConstraint();
+        var maxCharStatus   = controller.evaluateMaxCharConstraint(80);
 
         /* evaluate */
         expect(maxCharStatus).toBe("red")

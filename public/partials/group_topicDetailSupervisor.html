@@ -50,6 +50,14 @@
 
                     <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
                           ng-submit="tc.updateConstraints()">
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <p ng-bind-template="{{lc.getTerm('threshold_light')}}: {{tc.maxcharThreshold}}"></p>
+                                <slider floor="0" ceiling="100" step="1" precision="1" ng-model="tc.maxcharThreshold"></slider>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-10">
                                 <div ng-repeat="constraint in tc.constraintsForThisTopic">

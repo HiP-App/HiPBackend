@@ -12,4 +12,5 @@ case class TopicModel(uID: String,
                       constraints: Array[String],
                       deadline: String,
                       tagStore: String,
-                      linkedTopics: Array[String])
+                      linkedTopics: Array[String],
+                      maxCharThreshold: String)

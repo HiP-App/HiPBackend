@@ -130,7 +130,8 @@ servicesModule.service('commonTaskService', function(){
             constraints:constraintArray,
             deadline:   deadline,
             tagStore:   "-1",
-            linkedTopics: []
+            linkedTopics: [],
+            maxCharThreshold: "80"
         };
     };
 
@@ -342,7 +343,7 @@ servicesModule.service('commonTaskService', function(){
 
         // post
         $http.post('/admin/topic', topic).
-            success(function (data, status, headers, config) {
+            success(function () {
                 /* create empty history */
                 var historyObject = that.createHistoryObject(currentTopicID);
                 $http.post('/admin/history', historyObject);

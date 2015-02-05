@@ -27,9 +27,9 @@
 
                 <h4 ng-click="status = !status">
                     <collapse-triangle condition="status"></collapse-triangle> {{lc.getTerm('system_edit_status')}}
-                    <span class="pull-right label" ng-class="{'label-success':tc.evaluateMaxCharConstraint() == 'green',
-                                                              'label-warning':tc.evaluateMaxCharConstraint() == 'yellow',
-                                                              'label-danger':tc.evaluateMaxCharConstraint() == 'red'}">
+                    <span class="pull-right label" ng-class="{'label-success':tc.evaluateMaxCharConstraint(tc.maxcharThreshold) == 'green',
+                                                              'label-warning':tc.evaluateMaxCharConstraint(tc.maxcharThreshold) == 'yellow',
+                                                              'label-danger':tc.evaluateMaxCharConstraint(tc.maxcharThreshold) == 'red'}">
 
                         {{lc.getTerm("chars_remaining")}}: {{tc.maxchar - tc.currentTopic.content.length}}</span>
                 </h4>

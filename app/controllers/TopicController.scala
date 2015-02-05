@@ -49,6 +49,11 @@ class TopicController extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  /**
+   * This Action updates a topic with the parsed data in the HTTP body
+   *
+   * @return
+   */
   def updateTopic = Action.async(parse.json) {
     request =>
       request.body.validate[TopicModel].map {
@@ -60,7 +65,8 @@ class TopicController extends Controller with MongoController {
                                         "$set" -> Json.obj("status" -> topic.status),
                                         "$set" -> Json.obj("constraints" -> topic.constraints),
                                         "$set" -> Json.obj("tagStore" -> topic.tagStore),
-                                        "$set" -> Json.obj("linkedTopics" -> topic.linkedTopics))
+                                        "$set" -> Json.obj("linkedTopics" -> topic.linkedTopics),
+                                        "$set" -> Json.obj("maxCharThreshold" -> topic.maxCharThreshold))
 
           topicCollection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>

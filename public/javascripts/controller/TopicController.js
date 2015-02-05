@@ -31,6 +31,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     this.topicsByStatus = [];   // contains topics as soon as they are fetched for a specific status via the getTopicsByStatus function
     this.constraintsForThisTopic = [];
     this.maxchar = -1;          // contains the value of the maximal amount of characters
+    this.maxcharThreshold = -1; // contains the threshold of the yellow/green light
 
     this.listOfPictures = [];   // contains a list of all pictures that are used resp. shown in this topic
 
@@ -178,9 +179,70 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Updates the topic with the given ID with the changes that are specified in the JavaScript Object
+     *
+     * @param uIDOfTheTopic     The topic that should be changed/updated
+     * @param changes           An JS-Object containing the changes. It structure is like:
+     *                          {
+     *                             keys: ["changeMe"],
+     *                             changeMe: "new Value"
+     *                          }
+     * @param append            true, if the value has to be pushed/removed to an array
+     *                          false, if the value should be overwritten
+     * @param deleteMode        if true -> changes are destructive the given keys are going to be deleted
+     */
+    this.updateTopicAndBypassHistory = function(uIDOfTheTopic, changes, append, deleteMode){
+        if(deleteMode == undefined || deleteMode == false){
+            $http.get('/admin/topic/'+uIDOfTheTopic)
+                .success(function(topic){
+                    var topic = topic[0];
+
+                    changes.keys.forEach(function(addKey){
+                        if(append){
+                            topic[addKey].push(changes[addKey]);
+                        }else{
+                            topic[addKey] = changes[addKey];
+                        }
+                    });
+                    console.log(topic);
+                    /* send modified store back */
+                    $http.put('/admin/topic', topic);
+                });
+        }else{
+            /* DeleteMode is active */
+            $http.get('/admin/topic/'+uIDOfTheTopic)
+                .success(function(topic){
+                    var topic = topic[0];
+                    changes.keys.forEach(function(modifyKey){
+                        if(append){
+                            var pos = jQuery.inArray(changes[modifyKey], topic[modifyKey]);
+
+                            topic[modifyKey].splice(pos,1);
+
+                        }else{
+                            topic[modifyKey] = changes[modifyKey];
+                        }
+                    });
+
+                    /* send modified store back */
+                    $http.put('/admin/topic', topic);
+                });
+        }
+    };
+
+    /**
      * Updates the constraints of the current topic
      */
     this.updateConstraints = function(){
+        /* update threshold */
+        var changes = {
+            keys: ['maxCharThreshold'],
+            maxCharThreshold: that.maxcharThreshold+""
+        };
+
+        that.updateTopicAndBypassHistory(that.currentTopic.uID,changes,false,false);
+
+        /* update constraints itself */
         var constraintNotFulfilledDebugOutput = function () {
             if (that.debug) {
                 console.log("info TopicController: Constraint is not fulfilled");
@@ -291,58 +353,6 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
-     * Updates the topic with the given ID with the changes that are specified in the JavaScript Object
-     *
-     * @param uIDOfTheTopic     The topic that should be changed/updated
-     * @param changes           An JS-Object containing the changes. It structure is like:
-     *                          {
-     *                             keys: ["changeMe"],
-     *                             changeMe: "new Value"
-     *                          }
-     * @param append            true, if the value has to be pushed/removed to an array
-     *                          false, if the value should be overwritten
-     * @param deleteMode        if true -> changes are destructive the given keys are going to be deleted
-     */
-    this.updateTopicAndBypassHistory = function(uIDOfTheTopic, changes, append, deleteMode){
-        if(deleteMode == undefined || deleteMode == false){
-            $http.get('/admin/topic/'+uIDOfTheTopic)
-                .success(function(topic){
-                    var topic = topic[0];
-
-                    changes.keys.forEach(function(addKey){
-                        if(append){
-                            topic[addKey].push(changes[addKey]);
-                        }else{
-                            topic[addKey] = changes[addKey];
-                        }
-                    });
-
-                    /* send modified store back */
-                    $http.put('/admin/topic', topic);
-            });
-        }else{
-            /* DeleteMode is active */
-            $http.get('/admin/topic/'+uIDOfTheTopic)
-                .success(function(topic){
-                    var topic = topic[0];
-                    changes.keys.forEach(function(modifyKey){
-                        if(append){
-                            var pos = jQuery.inArray(changes[modifyKey], topic[modifyKey]);
-
-                            topic[modifyKey].splice(pos,1);
-
-                        }else{
-                            topic[modifyKey] = changes[modifyKey];
-                        }
-                    });
-
-                    /* send modified store back */
-                    $http.put('/admin/topic', topic);
-                });
-        }
-    };
-
-    /**
      * This function checks if the constraints are fulfilled
      * @returns {boolean}: true, if all constraint are fulfilled
      */
@@ -439,6 +449,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             $http.get('/admin/topic/'+uIDOfTheTopic).
                 success(function(data) {
                     that.currentTopic = data[0];
+
+                    that.maxcharThreshold = that.currentTopic.maxCharThreshold;
 
                     /* create the list of pictures of the topic */
                     that.preparePictureList();
@@ -813,10 +825,17 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     /**
      * Evaluates the status of the current max character constraints. Returns a String to signalize the status.
+     *
+     * @param percent:  The percentage value for the yellow-green switch. By default: 80
+     *
      * @returns {string}: 'green' if current content length is < 80% of the max value. 'Yellow' if current length is
      * between 80% and the max value and 'red' if current value is higher than max value.
      */
-    this.evaluateMaxCharConstraint = function(){
+    this.evaluateMaxCharConstraint = function(percent){
+        if(percent == undefined || percent < 0 || percent > 100){
+            percent = 80;
+        }
+
         if(that.currentTopic.content == undefined){
             return "no init yet";
         }
@@ -825,10 +844,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
         if(valueInTopic > that.maxchar || that.maxchar < 0){
             return "red";
-        }else if(valueInTopic >= 0.8 * that.maxchar){
-            return "yellow"
-        }else{
+        }else if(valueInTopic >= (percent / 100) * that.maxchar){
             return "green"
+        }else{
+            return "yellow"
         }
     };
 
