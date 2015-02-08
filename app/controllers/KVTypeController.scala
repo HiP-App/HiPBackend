@@ -28,7 +28,7 @@ class KVTypeController extends Controller with MongoController {
   /**
    * Returns a type in the db given by its uID
    *
-   * @return a list that contains every role as a JSON object
+   * @return a list that contains the type as a JSON object
    */
   def getType(uID: String) = Action.async {
     // let's do our query
@@ -49,9 +49,32 @@ class KVTypeController extends Controller with MongoController {
   }
 
   /**
+   * Returns a type in the db given by its name
+   *
+   * @return a list that contains the type as a JSON object
+   */
+  def getTypeWithName(name: String) = Action.async {
+    // let's do our query
+    val cursor: Cursor[KVTypeModel] = collection.find(Json.obj("name" -> name)).cursor[KVTypeModel]
+
+    // gather all the JsObjects in a list
+    val futureTypeList: Future[List[KVTypeModel]] = cursor.collect[List]()
+
+    // transform the list into a JsArray
+    val futureTypeJsonArray: Future[JsArray] = futureTypeList.map { types =>
+      Json.arr(types)
+    }
+    // everything's ok! Let's reply with the array
+    futureTypeJsonArray.map {
+      types =>
+        Ok(types(0))
+    }
+  }
+
+  /**
    * Returns every type in the db
    *
-   * @return a list that contains every role as a JSON object
+   * @return a list that contains the types as a JSON object
    */
   def getTypes = Action.async {
     // let's do our query
@@ -72,7 +95,7 @@ class KVTypeController extends Controller with MongoController {
   }
 
   /**
-   * Updated the role
+   * Updates the type
    *
    * @return
    */

@@ -27,6 +27,7 @@ Config.neededFieldsForKVStoreWithType_template      =   ["HowTo"];
 Config.neededValuesForKVStoreWithType_template      =   ["<h3>Vorlagen</h3><p><br/></p><p>Die Vorlagen können benutzt werden, um wiederkehrende Situationen zu vereinfachen.</p>"];
 
 /* Helper functions */
+/*
 Config.returnNeededFieldsForType = function(type){
     var completeNameOfTheField = "neededFieldsForKVStoreWithType_"+type;
 
@@ -37,6 +38,6 @@ Config.returnValuesForType = function(type){
     var completeNameOfTheField = "neededValuesForKVStoreWithType_"+type;
 
     return Config[completeNameOfTheField];
-};
+};*/
 
 

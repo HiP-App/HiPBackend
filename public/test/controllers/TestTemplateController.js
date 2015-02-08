@@ -11,6 +11,11 @@ describe('Testsuite for the TemplateController:', function () {
     var store2      = undefined;
     var group       = undefined;
 
+    var typeTest = "";
+    var typeTest2 = "";
+    var typeTemplate = "";
+    var typeList = [];
+
     var routeParams = {};
     routeParams.key = "ksUID";
 
@@ -60,7 +65,37 @@ describe('Testsuite for the TemplateController:', function () {
         group = {
             uID: "groupUID",
             member: "JaneDoe@doe.com,JohnDoe@doe.com"
-        }
+        };
+
+
+        typeTest = {
+            uID: "UID_TEST",
+            name: "test",
+            extendsType: 'root',
+            system: true,
+            keys: ["key1"],
+            values: ["initMe"]
+        };
+
+        typeTest2 = {
+            uID: "UID_TEST2",
+            name: "test2",
+            extendsType: 'root',
+            system: true,
+            keys: ["key1", "test2"],
+            values: ["defaultValue", "defaultValue2"]
+        };
+
+        typeTemplate = {
+            uID: "UID_TEMPLATE",
+            name: "template",
+            extendsType: 'root',
+            system: true,
+            keys: ["HowTo"],
+            values: ["<h3>Vorlagen</h3><p><br/></p><p>Die Vorlagen können benutzt werden, um wiederkehrende Situationen zu vereinfachen.</p>"]
+        };
+
+        typeList = [typeTest, typeTest2, typeTemplate];
     });
 
     afterEach(function () {
@@ -68,7 +103,11 @@ describe('Testsuite for the TemplateController:', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+
     function initController(){
+        /* fetching types for the KeyValueService */
+        $httpBackend.expect('GET', '/admin/types').respond(200, typeList);
+
         /* expect the fetch of the user data */
         $httpBackend.expect('GET','/admin/role/'+$scope.uc.email).respond(200,[userObject]);
 
@@ -91,6 +130,9 @@ describe('Testsuite for the TemplateController:', function () {
 
         /* manipulate normal init process */
         userObject.templates = "-1";
+
+        /* fetching types for the KeyValueService */
+        $httpBackend.expect('GET', '/admin/types').respond(200, typeList);
 
         /* expect the fetch of the user data */
         $httpBackend.expect('GET','/admin/role/'+$scope.uc.email).respond(200,[userObject]);

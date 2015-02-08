@@ -13,6 +13,7 @@ GET           /admin/users/:email                    @controllers.UserController
 PUT           /admin/userkv/:uID/:storeID            @controllers.UserController.updateKVStore(uID: String, storeID: String)
 
 GET           /admin/type/:uID                       @controllers.KVTypeController.getType(uID: String)
+GET           /admin/typewithname/:name              @controllers.KVTypeController.getTypeWithName(name: String)
 GET           /admin/types                           @controllers.KVTypeController.getTypes
 PUT           /admin/types                           @controllers.KVTypeController.updateType
 

@@ -112,4 +112,9 @@ describe('Testsuite for the TypeService:', function () {
         $httpBackend.expect('PUT','/admin/types',deepcopy).respond(200,{});
         $httpBackend.flush();
     });
+
+    it('it is able to construct a type from offline data', function () {
+        var type = service.constructTypeFromOfflineData('type_A', typeList);
+        expect(type.uID).toBe('uID_1');
+    });
 });

@@ -10,8 +10,14 @@ describe('Testsuite for the KeyValueService:', function () {
     var storageObject   = "";
     var storageObject2  = "";
 
+    var typeTest = "";
+    var typeTest2 = "";
+    var typeTemplate = "";
+    var typeList = [];
+
     beforeEach(function () {
         module('myApp.services');
+
     });
 
     beforeEach(inject(function (keyValueService ,_$httpBackend_) {
@@ -29,6 +35,35 @@ describe('Testsuite for the KeyValueService:', function () {
             uID: "uID_2",
             list: ["type#test"]
         }];
+
+        typeTest = {
+            uID: "UID_TEST",
+            name: "test",
+            extendsType: 'root',
+            system: true,
+            keys: ["key1"],
+            values: ["initMe"]
+        };
+
+        typeTest2 = {
+            uID: "UID_TEST2",
+            name: "test2",
+            extendsType: 'root',
+            system: true,
+            keys: ["key1", "test2"],
+            values: ["defaultValue", "defaultValue2"]
+        };
+
+        typeTemplate = {
+            uID: "UID_TEMPLATE",
+            name: "template",
+            extendsType: 'root',
+            system: true,
+            keys: ["HowTo"],
+            values: ["<h3>Vorlagen</h3><p><br/></p><p>Die Vorlagen können benutzt werden, um wiederkehrende Situationen zu vereinfachen.</p>"]
+        };
+
+        typeList = [typeTest, typeTest2, typeTemplate];
     }));
 
     afterEach(function () {
@@ -36,8 +71,14 @@ describe('Testsuite for the KeyValueService:', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+    function initService() {
+        $httpBackend.expect('GET', '/admin/types').respond(200, typeList);
+        $httpBackend.flush();
+    }
 
     it('is able to get a new key value store', function () {
+        initService();
+
         var check = function(data){
             expect(data.length).toBe(2);
         };
@@ -49,6 +90,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to delete a key value store', function () {
+        initService();
+
         service.deleteKVStore("UID_1");
 
         $httpBackend.expect("DELETE","/admin/kv/UID_1").respond(200, {});
@@ -56,6 +99,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to send a new key value store to the backend', function () {
+        initService();
+
         service.createKVStore(keyvalueList);
 
         var expectKV = {
@@ -68,6 +113,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to send a new key value store to the backend and does not crash if it is empty', function () {
+        initService();
+
         service.createKVStore([]);
 
         var expectKV = {
@@ -80,6 +127,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to create a KV-Store with the json wrapper function', function () {
+        initService();
+
         var json = {
             type: "test",
             keys: ["key1","key2"],
@@ -99,6 +148,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to create a KV-Store according to a given type', function () {
+        initService();
+
         service.createEmptyStoreAccordingToType("test");
 
         var expectKV = {
@@ -111,6 +162,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to create a KV-Store according to a given type: even with values', function () {
+        initService();
+
         service.createEmptyStoreAccordingToType("test2");
 
         var expectKV = {
@@ -123,6 +176,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to check if the kv store includes the type key', function () {
+        initService();
+
         service.checkType("uID_1", function(type){
             expect(type).toBe("test");
         });
@@ -132,6 +187,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to check if a KVStore contains every needed (type-specific) field - if it is correct', function () {
+        initService();
+
         service.checkFieldsForTypeAndCreateIfNeeded("uID_1", function(createdFields){
             expect(createdFields.length).toBe(0);
         });
@@ -141,6 +198,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to check if a KVStore contains every needed (type-specific) field - if it not correct', function () {
+        initService();
+
         // set another test-type
         keyvalueList[0] = "type#test2";
 
@@ -154,6 +213,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to update a KV-Store', function () {
+        initService();
+
         var store = {
             uID: "uID_1",
             type: "test",
@@ -173,6 +234,8 @@ describe('Testsuite for the KeyValueService:', function () {
     });
 
     it('is able to send a key to another store', function () {
+        initService();
+
         var fromStore = "uID_1";
         var key = "key1";
         var toStore = "uID_2";

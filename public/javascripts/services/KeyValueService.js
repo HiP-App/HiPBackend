@@ -4,10 +4,16 @@
  * This service handles the connection to the key/value store.
  */
 
-servicesModule.service('keyValueService', ['$http', 'commonTaskService', function($http, commonTaskService) {
+servicesModule.service('keyValueService', ['$http', 'commonTaskService', 'typeService', function($http, commonTaskService, typeService) {
     var that = this;
 
     this.downloadedKVStore = [];
+
+    /* fetch types on startup */
+    this.types = "-1";
+    typeService.getTypes(function(types){
+        that.types = types;
+    });
 
     /**
      * This function wrapps the serialized from from the Backend to the JSON format of a Key/Value-Store
@@ -93,8 +99,11 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
      * @return                  The created KV-Store in JSON Format
      */
     this.createEmptyStoreAccordingToType = function(type){
-        var keys    = Config.returnNeededFieldsForType(type);
-        var values  = Config.returnValuesForType(type);
+        /* find correct type */
+        var typeObject = typeService.constructTypeFromOfflineData(type, that.types);
+
+        var keys    = typeObject.keys;
+        var values  = typeObject.values;
         var list    = [];
 
         /* add type value */
@@ -166,7 +175,8 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', functio
     this.checkFieldsForTypeAndCreateIfNeeded = function(uID, doSth){
         that.getKVStore(uID, function(store){
             /* search for needed fields */
-            var neededFields = Config.returnNeededFieldsForType(store.type);
+            var typeObject = typeService.constructTypeFromOfflineData(store.type, that.types);
+            var neededFields = typeObject.keys;
 
             var created = [];
 

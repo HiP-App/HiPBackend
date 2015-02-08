@@ -64,6 +64,39 @@ servicesModule.service('typeService', ['$http', function($http) {
     };
 
     /**
+     * Fetches the type with the given name
+     * @param name {String}:        The name of the type that should be fetched
+     * @param callback
+     */
+    this.getTypeWithName = function(name, callback){
+        $http.get('/admin/typewithname/'+name).success(function(data){
+            /* construct JS Object interface */
+            var returnJSON = createJSObjectInterfaceForOneObject(data[0]);
+            console.log(returnJSON.extendsType);
+            if(returnJSON.extendsType != 'root'){
+                console.log(returnJSON);
+                /* fetch data from supertype */
+                $http.get('/admin/type/'+returnJSON.extendsType).success(function(supertype){
+                    var JSONSupertype = createJSObjectInterfaceForOneObject(supertype[0]);
+
+                    JSONSupertype.keys.forEach(function(key){
+                        returnJSON.keys.push(key);
+                        returnJSON.values.push(JSONSupertype[key]);
+
+                        returnJSON[key] = JSONSupertype[key];
+                    });
+
+                    /* send object back */
+                    callback(returnJSON);
+                });
+            }else{
+                /* put the object into the callback function */
+                callback(returnJSON);
+            }
+        });
+    };
+
+    /**
      * Function updates the given type on the server
      *
      * @param type {JSON}:      The type that should be updated
@@ -74,4 +107,45 @@ servicesModule.service('typeService', ['$http', function($http) {
         });
     };
 
+    /**
+     * Creates a type from offline data
+     *
+     * @param name
+     * @param offlineData
+     * @returns {*}
+     */
+    this.constructTypeFromOfflineData = function(name, offlineData){
+        var findType = function(aName){
+            for(var i=0; i < offlineData.length; i++){
+                if(offlineData[i].name == aName){
+                    return offlineData[i];
+                }
+            }
+            return null;
+        };
+
+        var findwithUID = function(aUID){
+            for(var i=0; i < offlineData.length; i++){
+                if(offlineData[i].uID == aUID){
+                    return offlineData[i];
+                }
+            }
+            return null;
+        };
+
+        var type = createJSObjectInterfaceForOneObject(findType(name));
+
+        if(type.extendsType != 'root'){
+            /* append supertype */
+            var stype = findwithUID(type.extendsType);
+
+            stype.keys.forEach(function(key){
+                type.keys.push(key);
+                type.values.push(stype[key]);
+                type[key] = stype[key];
+            });
+        }
+
+        return type;
+    };
 }]);

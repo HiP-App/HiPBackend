@@ -23,6 +23,10 @@ describe('Testsuite for the MediaGalleryController:', function () {
     });
 
     it('is able to delete a picture', function () {
+        /* init KeyValueService */
+        $httpBackend.expect('GET', '/admin/types').respond(200, {});
+        $httpBackend.flush();
+
         controller.deletePicture('1');
 
         $httpBackend.expectDELETE('/admin/picture/1').respond(200,{});
@@ -31,6 +35,10 @@ describe('Testsuite for the MediaGalleryController:', function () {
     });
 
     it('is able to append an image to the content of the given topic', function () {
+        /* init KeyValueService */
+        $httpBackend.expect('GET', '/admin/types').respond(200, {});
+        $httpBackend.flush();
+
         /* create a mock topic controller */
         var mockTc = {};
         mockTc.appendToContent = function(){ /* empty function */};
