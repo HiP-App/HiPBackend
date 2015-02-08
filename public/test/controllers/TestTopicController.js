@@ -295,6 +295,10 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expectPOST('/admin/history').respond(200,{});
 
+        /* store the potentially new max_char_value threshold */
+        $httpBackend.expectPUT('/admin/topic')
+            .respond(200,{});
+
         $httpBackend.flush();
 
         expect(mockAC.addAlert).toHaveBeenCalled();
@@ -417,7 +421,7 @@ describe('Testsuite for the TopicController:', function () {
 
     it('is able to update the constraints of the current topic with the ' +
         'updateConstraints function if the constraint is a character_limitation' +
-        'constraint', function () {
+        ' constraint - with empty topic', function () {
         initController();
 
         controller.updateConstraints();
@@ -432,12 +436,17 @@ describe('Testsuite for the TopicController:', function () {
         /* expect and check the PUT request */
         $httpBackend.expectPUT('/admin/constraints', checkAgainstThisConstraint)
             .respond(200,{});
+
+        /* store the potentially new max_char_value threshold */
+        $httpBackend.expectPUT('/admin/topic')
+            .respond(200,{});
+
         $httpBackend.flush();
     });
 
     it('is able to update the constraints of the current topic with the ' +
         'updateConstraints function if the constraint is a img_limitation' +
-        'constraint', function () {
+        ' constraint', function () {
         initController();
 
         /* modify constraint to a image limitation one */
@@ -460,6 +469,11 @@ describe('Testsuite for the TopicController:', function () {
         /* expect and check the PUT request */
         $httpBackend.expectPUT('/admin/constraints', checkAgainstThisConstraint)
             .respond(200,{});
+
+        /* store the potentially new max_char_value threshold */
+        $httpBackend.expectPUT('/admin/topic')
+            .respond(200,{});
+
         $httpBackend.flush();
     });
 
@@ -504,6 +518,10 @@ describe('Testsuite for the TopicController:', function () {
             .respond(200,{});
 
         $httpBackend.expectPOST('/admin/history').respond(200,{});
+
+        /* store the potentially new max_char_value threshold */
+        $httpBackend.expectPUT('/admin/topic')
+            .respond(200,{});
 
         $httpBackend.flush();
 

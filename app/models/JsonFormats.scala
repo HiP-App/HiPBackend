@@ -20,4 +20,5 @@ object JsonFormats {
   implicit val metadataFormat = Json.format[MetadataModel]
   implicit val historyFormat = Json.format[HistoryModel]
   implicit val keyValueFormat = Json.format[KeyValueModel]
+  implicit val kvTypeFormat = Json.format[KVTypeModel]
 }
