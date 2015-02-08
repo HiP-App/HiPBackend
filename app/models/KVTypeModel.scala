@@ -6,5 +6,6 @@ package models
 case class KVTypeModel(uID: String,
                      name: String,
                      extendsType: String,
+                     system: String,
                      keys: Array[String],
                      values: Array[String])

@@ -204,7 +204,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                             topic[addKey] = changes[addKey];
                         }
                     });
-                    
+
                     /* send modified store back */
                     $http.put('/admin/topic', topic);
                 });

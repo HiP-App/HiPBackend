@@ -55,11 +55,7 @@ class KVTypeController extends Controller with MongoController {
    */
   def getTypes = Action.async {
     // let's do our query
-    val cursor: Cursor[KVTypeModel] = collection.
-      // find all
-      find(Json.obj()).
-      // perform the query and get a cursor of JsObject
-      cursor[KVTypeModel]
+    val cursor: Cursor[KVTypeModel] = collection.find(Json.obj()).cursor[KVTypeModel]
 
     // gather all the JsObjects in a list
     val futureTypeList: Future[List[KVTypeModel]] = cursor.collect[List]()

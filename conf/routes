@@ -12,6 +12,10 @@ GET           /admin/users                           @controllers.UserController
 GET           /admin/users/:email                    @controllers.UserController.getUserByEmail(email: String)
 PUT           /admin/userkv/:uID/:storeID            @controllers.UserController.updateKVStore(uID: String, storeID: String)
 
+GET           /admin/type/:uID                       @controllers.KVTypeController.getType(uID: String)
+GET           /admin/types                           @controllers.KVTypeController.getTypes
+PUT           /admin/types                           @controllers.KVTypeController.updateType
+
 GET           /admin/role/:userid                    @controllers.RoleController.getRole(userid: String)
 GET           /admin/roles                           @controllers.RoleController.getRoles
 PUT           /admin/roles                           @controllers.RoleController.updateRole
