@@ -113,8 +113,13 @@ describe('Testsuite for the TypeService:', function () {
         $httpBackend.flush();
     });
 
-    it('it is able to construct a type from offline data', function () {
+    it('is able to construct a type from offline data', function () {
         var type = service.constructTypeFromOfflineData('type_A', typeList);
         expect(type.uID).toBe('uID_1');
+    });
+
+    it('is able to return a type and every subtype with offline data', function () {
+        var types = service.constructTypechainFromOfflineData('type_A', typeList);
+        expect(types.length).toBe(2);
     });
 });

@@ -11,7 +11,11 @@ controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService' 
 
     $scope.collapse = [];
 
-    this.store = ""; // contains the currently open key value store
+    this.store = "";            // contains the currently open key value store
+
+    this.knownImageTypes = [];  // contains all image types that are available
+
+    this.newType = [];          // stores the newly selected type
 
     /**
      * This functions opens the meta-data panel for the given picture
@@ -98,5 +102,35 @@ controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService' 
     this.sendTo = function(whereToSend, whatToSendUID){
           whereToSend.appendToContent("<img src='/admin/picture/"+whatToSendUID+"' width='20%' height='20%'>");
     };
+
+    /**
+     * Updates the image types
+     */
+    this.refreshTypes = function(){
+        that.knownImageTypes = keyValueService.findAllTypesLikeChild('img');
+    };
+
+    /**
+     * Updates the function of the currently loaded type with the given type
+     *
+     * @param type      The new type of the store (complete object)
+     */
+    this.updateType = function(type){
+        that.store.type = type.name;
+
+        that.store.keys = [];
+
+        keyValueService.updateKVStore(that.store, function(){
+           /* create needed fields */
+            keyValueService.checkFieldsForTypeAndCreateIfNeeded(that.store.uID, function(fields, store){
+                that.store = store;
+            });
+        });
+    };
+
+    /* init if needed */
+    if(that.knownImageTypes.length == 0){
+        that.refreshTypes();
+    }
 
 }]);

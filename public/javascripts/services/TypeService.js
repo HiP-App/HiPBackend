@@ -148,4 +148,65 @@ servicesModule.service('typeService', ['$http', function($http) {
 
         return type;
     };
+
+    /**
+     * This function collects all subtypes and the current type that has the same parent as the current type
+     * @param name          name of the current type
+     * @param offlineData   the offline data
+     * @returns {Array}     an array containing all the types
+     */
+    this.constructTypechainFromOfflineData = function(name, offlineData){
+        var findType = function(aName){
+            for(var i=0; i < offlineData.length; i++){
+                if(offlineData[i].name == aName){
+                    return offlineData[i];
+                }
+            }
+            return null;
+        };
+
+        var findwithUID = function(aUID){
+            for(var i=0; i < offlineData.length; i++){
+                if(offlineData[i].uID == aUID){
+                    return offlineData[i];
+                }
+            }
+            return null;
+        };
+
+        var findOtherChildsFromParentUID = function(aUID){
+            var innerReturnArray = [];
+            for(var i=0; i < offlineData.length; i++){
+                if(offlineData[i].extendsType == aUID){
+                    innerReturnArray.push(offlineData[i]);
+                }
+            }
+            return innerReturnArray;
+        };
+
+        /* find type */
+        var type = findType(name);
+        var returnArray = [];
+
+        /* push supertype */
+        if(type != undefined && type.extendsType != 'root'){
+            /* append supertype */
+            var stype = findwithUID(type.extendsType);
+
+            returnArray.push(stype);
+
+            /* push every other child of this supertype */
+            findOtherChildsFromParentUID(type.extendsType).forEach(function(cType){
+                returnArray.push(cType);
+            });
+        }else if(type != undefined && type != null && type.extendsType == 'root'){
+            returnArray.push(type);
+
+            findOtherChildsFromParentUID(type.uID).forEach(function(cType){
+                returnArray.push(cType);
+            });
+        }
+
+        return returnArray;
+    };
 }]);

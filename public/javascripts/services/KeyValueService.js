@@ -45,6 +45,19 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', 'typeSe
     }
 
     /**
+     * This function collects every child type that has the same father (i.e. supertype) as the given one
+     * @param name      The name of the current type
+     * @returns {Array} An array containing all the types
+     */
+    this.findAllTypesLikeChild = function(name){
+        if(that.types != "-1"){
+            return typeService.constructTypechainFromOfflineData(name, that.types);
+        }else{
+            return [];
+        }
+    };
+
+    /**
      * Fetches a new Key/Value store from the backend.
      *
      * @param uID {String}:         The uID of the KV-Store that should be fetched
@@ -194,16 +207,19 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', 'typeSe
                 }
             });
 
-            doSth(created, store);
+            if(doSth != undefined){
+                doSth(created, store);
+            }
         });
     };
 
     /**
      * Updates a KV-Store on the server side
      *
-     * @param store     The store with the new values as JSON container
+     * @param store             The store with the new values as JSON container
+     * @param successCallback   The function is run on success of the update
      */
-    this.updateKVStore = function(store){
+    this.updateKVStore = function(store, successCallback){
         var postThis = {
             uID: store.uID,
             list: ["type#"+store.type]
@@ -217,7 +233,8 @@ servicesModule.service('keyValueService', ['$http', 'commonTaskService', 'typeSe
         });
 
         $http.put('/admin/kv',postThis).success(function(){
-
+            if(successCallback != undefined)
+                successCallback();
         }).error(function(){
             console.log("Error while updating the kvStore...")
         });

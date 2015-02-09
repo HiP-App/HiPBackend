@@ -13,7 +13,7 @@
 
         <br>
 
-        <span ng-bind="opentext"    ng-click="gallery.openMetaData(img.uID, img.kvStore)"></span>
+        <span ng-bind="opentext"    ng-click="gallery.refreshTypes(); gallery.openMetaData(img.uID, img.kvStore)"></span>
 
         <!--
             Collapsed view for meta-data
@@ -26,6 +26,18 @@
                 </div>
 
                 <button type="button" class="btn btn-primary btn-sm" ng-bind="sendmetadata" ng-click="gallery.saveMetaData(img.uID)"></button>
+
+                <hr>
+
+                <h4 ng-bind-template="{{currentType}}: {{gallery.store.type}}"></h4>
+                <select
+                        ng-model="gallery.newType"
+                        ng-options="value.name for value in gallery.knownImageTypes">
+                </select>
+
+                <br>
+
+                <button type="button" class="btn btn-primary btn-sm" ng-bind="updatetype" ng-click="gallery.updateType(gallery.newType)"></button>
             </div>
         </div>
 

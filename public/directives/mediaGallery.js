@@ -11,7 +11,9 @@ controllersModule.directive('mediaGallery', function() {
             deletetext: '=deletetext',
             copyto: '=copyto',
             opentext: '=opentext',
-            sendmetadata: '=sendmetadata'
+            sendmetadata: '=sendmetadata',
+            currentType: '=currenttype',
+            updatetype: '=updatetype'
         },
         templateUrl: '/assets/directives/mediaGallery.html'
     };
