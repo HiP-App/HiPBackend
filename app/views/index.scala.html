@@ -33,7 +33,8 @@
        <!-- Header -->
         <div id="header">
             <div id="logo">
-                <img src='assets/images/icon.png' alt="logo of HiP" width="400">
+                <img src='assets/images/icon_student.png' alt="logo of HiP" width="400" ng-show="uc.isStudent()">
+                <img src='assets/images/icon_supervisor.png' alt="logo of HiP" width="400" ng-show="uc.isSupervisor()">
             </div>
 
             <nav> <!-- class="upperNavigation" -->
