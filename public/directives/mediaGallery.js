@@ -13,7 +13,8 @@ controllersModule.directive('mediaGallery', function() {
             opentext: '=opentext',
             sendmetadata: '=sendmetadata',
             currentType: '=currenttype',
-            updatetype: '=updatetype'
+            updatetype: '=updatetype',
+            lc: '=languagecontroller'
         },
         templateUrl: '/assets/directives/mediaGallery.html'
     };

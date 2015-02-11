@@ -16,6 +16,7 @@ GET           /admin/type/:uID                       @controllers.KVTypeControll
 GET           /admin/typewithname/:name              @controllers.KVTypeController.getTypeWithName(name: String)
 GET           /admin/types                           @controllers.KVTypeController.getTypes
 PUT           /admin/types                           @controllers.KVTypeController.updateType
+POST          /admin/types                           @controllers.KVTypeController.createType
 
 GET           /admin/role/:userid                    @controllers.RoleController.getRole(userid: String)
 GET           /admin/roles                           @controllers.RoleController.getRoles
@@ -32,6 +33,7 @@ DELETE        /admin/chat/:uID                       @controllers.ChatController
 
 GET           /admin/languages/:lang                 @controllers.LanguageController.getLanguageDataForClient(lang: String)
 POST          /admin/languages                       @controllers.LanguageController.postTerm
+DELETE        /admin/languages/:key/:lang            @controllers.LanguageController.deleteTerm(key: String, lang: String)
 
 GET           /admin/topic                           @controllers.TopicController.getTopics
 GET           /admin/topic/:uID                      @controllers.TopicController.getTopic(uID: String)

@@ -1,0 +1,109 @@
+<div>
+    <div id="mainSingleBoxBig" class="panel panel-default" ng-controller="TypeCtrl as tyc">
+        <div class="panel-heading" ng-bind="lc.getTerm('system_type_modify_header')"></div>
+        <div >
+            <div class="panel-body">
+                <form id="UpdateTypeForm" class="form-horizontal" role="form" ng-submit="tyc.updateType()">
+                    <h4 ng-bind="lc.getTerm('system_type_modify_information')"></h4>
+
+                    <!-- select a type -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-btn" tooltip-html-unsafe="{{lc.getTerm('tooltip_modify_type')}}"
+                                     tooltip-trigger="mouseenter" tooltip-placement="left">
+                                    <button type="button"
+                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        {{lc.getTerm('system_type_modify_form')}}  <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="type in tyc.types">
+                                            <a ng-click="tyc.loadedType = type; tyc.fetchLanguageForType(type)" ng-bind="type.name"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <input type="text" class="form-control" placeholder="" ng-model="tyc.loadedType.name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Change parent of type -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-btn" tooltip-html-unsafe="{{lc.getTerm('tooltip_modify_type')}}"
+                                     tooltip-trigger="mouseenter" tooltip-placement="left">
+                                    <button type="button"
+                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        {{lc.getTerm('system_type_modify_parent')}}  <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="type in tyc.types">
+                                            <a ng-click="tyc.loadedType.extendsType = type.uID; tyc.checkParentDependency(type.uID)" ng-bind="type.name"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <input type="text" class="form-control" ng-model="tyc.loadedType.extendsType" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 ng-bind="lc.getTerm('system_type_modify_information2')"></h4>
+
+                    <!-- Changes on keys -->
+                    <div class="form-group" ng-repeat="key in tyc.loadedType.keys">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <!-- header for old keys -->
+                            <h4 ng-bind="key" ng-show="key != ''"></h4>
+                            <!-- header for new keys -->
+                            <h4 ng-bind="tyc.loadedType[$index]" ng-show="tyc.loadedType[$index] != ''"></h4>
+
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <!-- key field cannot be changed if the key is a old one -->
+                                    <input type="text" class="form-control" placeholder="{{lc.getTerm('type_key')}}"
+                                           ng-hide="tyc.isIndexNew($index)"
+                                           ng-model="key" disabled/>
+
+                                    <!-- key field can be changed if it is a new key -->
+                                    <input type="text" class="form-control" placeholder="{{lc.getTerm('type_key')}}"
+                                           ng-show="tyc.isIndexNew($index)" ng-model="tyc.loadedType[$index]"/>
+
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="{{lc.getTerm('type_value')}}"
+                                           ng-model="tyc.loadedType.values[$index]" />
+                                </div>
+                            </div>
+
+                            <!-- Language fields -->
+                            <div class="input-group">
+                                <span class="input-group-addon" ng-bind="lc.getTerm('de_term')"></span>
+                                <input type="text" class="form-control" ng-model="tyc.dictEntry.de[key]">
+                            </div>
+
+                            <div class="input-group">
+                                <span class="input-group-addon" ng-bind="lc.getTerm('eng_term')"></span>
+                                <input type="text" class="form-control" ng-model="tyc.dictEntry.eng[key]">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- add new keys -->
+                    <button type="button" class="btn btn-success pull-right" ng-show="tyc.loadedType.keys != undefined"
+                            ng-click="tyc.addKey()"
+                            ng-bind="lc.getTerm('system_add_type_to_key')" aria-expanded="false"></button>
+
+                    <br>
+                    <br>
+
+                    <cancel-submit  cancel="lc.getTerm('system_types_form_cancel')"
+                                    submit="lc.getTerm('system_types_form_create')">
+                    </cancel-submit>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

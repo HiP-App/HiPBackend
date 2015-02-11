@@ -27,14 +27,6 @@ class ChatController extends Controller with MongoController {
   def postChat(newChat : String) = Action.async(parse.json) {
         if(newChat == "true"){
           request =>
-            /*
-             * request.body is a JsValue.
-             * There is an implicit Writes that turns this JsValue as a JsObject,
-             * so you can call insert() with this JsValue.
-             * (insert() takes a JsObject as parameter, or anything that can be
-             * turned into a JsObject using a Writes.)
-             */
-            println("New chat")
             println(request.body)
             request.body.validate[ChatModel].map {
               chat =>

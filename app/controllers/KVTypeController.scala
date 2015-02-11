@@ -117,6 +117,24 @@ class KVTypeController extends Controller with MongoController {
           }
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
+
+  /**
+   * Creates a type from the given JSON data within the request.body
+   *
+   * @return
+   */
+  def createType = Action.async(parse.json) {
+    request =>
+      request.body.validate[KVTypeModel].map {
+        currentType =>
+          // `user` is an instance of the case class `models.User`
+          collection.insert(currentType).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"Type Created")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
 }
 
 

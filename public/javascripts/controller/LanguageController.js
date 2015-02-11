@@ -39,6 +39,19 @@ controllersModule.controller('LangCtrl', ['$http', function($http) {
     };
 
     /**
+     * Returns the name of the specified key of a type object
+     *
+     * @param key       The key that should be used for lookup
+     * @param typeName  The name type that includes the key
+     * @returns {the}   The name of the key
+     */
+    this.getTypeKeyName = function(key, typeName){
+        var lookupString = 'type_'+key+'_'+typeName;
+
+        return that.getTerm(lookupString);
+    };
+
+    /**
      * This function creates a correct notification from notification data
      *
      * @param data      of the structure: [system_call, optional data like username, etc.]

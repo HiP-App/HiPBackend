@@ -21,7 +21,7 @@
         <div collapse="collapse[img.uID]">
             <div class="well well-lg">
                 <div ng-repeat="key in gallery.store.keys">
-                    <small ng-bind="key"></small>
+                    <small ng-bind="lc.getTypeKeyName(key, gallery.store.type)"></small>
                     <input type="text" class="form-control" placeholder="key" ng-model="gallery.store[key]">
                 </div>
 

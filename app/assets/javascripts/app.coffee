@@ -86,6 +86,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/messages/view/:messageID', {
               templateUrl: '/assets/partials/basic_messagesDetails.html'
             })
+            .when('/type/edit/:uID', {
+              templateUrl: '/assets/partials/admin_modifyType.html'
+            })
             .otherwise({redirectTo: '/'})
 
 @commonModule = angular.module('myApp.common', [])

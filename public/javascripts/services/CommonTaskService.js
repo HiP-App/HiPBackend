@@ -221,6 +221,25 @@ servicesModule.service('commonTaskService', function(){
         });
     };
 
+    /**
+     * Factory function for a type object
+     * @param name
+     * @param extendsType
+     * @param keys
+     * @param values
+     * @param system
+     * @returns {{uID: *, name: *, extendsType: *, keys: *, values: *, system: *}}
+     */
+    this.createTypeObject = function(name, extendsType, keys, values, system){
+        return {
+            uID: that.generateUID(name),
+            name: name,
+            extendsType: extendsType,
+            keys: keys,
+            values: values,
+            system: system
+        };
+    };
 
     /**
      * Create only missing constraints for the given topicID. Furthermore, it returns the

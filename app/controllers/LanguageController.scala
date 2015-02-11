@@ -72,13 +72,6 @@ class LanguageController extends Controller with MongoController {
    */
   def postTerm() = Action.async(parse.json) {
     request =>
-      /*
-       * request.body is a JsValue.
-       * There is an implicit Writes that turns this JsValue as a JsObject,
-       * so you can call insert() with this JsValue.
-       * (insert() takes a JsObject as parameter, or anything that can be
-       * turned into a JsObject using a Writes.)
-       */
       request.body.validate[LanguageModel].map {
         language =>
           // `user` is an instance of the case class `models.User`
@@ -90,6 +83,21 @@ class LanguageController extends Controller with MongoController {
       }.getOrElse(
           Future.successful(BadRequest("invalid json"))
         )
+  }
+
+  /**
+   * Deletes the current language token with the given key
+   *
+   * @param key     of the language token that should be deleted
+   * @param lang    language of the key that should be deleted
+   * @return
+   */
+  def deleteTerm(key : String, lang: String) = Action.async {
+    /* delete from DB */
+    collection.remove(Json.obj("key" -> key, "language" -> lang)).map {
+      lastError =>
+        Created(s"Item removed")
+    }
   }
 }
 

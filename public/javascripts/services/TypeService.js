@@ -20,6 +20,7 @@ servicesModule.service('typeService', ['$http', function($http) {
      */
     this.getTypes = function(callback){
         $http.get('/admin/types').success(function(data){
+
             /* for each entry => construct JS Object interface */
             for(var i = 0; i < data.length; i++){
                 data[i] = createJSObjectInterfaceForOneObject(data[i]);
@@ -41,7 +42,7 @@ servicesModule.service('typeService', ['$http', function($http) {
             /* construct JS Object interface */
             var returnJSON = createJSObjectInterfaceForOneObject(data[0]);
 
-            if(returnJSON.extendsType != 'root' || returnJSON.extendsType != 'undefined'){
+            if(returnJSON.extendsType != 'undefined'  && returnJSON.extendsType != 'root'){
                 /* fetch data from supertype */
                 $http.get('/admin/type/'+returnJSON.extendsType).success(function(supertype){
                     var JSONSupertype = createJSObjectInterfaceForOneObject(supertype[0]);
@@ -103,6 +104,17 @@ servicesModule.service('typeService', ['$http', function($http) {
      */
     this.putType = function(type){
         $http.put('/admin/types',type).success(function(){
+
+        });
+    };
+
+    /**
+     * Function creates the given type on the server
+     *
+     * @param type {JSON}:      The type that should be updated
+     */
+    this.postType = function(type){
+        $http.post('/admin/types',type).success(function(){
 
         });
     };
