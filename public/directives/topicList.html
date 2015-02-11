@@ -21,9 +21,9 @@
     </li>
 </ul>
 
-<div ng-click="tc.getSubTopicByTopicID(gc.bufferedGroup.topic)">
+<div ng-click="tc.getSubTopicByTopicID(gc.bufferedGroup.topic); hideSubtopics=false" ng-init="hideSubtopics = true">
     <h4>
-        {{lc.getTerm('system_sub_topics')}}
+        <collapse-triangle condition="hideSubtopics" ng-hide="uc.isStudent()"></collapse-triangle>{{lc.getTerm('system_sub_topics')}}
     </h4>
 <div>
 
