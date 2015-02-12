@@ -83,6 +83,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/messages/send', {
               templateUrl: '/assets/partials/basic_sendMessage.html'
             })
+            .when('/messages/send/:toUserUID/:title', {
+              templateUrl: '/assets/partials/basic_sendMessage.html'
+            })
             .when('/messages/view/:messageID', {
               templateUrl: '/assets/partials/basic_messagesDetails.html'
             })

@@ -20,6 +20,7 @@
         -->
         <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = true; lTopics = true">
             <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
+
                 <fullscreen-overlay>
                     <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
                     'overflow': 'scroll', 'max-height':'550px'}"></div>
@@ -36,6 +37,10 @@
 
                 <div collapse="status">
                     <div class="well well-lg">
+                        <a ng-href="/#/messages/send/{{ tc.supervisor }}/{{lc.getTerm('mail_supervisor_request')}}{{tc.currentTopic.name}}">
+                            <button type="button" class="btn btn-primary btn-sm pull-right" ng-bind="lc.getTerm('system_edit_inform')"></button>
+                        </a>
+
                         <span ng-bind-template="Deadline: {{ tc.getDateAsString() }}"></span>
 
                         <alert-box ac="ac"></alert-box>

@@ -45,6 +45,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     this.newLink            = undefined; // contains temporary information if a new link to another topic is going to be generated
 
+    this.supervisor         = ""; // contains the supervisor of the currently loaded topic
+
     this.modifyTopicID      = "";
     this.modifyTopicName    = "";
     this.modifyTopicContent = "";
@@ -435,6 +437,22 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Function tries to fetch the supervisor, who has created the group / topic
+     * (! Recursive function)
+     * @param createdBy the starting term
+     * @param callback  first parameter contains the supervisor
+     */
+    this.fetchSupervisor = function(createdBy, callback){
+        if(createdBy.indexOf('@') != -1 || createdBy == 'anUser' /* testing case */){
+            callback(createdBy);
+        }else{
+            $http.get('/admin/topic/'+createdBy).success(function(topic) {
+               that.fetchSupervisor(topic[0].createdBy, callback);
+            });
+        }
+    };
+
+    /**
      * Requests the actual topic with the given uID as JSON object
      * and stores it internally in that.currentTopic
      *
@@ -463,6 +481,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                                 name: name
                             });
                         }, that.topics);
+                    });
+
+                    /* store the supervisor */
+                    that.fetchSupervisor(that.currentTopic.createdBy, function(supervisor){
+                        that.supervisor = supervisor;
                     });
 
                     /* get history entries */
@@ -534,13 +557,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         console.log("info TopicController: fetching subtopics for "+uIDOfTheParentObject);
 
         $http.get('/admin/topicbyuser/'+uIDOfTheParentObject).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 that.subtopics = data;
 
                 if(that.debug)
                     console.log(that.subtopics);
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("error TopicController: Subtopics cannot get pulled");
             });
     };

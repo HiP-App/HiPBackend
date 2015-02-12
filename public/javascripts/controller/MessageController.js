@@ -134,4 +134,9 @@ controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams','c
         that.getMessageByID($routeParams.messageID);
     }
 
+    if($routeParams.toUserUID != undefined && $routeParams.title != undefined){
+        that.messageThatGetsCurrentlyCreated.receiver   = $routeParams.toUserUID;
+        that.messageThatGetsCurrentlyCreated.title      = $routeParams.title;
+    }
+
 }]);
