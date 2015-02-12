@@ -6,7 +6,7 @@
  * This is the major controller of the backend. It handles the change of topics, media entries, footnotes, etc.
  * Note that it needs the existence of an user controller (uc) in the current scope to work properly.
  */
-controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService','LinkCreator', function($scope,$http,$routeParams,commonTaskService, LinkCreator) {
+controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService','LinkCreator','$timeout', function($scope,$http,$routeParams,commonTaskService, LinkCreator, $timeout) {
     var that = this;
 
     this.debug = false;
@@ -918,5 +918,13 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     if($routeParams.userID != undefined){
         that.getTopicsByUserID($routeParams.userID);
+    }
+
+    if($routeParams.uID != undefined){
+        /* we are inside a scope of a group partial because uID is the uID of a group
+        * => thus, we can use the gc here to get a topic */
+        $timeout(function(){
+            that.getSubTopicByTopicID($scope.gc.bufferedGroup.topic);
+        }, 500);
     }
 }]);
