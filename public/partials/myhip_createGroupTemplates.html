@@ -1,0 +1,64 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
+        <div class="panel-heading" ng-bind="lc.getTerm('system_grouptemplates_modify_header')"></div>
+        <div >
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" ng-submit="tc.updateTopic()">
+                    <h4 ng-bind="lc.getTerm('system_grouptemplates_modify_information')"></h4>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-btn" tooltip-html-unsafe="{{lc.getTerm('tooltip_grouptemplates_modify_group')}}"
+                                     tooltip-trigger="mouseenter" tooltip-placement="left">
+                                    <button type="button"
+                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        {{lc.getTerm('system_grouptemplates_modify_form_group')}}  <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="grp in gc.groupsCreatedByThisUserOrUserIsMemberOfGroup">
+                                            <a ng-click="tc.getTopicByTopicID(grp.topic); tc.getSubTopicByTopicID(grp.topic)" ng-bind="grp.name"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <input type="text" class="form-control" placeholder="" ng-model="tc.currentTopic.name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-btn" tooltip-html-unsafe="{{lc.getTerm('tooltip_grouptemplates_modify_topic')}}"
+                                     tooltip-trigger="mouseenter" tooltip-placement="left">
+                                    <button type="button"
+                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        {{lc.getTerm('system_grouptemplates_modify_form_topic')}}  <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="top in tc.subtopics">
+                                            <a ng-click="tc.currentTopic = top" ng-bind="top.name"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- <input type="text" class="form-control" placeholder="" ng-model="tc.modifyTopicName"> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 ng-bind="lc.getTerm('system_topic_modify_selectTemplate')"></h4>
+                    <templates-box  append="tc"
+                                    directconnect="true"
+                                    languagecontroller="lc"
+                                    usercontroller="uc"
+                                    groupcontroller="gc"
+                                    showcondition="uc.isSupervisor()"></templates-box>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

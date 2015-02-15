@@ -3,6 +3,12 @@
     <div class="panel-body">
         <div ng-repeat="template in templateC.templates.keys">
             <div class="shift-left">
+                <!-- send to topic directly -->
+                <a class="btn btn-primary btn-xs" ng-hide="directconnect == false || directconnect == undefined"
+                   ng-click="tc.updateContentOfTheCurrentTopicWhileBypassingTheHistory(templateC.templates[template])"
+                   ng-bind="lc.getTerm('system_send_template_to_topic')"></a>
+
+                <!-- name of the template -->
                 <a ng-href="/#/templates/edit/{{template}}" ng-bind="template"></a>
             </div>
 

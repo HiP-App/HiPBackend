@@ -207,7 +207,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                         }
                     });
 
-                    /* send modified store back */
+                    /* send modified topic back */
                     $http.put('/admin/topic', topic);
                 });
         }else{
@@ -226,10 +226,23 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                         }
                     });
 
-                    /* send modified store back */
+                    /* send modified topic back */
                     $http.put('/admin/topic', topic);
                 });
         }
+    };
+
+    /**
+     * This function updates the content of the topic while bypassing the history. It is for example used to
+     * initialize a topic with a template
+     *
+     * @param newContent        the new content of the topic
+     */
+    this.updateContentOfTheCurrentTopicWhileBypassingTheHistory = function(newContent){
+            that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+                keys: ['content'],
+                content: newContent
+            }, false, false);
     };
 
     /**

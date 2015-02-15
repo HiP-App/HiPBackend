@@ -10,7 +10,8 @@ controllersModule.directive('templatesBox', function() {
             uc: '=usercontroller',
             gc: '=groupcontroller',
             showcondition: '=showcondition',
-            tc: '=append'
+            tc: '=append',
+            directconnect: '@directconnect'
         },
         templateUrl: '/assets/directives/templatesBox.html'
     };

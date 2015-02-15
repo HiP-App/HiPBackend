@@ -44,6 +44,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/group/create', {
                 templateUrl: '/assets/partials/myhip_createGroup.html'
             })
+            .when('/group/create2', {
+                templateUrl: '/assets/partials/myhip_createGroupTemplates.html'
+            })
             .when('/group/rights/:uID', {
                 templateUrl: '/assets/partials/myhip_readRights.html'
             })
