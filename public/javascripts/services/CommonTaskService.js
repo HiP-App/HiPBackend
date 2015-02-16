@@ -131,7 +131,8 @@ servicesModule.service('commonTaskService', function(){
             deadline:   deadline,
             tagStore:   "-1",
             linkedTopics: [],
-            maxCharThreshold: "80"
+            maxCharThreshold: "80",
+            gps: ["",""]
         };
     };
 

@@ -259,6 +259,16 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * This function updates the GPS data while bypassing the history.
+     */
+    this.updateGPS = function(){
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+            keys: ['gps'],
+            gps: that.currentTopic.gps
+        }, false, false);
+    };
+
+    /**
      * Updates the constraints of the current topic
      */
     this.updateConstraints = function(){
@@ -931,6 +941,29 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
         /* do changes */
         that.updateTopicAndBypassHistory(that.currentTopic.uID, changes, true, false);
+    };
+
+    this.initMap = function(x,y){
+        $timeout(function(){
+            var myOptions = {
+                zoom: 16,
+                center: new google.maps.LatLng(x, y),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+            /* create marker */
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(x, y),
+                map: map,
+                title: that.currentTopic.name
+            });
+
+            /* needed due to bug in AngularJS */
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(new google.maps.LatLng(x, y));
+        }, 250);
     };
 
     /**

@@ -18,7 +18,8 @@
         <!--
         GROUP MEMBER VIEW
         -->
-        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = true; lTopics = true">
+        <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = true;
+            lTopics = true; gps = true">
             <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
 
                 <fullscreen-overlay>
@@ -129,6 +130,21 @@
                     <div class="float-clear"></div>
 
                     <hr>
+
+                    <h5 ng-click="gps = !gps; tc.initMap(tc.currentTopic.gps[0], tc.currentTopic.gps[1])">
+                        <collapse-triangle condition="gps"></collapse-triangle> {{lc.getTerm('system_edit_gps')}}
+                    </h5>
+
+                    <div collapse="gps">
+                        <!-- GPS -->
+                        <input type="text" ng-model="tc.currentTopic.gps[0]"> <input type="text" ng-model="tc.currentTopic.gps[1]">
+                        <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_edit_gps')" ng-click="tc.updateGPS(); gps = !gps"></button>
+
+                        <br>
+
+                        <div id="map" style="width: 400px; height: 300px"></div>
+                        <!-- END OF: GPS -->
+                    </div>
 
                     <h5 ng-click="footnotes = !footnotes">
                         <collapse-triangle condition="footnotes"></collapse-triangle> {{lc.getTerm('system_edit_footnotes')}}

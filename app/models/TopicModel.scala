@@ -13,4 +13,5 @@ case class TopicModel(uID: String,
                       deadline: String,
                       tagStore: String,
                       linkedTopics: Array[String],
-                      maxCharThreshold: String)
+                      maxCharThreshold: String,
+                      gps : Array[String])
