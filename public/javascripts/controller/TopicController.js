@@ -943,6 +943,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         that.updateTopicAndBypassHistory(that.currentTopic.uID, changes, true, false);
     };
 
+    /**
+     * This functions creates the google map object and centers it at the given position
+     *
+     * @param x     The latitude of the postion
+     * @param y     The longitude of the position
+     */
     this.initMap = function(x,y){
         $timeout(function(){
             var myOptions = {

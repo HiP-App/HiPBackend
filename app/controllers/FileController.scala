@@ -28,8 +28,8 @@ class FileController extends Controller with MongoController{
 
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
 
-  def mediaCollection: JSONCollection = db.collection[JSONCollection]("media.files")
-  def metaCollection: JSONCollection = db.collection[JSONCollection]("media.meta")
+  def mediaCollection:  JSONCollection = db.collection[JSONCollection]("media.files")
+  def metaCollection:   JSONCollection = db.collection[JSONCollection]("media.meta")
 
   /**
    * This Action is able to store a new picture in the database (it also generates a fitting thumbnail)
@@ -39,7 +39,7 @@ class FileController extends Controller with MongoController{
   def upload(topicID: String) = Action(parse.multipartFormData) { request =>
     request.body.file("file") match {
       case Some(photo) =>
-        val TARGET_W = 64; // width of the thumbail
+        val TARGET_W = 64; // width of the thumbnail
         val TARGET_H = 64; // height of the thumbnail
 
         val filename = photo.filename
@@ -60,10 +60,10 @@ class FileController extends Controller with MongoController{
 
         val os = new ByteArrayOutputStream()
 
-        // load image for scaling operation (needed to derive thumbnail)
+        /* load image for scaling operation (needed to derive thumbnail) */
         var before = ImageIO.read(newFile)
 
-        // create scale operation
+        /* create scale operation */
         val wScale  = TARGET_W / before.getWidth().asInstanceOf[Double]
         val hScale  = TARGET_H / before.getHeight().asInstanceOf[Double]
 
@@ -71,25 +71,25 @@ class FileController extends Controller with MongoController{
         at.scale(wScale, hScale)
         var scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR)
 
-        // create object that will contain the scaled image
+        /* create object that will contain the scaled image */
         val w = (before.getWidth() * wScale).asInstanceOf[Int]
         val h = (before.getHeight() * hScale).asInstanceOf[Int]
         var after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
 
-        // use scale operation
+        /* use scale operation */
         scaleOp.filter(before, after)
 
-        // write image to output stream
+        /* write image to output stream */
         ImageIO.write(after,"png", os)
 
-        // derive FileInputStream
+        /* derive FileInputStream */
         val fis = new ByteArrayInputStream(os.toByteArray())
 
         /* write both files */
         gridFS.writeFromInputStream(fileToSave, new FileInputStream(newFile))
         gridFS.writeFromInputStream(fileToSaveThumb, fis)
 
-        // include the additional data
+        /* include the additional data */
         val cleanedID = fileToSave.id.toString.split('"')(1)
         val cleanedIDThumb = fileToSaveThumb.id.toString.split('"')(1)
 
