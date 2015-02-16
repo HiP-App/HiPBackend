@@ -61,6 +61,19 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Clears the ModifyTopic buffer
+     */
+    this.clearBuffer = function(){
+        that.modifyTopicID      = "";
+        that.modifyTopicName    = "";
+        that.modifyTopicContent = "";
+        that.modifyTopicGroup   = "";
+        that.modifyTopicStatus  = "";
+        that.modifyTopicCreatedBy = "";
+        that.modifyTopicDeadline  = "";
+    };
+
+    /**
      * Accepts a bunch of data for internal use. In general, this is only a string representation of the
      * topic JSON object
      *
@@ -732,14 +745,24 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     this.deleteCurrentTopic = function(){
         function deletingProcedure(deleteThis) {
             $http.delete('/admin/topic/' + deleteThis).
-                success(function (data, status, headers, config) {
+                success(function () {
                     // remove corresponding chat system
                     commonTaskService.deleteChat($http, deleteThis);
+
+                    // delete from frontend
+                    that.currentUserTopics.forEach(function(topic, index){
+                        if(topic.uID == deleteThis){
+                            that.currentUserTopics.splice(index,1);
+                        }
+                    });
+
+                    // clear buffer
+                    that.clearBuffer();
 
                     // remove corresponding history
                     that.deleteHistory(deleteThis);
                 }).
-                error(function (data, status, headers, config) {
+                error(function () {
                     console.log("error TopicController: Topic cannot get removed");
                 });
         }
