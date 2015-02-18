@@ -137,12 +137,17 @@
 
                     <div collapse="gps">
                         <!-- GPS -->
-                        <input type="text" ng-model="tc.currentTopic.gps[0]"> <input type="text" ng-model="tc.currentTopic.gps[1]">
+                        <input type="text" id="lat" ng-model="tc.currentTopic.gps[0]"> <input type="text" ng-model="tc.currentTopic.gps[1]">
                         <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_edit_gps')" ng-click="tc.updateGPS(); gps = !gps"></button>
 
                         <br>
 
-                        <div id="map" style="width: 400px; height: 300px"></div>
+                        <input type="text" ng-model="location" size="47">
+                        <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_update_gpsByAddress')" ng-click="tc.setGeoCodeByAddress(location)"></button>
+
+                        <br>
+
+                        <div id="map" style="width: 600px; height: 300px"></div>
                         <!-- END OF: GPS -->
                     </div>
 

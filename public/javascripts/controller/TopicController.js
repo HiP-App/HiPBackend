@@ -16,6 +16,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         sender:"System"
     };
 
+    this.map = undefined;       // Stores the HERE MAP object
+
+    this.HEREMAPS_ID = 'DemoAppId01082013GAL';
+    this.HEREMAPS_CODE = 'AJKnXv84fjrb0KIHawS0Tg';
+
     this.topics = [];           // contains every topic
 
     this.currentTopicSubTopicsAsString = "";    // contains the list of the subtopics as it is written in the view
@@ -951,25 +956,73 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      */
     this.initMap = function(x,y){
         $timeout(function(){
-            var myOptions = {
-                zoom: 16,
-                center: new google.maps.LatLng(x, y),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
+            if(that.map == undefined){
+                //Step 1: initialize communication with the platform
+                var platform = new H.service.Platform({
+                    app_id: that.HEREMAPS_ID,
+                    app_code: that.HEREMAPS_CODE,
+                    useCIT: true
+                });
+                var defaultLayers = platform.createDefaultLayers();
 
-            var map = new google.maps.Map(document.getElementById("map"), myOptions);
+                //Step 2: initialize a map  - not specificing a location will give a whole world view.
+                that.map = new H.Map(document.getElementById('map'),
+                    defaultLayers.normal.map);
 
-            /* create marker */
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(x, y),
-                map: map,
-                title: that.currentTopic.name
-            });
+                //Step 3: make the map interactive
+                // MapEvents enables the event system
+                // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+                var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(that.map));
 
-            /* needed due to bug in AngularJS */
-            google.maps.event.trigger(map, 'resize');
-            map.setCenter(new google.maps.LatLng(x, y));
+                // Create the default UI components
+                var ui = H.ui.UI.createDefault(that.map, defaultLayers);
+
+                that.map.setCenter({lat:x, lng:y});
+                that.map.setZoom(15);
+
+                that.map.addObject(new H.map.Marker({lat:x, lng:y}));
+
+                that.map.addEventListener('tap', function (evt) {
+                    var coord = that.map.screenToGeo(evt.currentPointer.viewportX,
+                        evt.currentPointer.viewportY);
+
+                    /* update coordinates */
+                    that.currentTopic.gps[0] = coord.lat;
+                    that.currentTopic.gps[1] = coord.lng;
+
+                    /* force update */
+                    var element = angular.element($('#lat'));
+                    element.scope().$apply();
+
+                    that.map.setCenter({lat:that.currentTopic.gps[0], lng:that.currentTopic.gps[1]});
+                });
+            }
+
         }, 250);
+    };
+
+    /**
+     * Sets the geoposition by the given address using the here maps geolocations service
+     * @param formData
+     */
+    this.setGeoCodeByAddress = function(formData){
+        $http.get('//geocoder.cit.api.here.com/6.2/geocode.json?searchtext='+formData+'&app_id='+
+            that.HEREMAPS_ID+'&app_code='+that.HEREMAPS_CODE+'&gen=6').success(function(data){
+
+            var coord = data.Response.View[0].Result[0].Location.DisplayPosition;
+
+            /* update coordinates */
+            that.currentTopic.gps[0] = coord.Latitude;
+            that.currentTopic.gps[1] = coord.Longitude;
+
+            /* force update */
+            var element = angular.element($('#lat'));
+            element.scope().$apply();
+
+            that.map.setCenter({lat:that.currentTopic.gps[0], lng:that.currentTopic.gps[1]});
+
+            that.map.addObject(new H.map.Marker({lat:that.currentTopic.gps[0], lng:that.currentTopic.gps[1]}))
+        });
     };
 
     /**
