@@ -973,6 +973,27 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Updates the maxcharThreshold
+     */
+    this.updateLightSign = function(){
+        function getValueOfConstraint(name){
+            for(var i = 0; i<that.constraintsForThisTopic.length; i++){
+                var constraint = that.constraintsForThisTopic[i];
+                if(constraint.name == name){
+                    return constraint.value;
+                }
+            }
+        };
+
+        var min =  getValueOfConstraint('character_limitation');
+        var max =  getValueOfConstraint('max_character_limitation');
+
+        var percentage = (min/max) * 100;
+
+        that.maxcharThreshold = percentage;
+    };
+
+    /**
      * Function removes the given link from the topic
      *
      * @param uID       uID of the link that should be removed
