@@ -162,7 +162,8 @@ servicesModule.service('typeService', ['$http', function($http) {
     };
 
     /**
-     * This function collects all subtypes and the current type that has the same parent as the current type
+     * This function collects all subtypes type that has the same parent as the current type (and adds the current type to the list)
+     *
      * @param name          name of the current type
      * @param offlineData   the offline data
      * @returns {Array}     an array containing all the types
