@@ -56,6 +56,9 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/topic/create', {
                 templateUrl: '/assets/partials/myhip_createTopic.html'
             })
+            .when('/topic/accept', {
+                templateUrl: '/assets/partials/master_acceptTopic.html'
+            })
             .when('/templates/edit/', {
               templateUrl: '/assets/partials/myhip_editTemplates.html'
             })

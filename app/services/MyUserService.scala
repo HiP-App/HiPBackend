@@ -93,12 +93,15 @@ class MyUserService(application: Application) extends UserServicePlugin(applicat
         "updated_at" -> Json.obj("$date" -> new Date())
       )
 
-      val role = "student";
+      val role = "student"
+
       val saveadd = Json.obj(
         "userid" -> user.identityId.userId,
         "email" -> email,
         "role" -> role,
-        "templates" -> "-1"
+        "templates" -> "-1",
+        "admin" -> "false",
+        "master" -> "false"
       )
 
       // insert only if it is not there

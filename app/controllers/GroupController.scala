@@ -28,13 +28,6 @@ class GroupController extends Controller with MongoController {
    */
   def createGroup = Action.async(parse.json) {
     request =>
-      /*
-       * request.body is a JsValue.
-       * There is an implicit Writes that turns this JsValue as a JsObject,
-       * so you can call insert() with this JsValue.
-       * (insert() takes a JsObject as parameter, or anything that can be
-       * turned into a JsObject using a Writes.)
-       */
       request.body.validate[GroupModel].map {
         group =>
           // `user` is an instance of the case class `models.User`
@@ -156,7 +149,7 @@ class GroupController extends Controller with MongoController {
                                         "$set" -> Json.obj("name" -> grp.name),
                                         "$set" -> Json.obj("member" -> grp.member),
                                         "$set" -> Json.obj("notifications" -> grp.notifications),
-                                        "$set" -> Json.obj("readableBy" -> grp.readableBy));
+                                        "$set" -> Json.obj("readableBy" -> grp.readableBy))
 
           collection.update(Json.obj("uID" -> grp.uID), modifier).map {
             lastError =>

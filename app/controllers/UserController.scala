@@ -97,4 +97,28 @@ class UserController extends Controller with MongoController {
     }
   }
 
+  /**
+   * This action updates the given user meta data
+   *
+   * @return
+   */
+  def updateUser = Action.async(parse.json){
+    request =>
+      request.body.validate[UserAddModel].map {
+        user =>
+          val modifier    =   Json.obj( "$set" -> Json.obj("userid" -> user.userid),
+            "$set" -> Json.obj("email" -> user.email),
+            "$set" -> Json.obj("role" -> user.role),
+            "$set" -> Json.obj("templates" -> user.templates),
+            "$set" -> Json.obj("admin" -> user.admin),
+            "$set" -> Json.obj("master" -> user.master))
+
+          collection.update(Json.obj("userid" -> user.userid), modifier).map {
+            lastError =>
+              logger.debug(s"Successfully inserted with LastError: $lastError")
+              Created(s"User has been added")
+          }
+      }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
 }

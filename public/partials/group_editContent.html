@@ -46,17 +46,17 @@
 
                         <alert-box ac="ac"></alert-box>
 
-                        <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                        <div class="radio" ng-click="tc.updateStatusAndByPassHistory(tc.currentTopic.status, ac, lc)">
                             <label>
                                 <input type="radio" name="radioWIP" ng-model="tc.currentTopic.status" value="wip">{{lc.getTerm('system_wip')}}
                             </label>
                         </div>
-                        <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                        <div class="radio" ng-click="tc.updateStatusAndByPassHistory(tc.currentTopic.status, ac, lc)">
                             <label>
                                 <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir">{{lc.getTerm('system_ir')}}
                             </label>
                         </div>
-                        <div class="radio" ng-click="tc.updateStatusIfAllowedByContraints(ac,lc)">
+                        <div class="radio" ng-click="tc.updateStatusAndByPassHistory(tc.currentTopic.status, ac, lc)">
                             <label>
                                 <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done">{{lc.getTerm('system_done')}}
                             </label>

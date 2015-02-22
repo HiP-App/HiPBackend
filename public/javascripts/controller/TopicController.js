@@ -274,6 +274,65 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * This function updates the status of the current topic
+     *  @param status       the new status
+     *  @param ac           reference to the alert controller that is responsible in this view
+     *  @param lc           reference to the language controller that is responsible in this view
+     */
+    this.updateStatusAndByPassHistory = function(status, ac,lc){
+        var constraintsFulfilled = that.constraintsFulfilled();
+
+        if(constraintsFulfilled){
+            that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+                keys: ['status'],
+                status: status
+            }, false, false);
+        }else{
+            this.sendAlert(ac, lc, 'notification_alert_failDueToContraints');
+        };
+    };
+
+    /**
+     * This function accepts the topic for the usage in the frontend
+     * @param topicUID uID of the topic that should be accepted
+     */
+    this.acceptTopic = function(topicUID){
+        that.updateTopicAndBypassHistory(topicUID, {
+            keys: ['status'],
+            status: 'accepted'
+        }, false, false);
+
+        /* remove it from array: that.topicsByStatus -> so, it will not shown in the frontend */
+        for(var i = 0; i < that.topicsByStatus.length; i++){
+            if(that.topicsByStatus[i].uID == topicUID){
+                that.topicsByStatus.splice(i,1);
+
+                that.clearBuffer();
+            }
+        }
+    };
+
+    /**
+     * This function rejects the topic for the usage in the frontend and sets the status to "work in progress"
+     * @param topicUID uID of the topic that should be rejected
+     */
+    this.rejectTopic = function(topicUID){
+        that.updateTopicAndBypassHistory(topicUID, {
+         keys: ['status'],
+         status: 'wip'
+         }, false, false);
+
+        /* remove it from array: that.topicsByStatus -> so, it will not shown in the frontend */
+        for(var i = 0; i < that.topicsByStatus.length; i++){
+            if(that.topicsByStatus[i].uID == topicUID){
+                that.topicsByStatus.splice(i,1);
+
+                that.clearBuffer();
+            }
+        }
+    };
+
+    /**
      * Updates the constraints of the current topic
      */
     this.updateConstraints = function(){
@@ -580,7 +639,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      */
     this.getTopicsByStatus = function(statusOfTheTopic){
         $http.get('/admin/topicbystatus/'+statusOfTheTopic).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 that.topicsByStatus = data;
             }).
             error(function(data, status, headers, config) {
@@ -1098,5 +1157,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         $timeout(function(){
             that.getSubTopicByTopicID($scope.gc.bufferedGroup.topic);
         }, 500);
+    }
+
+    if($routeParams.uID == undefined &&
+        $routeParams.topicID == undefined &&
+        $routeParams.userID == undefined){
+        that.getTopicsByStatus('done');
     }
 }]);

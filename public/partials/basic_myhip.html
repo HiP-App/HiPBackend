@@ -16,7 +16,9 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <div ng-show="uc.isSupervisor()" ng-bind="lc.getTerm('system_supervisor_datareview')"></div>
+                <a href="/#/topic/accept">
+                    <div ng-show="uc.isMaster()" ng-bind="lc.getTerm('system_supervisor_dataAccept')"></div>
+                </a>
             </div>
         </div>
 

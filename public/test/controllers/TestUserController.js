@@ -10,6 +10,22 @@ function setUserToSupervisor(controller) {
     controller.role = 'supervisor';
 }
 
+function setUserToNotAdmin(controller) {
+    controller.admin = 'false';
+}
+
+function setUserToAdmin(controller) {
+    controller.admin = 'true';
+}
+
+function setUserToNotMaster(controller) {
+    controller.master = 'false';
+}
+
+function setUserToMaster(controller) {
+    controller.master = 'true';
+}
+
 describe('Testsuite for the userController:', function () {
     var controller = null, $scope = null, $httpBackend = null;
     var $attrs = {};
@@ -52,5 +68,29 @@ describe('Testsuite for the userController:', function () {
         setUserToStudent(controller);
 
         expect(controller.isSupervisor()).toBe(false);
+    });
+
+    it('returns false for admin if user is not an admin', function () {
+        setUserToNotAdmin(controller);
+
+        expect(controller.isAdmin()).toBe(false);
+    });
+
+    it('returns true for admin if user is an admin', function () {
+        setUserToAdmin(controller);
+
+        expect(controller.isAdmin()).toBe(true);
+    });
+
+    it('returns false for admin if user is not a master user', function () {
+        setUserToNotMaster(controller);
+
+        expect(controller.isMaster()).toBe(false);
+    });
+
+    it('returns true for admin if user is a master user', function () {
+        setUserToMaster(controller);
+
+        expect(controller.isMaster()).toBe(true);
     });
 });
