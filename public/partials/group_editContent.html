@@ -56,9 +56,9 @@
                                 <input type="radio" name="radioIR" ng-model="tc.currentTopic.status" value="ir">{{lc.getTerm('system_ir')}}
                             </label>
                         </div>
-                        <div class="radio" ng-click="tc.updateStatusAndByPassHistory(tc.currentTopic.status, ac, lc)">
+                        <div class="radio">
                             <label>
-                                <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done">{{lc.getTerm('system_done')}}
+                                <input type="radio" name="radioDONE" ng-model="tc.currentTopic.status" value="done" disabled>{{lc.getTerm('system_done')}}
                             </label>
                         </div>
                     </div>

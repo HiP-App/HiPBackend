@@ -19,11 +19,11 @@
             <div class="panel-body" ng-controller="AnnotationCtrl as annoCtrl">
 
                 <!--
-                Show this box iff status of the topic is 'done' OR iff the deadline has past by
+                Show this box iff status of the topic is 'done', 'ir' OR iff the deadline has past by
                         => show the content of the topic
                 -->
                 <div id="concreteContent"
-                     ng-show="(tc.currentTopic.status == 'done' || tc.deadlineReached()) && showDiv == 1">
+                     ng-show="(tc.currentTopic.status == 'done' || tc.currentTopic.status == 'ir' || tc.deadlineReached()) && showDiv == 1">
 
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
@@ -33,6 +33,10 @@
                         <button ng-click="annoCtrl.startAnnotation('#concreteContent')"
                                 class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('start_annotation')">
                         </button>
+
+                        <button ng-click="tc.updateStatusAndByPassHistory('done')"
+                                class="btn btn-success" ng-bind="lc.getTerm('button_set_topic_to_done')">
+                        </button>
                     </div>
 
                     <div ng-bind-html="tc.currentTopic.content"></div>
@@ -41,9 +45,9 @@
 
 
                 <!--
-                Show this box iff status of the topic is not 'done'
+                Show this box iff status of the topic is not 'done' or 'ir'
                 -->
-                <div id="briefContent" ng-show="tc.currentTopic.status != 'done' && showDiv == 1">
+                <div id="briefContent" ng-show="(tc.currentTopic.status != 'done' && tc.currentTopic.status != 'ir') && showDiv == 1">
                     <h4 ng-bind="tc.currentTopic.name"></h4>
 
                     <br>
