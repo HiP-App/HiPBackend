@@ -240,30 +240,10 @@ describe('Testsuite for the TopicController:', function () {
     it('updates a topic with the updateTopic function', function () {
         initController();
 
-        var updateTopic = {
-            uID: demoTopic1.uID,
-            name: demoTopic1.name,
-            group: demoTopic1.group,
-            createdBy: demoTopic1.createdBy,
-            content: demoTopic1.content,
-            status: demoTopic1.status,
-            constraints: demoTopic1.constraints[0]
-        };
-        /* prepare controller
-            => set the needed String representation manually
-         */
-        controller.modifyTopicID            = demoTopic1.uID;
-        controller.modifyTopicName          = demoTopic1.name;
-        controller.modifyTopicContent       = demoTopic1.content;
-        controller.modifyTopicGroup         = demoTopic1.group;
-        controller.modifyTopicStatus        = demoTopic1.status;
-        controller.modifyTopicCreatedBy     = demoTopic1.createdBy;
-        controller.modifyTopicConstraints   = demoTopic1.constraints[0];
-
         /* update */
         controller.updateTopic();
 
-        $httpBackend.expectPUT('/admin/topic', updateTopic)
+        $httpBackend.expectPUT('/admin/topic')
             .respond(200,{});
         $httpBackend.flush();
     });

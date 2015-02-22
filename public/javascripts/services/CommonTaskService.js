@@ -117,9 +117,31 @@ servicesModule.service('commonTaskService', function(){
      * @param topicStatus   status of the topic. I.e., 'wip', 'ir' or 'done'
      * @param constraintArray   An array containing all constraints for this topic
      * @param deadline              the deadline for the given topic
+     * @param tagstore
+     * @param linkedTopics
+     * @param maxCharTreshold
+     * @param gps
      * @returns {{uID: *, name: *, group: *, createdBy: *, content: *, status: *, constraints: *}}
      */
-    this.createTopicObject = function(uID, topicname, groupID, createdBy, content, topicStatus, constraintArray, deadline){
+    this.createTopicObject = function(uID, topicname, groupID, createdBy, content, topicStatus, constraintArray, deadline,
+        tagstore, linkedTopics, maxCharTreshold, gps){
+
+        if(tagstore == undefined){
+            tagstore = "-1";
+        }
+
+        if(linkedTopics == undefined){
+            linkedTopics = [];
+        }
+
+        if(maxCharTreshold == undefined){
+            maxCharTreshold = "80";
+        }
+
+        if(gps == undefined){
+            gps = ["",""];
+        }
+
         return {
             uID:        uID,
             name:       topicname,
@@ -129,10 +151,10 @@ servicesModule.service('commonTaskService', function(){
             status:     topicStatus,
             constraints:constraintArray,
             deadline:   deadline,
-            tagStore:   "-1",
-            linkedTopics: [],
-            maxCharThreshold: "80",
-            gps: ["",""]
+            tagStore:   tagstore,
+            linkedTopics: linkedTopics,
+            maxCharThreshold: maxCharTreshold,
+            gps: gps
         };
     };
 

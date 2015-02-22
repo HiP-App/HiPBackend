@@ -59,6 +59,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     this.modifyTopicCreatedBy   = "";
     this.modifyTopicContraints  = [];
     this.modifyTopicDeadline    = [];
+    this.tagstore               = "";
+    this.linkedTopic            = "";
+    this.maxCharTreshold        = "";
+    this.gps                    = [];
 
     this.cachedTopicForUIDTranslation = {
         uID: "-1",
@@ -76,9 +80,15 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         that.modifyTopicStatus  = "";
         that.modifyTopicCreatedBy = "";
         that.modifyTopicDeadline  = "";
+        that.tagstore               = "";
+        that.linkedTopic            = "";
+        that.maxCharTreshold        = "";
+        that.gps                    = [];
     };
 
     /**
+     * WORKAROUNG FOR BUG IN ANGULAR.JS
+     *
      * Accepts a bunch of data for internal use. In general, this is only a string representation of the
      * topic JSON object
      *
@@ -91,7 +101,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      * @param topicCreatedBy
      */
     this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints,
-        topicCreatedBy, deadline){
+        topicCreatedBy, deadline, tagstore, linkedTopic, maxCharTreshold, gps){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
         that.modifyTopicContent = topicContent;
@@ -99,6 +109,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         that.modifyTopicStatus  = topicStatus;
         that.modifyTopicCreatedBy = topicCreatedBy;
         that.modifyTopicDeadline  = deadline;
+        that.tagstore             = tagstore;
+        that.linkedTopic          = linkedTopic;
+        that.maxCharTreshold      = maxCharTreshold;
+        that.gps                  = gps;
 
         var constraintsAreInitialized = topicConstraints[0] != "" || topicConstraints != undefined;
         if(constraintsAreInitialized){
@@ -289,7 +303,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             }, false, false);
         }else{
             this.sendAlert(ac, lc, 'notification_alert_failDueToContraints');
-        };
+        }
     };
 
     /**
@@ -410,14 +424,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      * @param msg   the message that should be contained in the alert
      */
     this.updateStatus = function(ac, lc, msg){
-        var topic = commonTaskService.createTopicObject(that.currentTopic.uID,
-            that.currentTopic.name,
-            that.currentTopic.group,
-            that.currentTopic.createdBy,
-            that.currentTopic.content,
-            that.currentTopic.status,
-            that.currentTopic.constraints,
-            that.currentTopic.deadline);
+        var topic = that.currentTopic;
 
         var constraintsAreInitialized = that.currentTopic.constraints[0] != "" || that.currentTopic.constraints != undefined;
         if(!constraintsAreInitialized){
@@ -778,15 +785,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      * that.modifyTopicID, that.modifyTopicName, ...)
      */
     this.updateTopic = function(){
-        var topic = {
-            uID :       that.modifyTopicID,
-            name :      that.modifyTopicName,
-            group  :    that.modifyTopicGroup,
-            createdBy:  that.modifyTopicCreatedBy,
-            content:    that.modifyTopicContent,
-            status:     that.modifyTopicStatus,
-            constraints: that.modifyTopicConstraints
-        };
+        var topic = commonTaskService.createTopicObject(that.modifyTopicID, that.modifyTopicName,
+            that.modifyTopicGroup, that.modifyTopicCreatedBy, that.modifyTopicContent, that.modifyTopicStatus,
+            that.modifyTopicConstraints, that.modifyTopicDeadline, that.tagstore, that.linkedTopic,
+            that.maxCharTreshold, that.gps);
 
         $http.put('/admin/topic', topic).
             success(function(data, status, headers, config) {
@@ -1071,8 +1073,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             var coord = data.Response.View[0].Result[0].Location.DisplayPosition;
 
             /* update coordinates */
-            that.currentTopic.gps[0] = coord.Latitude;
-            that.currentTopic.gps[1] = coord.Longitude;
+            that.currentTopic.gps[0] = coord.Latitude + "";
+            that.currentTopic.gps[1] = coord.Longitude + "";
 
             /* force update */
             var element = angular.element($('#lat'));
