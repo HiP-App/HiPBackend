@@ -43,6 +43,8 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
     	'../app/assets/javascripts/app.coffee' : ['coffee'],
+    	'**/javascripts/controller/*.js': 'coverage',
+    	'**/javascripts/services/*.js': 'coverage',
     	'**/javascripts/*.js': 'coverage'
   		//'**/*.coffee': ['coffee']
     },
