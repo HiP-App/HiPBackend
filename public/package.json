@@ -1,12 +1,12 @@
 {
-    "name": "hip",
-    "version": "0.1.0",
-    "devDependencies": {
-        "grunt": "~0.4.5",
-        "karma-jasmine": "latest",
-        "karma-coverage": "latest",
-        "karma-coffee-preprocessor": "latest",
-        "karma-chrome-launcher": "latest",
-        "coffee-script": "latest"
-    }
+  "name": "hip",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "karma-jasmine": "latest",
+    "karma-coverage": "~0.2.7",
+    "karma-coffee-preprocessor": "latest",
+    "karma-chrome-launcher": "latest",
+    "coffee-script": "latest"
+  }
 }
