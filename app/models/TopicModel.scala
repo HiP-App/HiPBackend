@@ -11,7 +11,7 @@ case class TopicModel(uID: String,
                       status: String,
                       constraints: Array[String],
                       deadline: String,
-                      tagStore: String,
+                      tagStore: Array[String],
                       linkedTopics: Array[String],
                       maxCharThreshold: String,
                       gps : Array[String])

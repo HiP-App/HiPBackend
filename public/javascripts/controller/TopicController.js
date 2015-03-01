@@ -18,8 +18,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
     this.map = undefined;       // Stores the HERE MAP object
 
-    this.HEREMAPS_ID = 'DemoAppId01082013GAL';
-    this.HEREMAPS_CODE = 'AJKnXv84fjrb0KIHawS0Tg';
+    this.HEREMAPS_ID    = 'DemoAppId01082013GAL';
+    this.HEREMAPS_CODE  = 'AJKnXv84fjrb0KIHawS0Tg';
 
     this.topics = [];           // contains every topic
 

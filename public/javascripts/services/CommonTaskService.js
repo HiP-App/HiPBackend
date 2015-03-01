@@ -127,7 +127,7 @@ servicesModule.service('commonTaskService', function(){
         tagstore, linkedTopics, maxCharTreshold, gps){
 
         if(tagstore == undefined){
-            tagstore = "-1";
+            tagstore = [];
         }
 
         if(linkedTopics == undefined){
