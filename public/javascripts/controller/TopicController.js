@@ -64,6 +64,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     this.maxCharTreshold        = "";
     this.gps                    = [];
 
+    this.labelTag               = "...";
+    this.tagValue               = "";
+
     this.cachedTopicForUIDTranslation = {
         uID: "-1",
         name: "-1"
@@ -1139,6 +1142,46 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      */
     this.returnLink = function(uID){
       return LinkCreator.getLinkForTopic(uID);
+    };
+
+    /**
+     * Function creates a new tag for the current topic
+     *
+     * @param tag
+     */
+    this.createTag = function(tag){
+        /* backward compatibility */
+        if(that.currentTopic.tagStore == '-1'){
+            that.currentTopic.tagStore = [];
+        }
+
+        that.currentTopic.tagStore.push(tag);
+
+        /* send to backend */
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+            keys: ['tagStore'],
+            tagStore: tag
+        }, true, false);
+    };
+
+    /**
+     * Function removes the tag with the given index
+     *
+     * @param index {integer}:  Index of the tag that should be removed
+     */
+    this.removeTag = function(index){
+        /* backward compatibility */
+        if(that.currentTopic.tagStore == '-1'){
+            that.currentTopic.tagStore = [];
+        }
+
+        that.currentTopic.tagStore.splice(index,1);
+
+        /* send to backend */
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+            keys: ['tagStore'],
+            tagStore: that.currentTopic.tagStore
+        }, false, false);
     };
 
     /* update parameter if needed */

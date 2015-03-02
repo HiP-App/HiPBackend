@@ -24,7 +24,7 @@ describe('Testsuite for the TopicController:', function () {
             status: "wip",
             constraints: ["constraintA"],
             deadline : "2020-01-14T23:00:00.000Z",
-            tagStore: "-1",
+            tagStore: [],
             linkedTopics: []
         };
 
@@ -777,6 +777,30 @@ describe('Testsuite for the TopicController:', function () {
 
         $httpBackend.expect('GET','/admin/topic').respond(200,[demoTopic1,demoTopic2]);
         $httpBackend.flush();
+    });
 
+    it('is able to add a new tag to the tag array', function () {
+        initController();
+
+        controller.createTag("dummy");
+        expect(controller.currentTopic.tagStore[0]).toBe("dummy");
+
+        /* expect sending to backend */
+        $httpBackend.expect('PUT','/admin/topic').respond(200,{});
+        $httpBackend.flush();
+    });
+
+    it('is able to remove a tag given by its index', function () {
+        initController();
+
+        controller.currentTopic.tagStore[0] = "RemoveMe";
+
+        controller.removeTag(0);
+
+        expect(controller.currentTopic.tagStore[0]).toBe(undefined);
+
+        /* expect sending to backend */
+        $httpBackend.expect('PUT','/admin/topic').respond(200,{});
+        $httpBackend.flush();
     });
 });
