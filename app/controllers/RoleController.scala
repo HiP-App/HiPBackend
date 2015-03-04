@@ -88,8 +88,9 @@ class RoleController extends Controller with MongoController {
     request =>
       request.body.validate[UserAddModel].map {
         userAdd =>
-
-          val modifier    =   Json.obj( "$set" -> Json.obj("role" -> userAdd.role))
+          val modifier    =   Json.obj( "$set" -> Json.obj("role" -> userAdd.role),
+                                        "$set" -> Json.obj("master" -> userAdd.master),
+                                        "$set" -> Json.obj("admin" -> userAdd.admin))
 
           // update entry
           collection.update(Json.obj("userid" -> userAdd.userid),modifier,upsert = true).map {

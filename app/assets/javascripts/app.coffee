@@ -80,8 +80,8 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/language/create', {
               templateUrl: '/assets/partials/admin_createLangTerm.html'
             })
-            .when('/roles/create', {
-              templateUrl: '/assets/partials/admin_roleManagement.html'
+            .when('/user/edit', {
+              templateUrl: '/assets/partials/admin_userManagement.html'
             })
             .when('/messages/all/:recName', {
               templateUrl: '/assets/partials/basic_messages.html'

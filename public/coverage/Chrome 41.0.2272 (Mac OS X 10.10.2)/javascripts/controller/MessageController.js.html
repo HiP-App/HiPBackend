@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for javascripts/controller/MessageController.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../prettify.css">
+
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header medium">
+    <h1>Code coverage report for <span class="entity">javascripts/controller/MessageController.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">74.47% <small>(35 / 47)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">50% <small>(11 / 22)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">72.73% <small>(8 / 11)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">74.47% <small>(35 / 47)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">javascripts/controller/</a> &#187; MessageController.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Created by Jörg Amelunxen on 05.11.2014.
+ *
+ * @class angular_module.controllersModule.MessageCtrl
+ *
+ * This controller implements the functions for receiving and sending private messages
+ */
+controllersModule.controller('MessageCtrl', ['$scope','$http', '$routeParams','commonTaskService', function($scope,$http,$routeParams,commonTaskService) {
+    var that = this;
+&nbsp;
+    this.debug = false;
+&nbsp;
+    this.errorObject = {
+        content:"Connection Error",
+        sender:"System"
+    };
+&nbsp;
+    this.messageThatGetsCurrentlyCreated = {};
+&nbsp;
+    this.messages = [{ }];
+&nbsp;
+    this.detailMessage = {
+        title : "MyTitle",
+        content: "MyContent"
+    };
+&nbsp;
+    /**
+     * Fetches the messages given the name of it's receiver.
+     * The data is stored internally in that.messages.
+     *
+     * @param recName   the name of the receiver.
+     */
+    this.getMessagesByReceiverName = function(recName){
+        $http.get('/admin/messages/all/'+recName).
+            success(function(data, status, headers, config) {
+&nbsp;
+                that.messages = data;
+&nbsp;
+                <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug == true){
+<span class="cstat-no" title="statement not covered" >                    console.log("info MessageCtrl: getting message data");</span>
+                }
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                that.messages  = that.errorObject;</span>
+            });
+    };
+&nbsp;
+    /**
+     * Fetches a concrete message by its uID.
+     * The message is stored internally in that.detailMessage.
+     *
+     * @param messageID     the uID of the message
+     */
+    this.getMessageByID = function(messageID){
+        $http.get('/admin/messages/view/'+messageID).
+            success(function(data, status, headers, config) {
+&nbsp;
+                that.detailMessage.title = data[0].title;
+                that.detailMessage.content = data[0].content;
+&nbsp;
+                <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug == true){
+<span class="cstat-no" title="statement not covered" >                    console.log("info MessageCtrl: getting message data of message " + messageID);</span>
+                }
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                that.messages  = that.errorObject;</span>
+            });
+    };
+&nbsp;
+    /**
+     * Sends a new message given the uID of the sender
+     *
+     * @param emailOfTheSender  the uID resp. email address of the sender
+     */
+    this.sendMessage = function(emailOfTheSender){
+        var uID = commonTaskService.generateUID(that.messageThatGetsCurrentlyCreated.title+that.messageThatGetsCurrentlyCreated.receiver+
+            that.messageThatGetsCurrentlyCreated.content);
+&nbsp;
+        var tempMessage = commonTaskService.createMessageObject(uID,that.messageThatGetsCurrentlyCreated.receiver, emailOfTheSender,
+        that.messageThatGetsCurrentlyCreated.title, that.messageThatGetsCurrentlyCreated.content);
+&nbsp;
+        commonTaskService.sendPrivateMessage($http, tempMessage, that.debug);
+    };
+&nbsp;
+    /**
+     * Deletes a message given its uID
+     *
+     * @param messageID     of the message that should be deleted
+     */
+    this.deleteMessage = function(messageID){
+        /* remove from backend */
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug == true){
+<span class="cstat-no" title="statement not covered" >            console.log("info MessageCtrl: message with id " + messageID + " will be deleted ");</span>
+        }
+&nbsp;
+        $http.delete('/admin/messages/'+messageID).
+            success(function(data, status, headers, config) {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug == true){
+<span class="cstat-no" title="statement not covered" >                    console.log("info MessageCtrl: message with id " + messageID + " has been deleted ");</span>
+                }
+&nbsp;
+                /* remove from frontend, too */
+                var newValues = [];
+                for(var i=0; i &lt; that.messages.length; i++){
+                    if(that.messages[i].uID != messageID){
+                        newValues.push(that.messages[i]);
+                    }
+                }
+&nbsp;
+                that.messages = newValues;
+&nbsp;
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                that.messages  = that.errorObject;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if(that.debug == true){</span>
+<span class="cstat-no" title="statement not covered" >                    console.log("error MessageCtrl: message with id " + messageID + " has NOT been deleted ");</span>
+                }
+            });
+    };
+&nbsp;
+    /* update parameter if needed */
+    <span class="missing-if-branch" title="else path not taken" >E</span>if($routeParams.recName != undefined){
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(this.debug)
+<span class="cstat-no" title="statement not covered" >            console.log("info MessageCtrl: fetching messages for user " + $routeParams.recName);</span>
+&nbsp;
+        that.getMessagesByReceiverName($routeParams.recName);
+    }
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if($routeParams.messageID != undefined){
+        that.getMessageByID($routeParams.messageID);
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if($routeParams.toUserUID != undefined &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >$routeParams.title != undefined)</span>{
+<span class="cstat-no" title="statement not covered" >        that.messageThatGetsCurrentlyCreated.receiver   = $routeParams.toUserUID;</span>
+<span class="cstat-no" title="statement not covered" >        that.messageThatGetsCurrentlyCreated.title      = $routeParams.title;</span>
+    }
+&nbsp;
+}]);</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Mar 04 2015 16:02:50 GMT+0100 (CET)</div>
+</div>
+
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+
+<script src="../../sorter.js"></script>
+</body>
+</html>

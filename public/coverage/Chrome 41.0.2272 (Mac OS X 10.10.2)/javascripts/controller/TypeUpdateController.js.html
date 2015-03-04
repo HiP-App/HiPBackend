@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for javascripts/controller/TypeUpdateController.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../prettify.css">
+
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header medium">
+    <h1>Code coverage report for <span class="entity">javascripts/controller/TypeUpdateController.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">59.14% <small>(55 / 93)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">41.03% <small>(16 / 39)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">69.57% <small>(16 / 23)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">59.14% <small>(55 / 93)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">javascripts/controller/</a> &#187; TypeUpdateController.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Created by Jörg Amelunxen on 09.02.15.
+ */
+controllersModule.controller('TypeCtrl', ['$scope','$http','$routeParams','typeService', 'commonTaskService',function($scope,$http,$routeParams,typeService, commonTaskService) {
+    var that = this;
+&nbsp;
+    this.loadedType = {};       // stores the currently loaded type
+    this.types = [];            // stores all types
+&nbsp;
+    this.dict = {
+        de: {},
+        eng: {}
+    };
+&nbsp;
+    this.dictEntry = {          // stores the dictionary data for this type
+        de: {},
+        eng: {}
+    };
+&nbsp;
+    /**
+     * Fetches the language data for the given key array and the given type name
+     * @param keyArray              the names of the used keys
+     * @param typeName              name of the type
+     * @param callback              first parameter contains the dict
+     */
+    this.fetchLanguageFor = function(keyArray, typeName, callback){
+        $http.get('/admin/languages/de').
+            success(function(deDict) {
+                /* create DE dict */
+                deDict.forEach(function(entry){
+                   that.dict.de[entry.key] = entry.value;
+                });
+&nbsp;
+                $http.get('/admin/languages/eng').
+                    success(function(engDict) {
+                        /* create ENG dict */
+                        engDict.forEach(function(entry){
+                            that.dict.eng[entry.key] = entry.value;
+                        });
+&nbsp;
+                        /* use both dictionaries to create the dictEntry */
+                        keyArray.forEach(function(key){
+                            var completeTerm =  'type_'+key+'_'+typeName;
+&nbsp;
+                            that.dictEntry.de[key]  = that.dict.de[completeTerm];
+                            that.dictEntry.eng[key] = that.dict.eng[completeTerm];
+                        });
+&nbsp;
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if(callback != undefined)
+                            callback(that.dictEntry);
+                    });
+            });
+    };
+&nbsp;
+    /**
+     * Adapter for type interface
+     * @param type
+     * @param callback              first parameter contains the dict
+     */
+    this.fetchLanguageForType = <span class="fstat-no" title="function not covered" >function(type, callback){</span>
+<span class="cstat-no" title="statement not covered" >        that.fetchLanguageFor(type.keys, type.name, callback);</span>
+    };
+&nbsp;
+    /**
+     * This function updates the language tokens on the server side. However, it does nothing if the language values
+     * are not changed to prevent the unnecessary loss of bandwidth.
+     */
+    this.sendLanguageData = function(){
+        that.loadedType.keys.forEach(function(key){
+            var languageTerm = 'type_'+key+'_'+that.loadedType.name;
+&nbsp;
+            var languageObjectDe = {
+                language: 'de',
+                key: languageTerm,
+                value: that.dictEntry.de[key]
+            };
+&nbsp;
+            var languageObjectEng = {
+                language: 'eng',
+                key: languageTerm,
+                value: that.dictEntry.eng[key]
+            };
+&nbsp;
+            if(that.dict.de[languageTerm] == undefined){
+                /* language key is unknown =&gt; just post german term */
+                $http.post('/admin/languages', languageObjectDe)
+            }else if(that.dictEntry.de[key] != that.dict.de[languageTerm]){
+                /* old language key is known =&gt; delete old one and post new german term */
+                $http.delete('/admin/languages/'+languageTerm+'/de').success(function(){
+                    $http.post('/admin/languages', languageObjectDe)
+                });
+            }
+&nbsp;
+            if(that.dict.de[languageTerm] == undefined){
+                /* language key is unknown =&gt; just post english term */
+                $http.post('/admin/languages', languageObjectEng)
+            }else if(that.dictEntry.eng[key] != that.dict.eng[languageTerm]){
+                /* old language key is known =&gt; delete old one and post new english term */
+                $http.delete('/admin/languages/'+languageTerm+'/eng').success(function(){
+                    $http.post('/admin/languages', languageObjectEng)
+                });
+            }
+        });
+    };
+&nbsp;
+    /**
+     * Checks if the loadedType includes all parent keys. If this is not the keys, the keys will be created.
+     * @param uID   uID of the parent
+     */
+    this.checkParentDependency = <span class="fstat-no" title="function not covered" >function(uID){</span>
+        /* do we have a full type object? */
+<span class="cstat-no" title="statement not covered" >        if(that.loadedType.keys == undefined || that.loadedType.values == undefined || that.loadedType.extendsType == undefined){</span>
+            /* set new type */
+<span class="cstat-no" title="statement not covered" >            that.loadedType = commonTaskService.createTypeObject(that.loadedType.name, uID, [], [], "false");</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        typeService.getType(uID, <span class="fstat-no" title="function not covered" >function(type){</span></span>
+<span class="cstat-no" title="statement not covered" >            type.keys.forEach(<span class="fstat-no" title="function not covered" >function(key){</span></span>
+<span class="cstat-no" title="statement not covered" >               var found = (jQuery.inArray(key, that.loadedType.keys));</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if(found == -1){</span>
+<span class="cstat-no" title="statement not covered" >                    that.loadedType.keys.push(key);</span>
+<span class="cstat-no" title="statement not covered" >                    that.loadedType.values.push(type[key]);</span>
+<span class="cstat-no" title="statement not covered" >                    that.loadedType[key] = type[key];</span>
+                }
+            });
+        });
+&nbsp;
+        /* update languages */
+<span class="cstat-no" title="statement not covered" >        that.fetchLanguageForType(that.loadedType);</span>
+    };
+&nbsp;
+    /**
+     * Returns true if the given index of the key array is a newly created one
+     * @param index
+     * @returns {boolean}
+     */
+    this.isIndexNew = <span class="fstat-no" title="function not covered" >function(index){</span>
+<span class="cstat-no" title="statement not covered" >        if(that.loadedType.newAdded != undefined){</span>
+<span class="cstat-no" title="statement not covered" >            var pos = jQuery.inArray(index, that.loadedType.newAdded);</span>
+<span class="cstat-no" title="statement not covered" >            if(pos == -1){</span>
+<span class="cstat-no" title="statement not covered" >                return false;</span>
+            }else{
+<span class="cstat-no" title="statement not covered" >                return true;</span>
+            }
+        }else{
+<span class="cstat-no" title="statement not covered" >            return false;</span>
+        }
+    };
+&nbsp;
+    /**
+     * Updates the keys of the loaded type at position index with value key
+     * @param index     The index that should be overwritten
+     * @param key       The new key value
+     */
+    this.updateKeyArray = <span class="fstat-no" title="function not covered" >function(index, key){</span>
+<span class="cstat-no" title="statement not covered" >        if(that.loadedType.keys != undefined) {</span>
+<span class="cstat-no" title="statement not covered" >            that.loadedType.keys[index] = key;</span>
+        }
+    };
+&nbsp;
+    function AngularBugWorkAround() {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (that.loadedType.newAdded != undefined) {
+<span class="cstat-no" title="statement not covered" >            const index = that.loadedType.newAdded[0];</span>
+<span class="cstat-no" title="statement not covered" >            const keyName = that.loadedType[index];</span>
+<span class="cstat-no" title="statement not covered" >            that.updateKeyArray(index, keyName);</span>
+&nbsp;
+            /* update dict entries */
+<span class="cstat-no" title="statement not covered" >            that.dictEntry.de[keyName] = that.dictEntry.de[''];</span>
+<span class="cstat-no" title="statement not covered" >            that.dictEntry.eng[keyName] = that.dictEntry.eng[''];</span>
+&nbsp;
+            /* clear */
+<span class="cstat-no" title="statement not covered" >            that.dictEntry.de[''] = '';</span>
+<span class="cstat-no" title="statement not covered" >            that.dictEntry.eng[''] = '';</span>
+<span class="cstat-no" title="statement not covered" >            that.loadedType[index] = '';</span>
+<span class="cstat-no" title="statement not covered" >            that.loadedType.newAdded.pop();</span>
+        }
+    }
+&nbsp;
+    /**
+     * Adds a new key to the current type
+     */
+    this.addKey = <span class="fstat-no" title="function not covered" >function(){</span>
+        /* push old one if needed */
+        /* UGLY WORKDAROUND FOR BUG IN ANGULAR: push new created fields to key array */
+<span class="cstat-no" title="statement not covered" >        AngularBugWorkAround();</span>
+&nbsp;
+        /* create new key */
+<span class="cstat-no" title="statement not covered" >        if(that.loadedType.keys != undefined){</span>
+<span class="cstat-no" title="statement not covered" >            that.loadedType.keys.push("");</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if(that.loadedType.newAdded == undefined){</span>
+<span class="cstat-no" title="statement not covered" >                that.loadedType.newAdded = [];</span>
+            }
+&nbsp;
+            /* add index of created key to newAdded array */
+<span class="cstat-no" title="statement not covered" >            that.loadedType.newAdded.push(that.loadedType.keys.length-1);</span>
+        }
+    };
+&nbsp;
+    /**
+     * This function updates resp. creates the type with the given data
+     * @param type      the new type data. If the type is undefined, the controller will use that.loadedType
+     */
+    this.updateType = function(type){
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(type == undefined){
+<span class="cstat-no" title="statement not covered" >            type = that.loadedType;</span>
+        }
+&nbsp;
+        /* WORKDAROUND FOR BUG IN ANGULAR: push new created fields to key array */
+        AngularBugWorkAround();
+&nbsp;
+        /* update or creation? */
+        var typeNameIsKnown = function(type){
+            for(var i = 0; i &lt; that.types.length; i++){
+<span class="cstat-no" title="statement not covered" >             if(that.types[i].name == type.name){</span>
+<span class="cstat-no" title="statement not covered" >                 return true;</span>
+             }
+            }
+            return false;
+        };
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(typeNameIsKnown(type)){
+<span class="cstat-no" title="statement not covered" >            typeService.putType(type);</span>
+        }else{
+            typeService.postType(type);
+        }
+&nbsp;
+        that.sendLanguageData();
+    };
+&nbsp;
+    if($routeParams.uID != undefined &amp;&amp; $routeParams.uID != 'undefined'){
+        /* load type information */
+        typeService.getType($routeParams.uID, function(type){
+           that.loadedType = type;
+        });
+    }else{
+        typeService.getTypes(function(types){
+           that.types = types;
+        });
+    };
+&nbsp;
+}]);
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Mar 04 2015 16:02:50 GMT+0100 (CET)</div>
+</div>
+
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+
+<script src="../../sorter.js"></script>
+</body>
+</html>

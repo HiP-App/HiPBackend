@@ -17,6 +17,8 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
     };
 
     this.userList   = "unset";          // list stores all users in the system
+    this.selectedUser = "";             // stores a selected user in the userList
+    this.selectedUserMetadata = "";     // stores the meta data of the selected user
 
     this.email      = $attrs.mail;      // email address of the current user
     this.firstname  = $attrs.firstname; // firstname of the current user
@@ -84,18 +86,71 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
     };
 
     /**
-     * Fetches the role of the current user if needed (a.k.a, on init)
+     * Fetches the meta data for the given user
+     *
+     * @param userID        userID of the searched user
+     * @param callback      callback function that contains the dataobject as a first parameter
      */
-    if(that.role == 'unset'){
-        $http.get('/admin/role/'+that.email).
+    this.getMetaData = function(userID, callback){
+        $http.get('/admin/role/'+userID).
             success(function(data) {
-                that.role   = data[0].role;
-                that.admin  = data[0].admin;
-                that.master  = data[0].master;
+                var returnObj = {
+                    role:   data[0].role,
+                    master: data[0].master,
+                    admin:  data[0].admin
+                };
+
+                callback(returnObj);
             }).
             error(function() {
                 console.log("Error getting metadata of the user")
             });
+    };
+
+    /**
+     * This function updates the meta data for the currently selected user
+     */
+    this.updateMetadataForSelectedUser = function(){
+        that.getMetaData(that.selectedUser.userid, function(meta){
+            meta.admin  = (meta.admin === 'true');
+            meta.master = (meta.master === 'true');
+            that.selectedUserMetadata = meta;
+        })
+    };
+
+    /**
+     * Updates the currently stored user
+     */
+    this.updateUser = function(){
+        var metadata = {
+            userid :    that.selectedUser.userid,
+            email :     that.selectedUser.userid,
+            role  :     that.selectedUserMetadata.role,
+            templates:  '',
+            admin:      that.selectedUserMetadata.admin+'',
+            master:     that.selectedUserMetadata.master+''
+        };
+
+        // post
+        $http.put('/admin/roles', metadata).
+            success(function(data, status, headers, config) {
+                // this callback will be called asynchronously
+                // when the response is available
+            }).
+            error(function(data, status, headers, config) {
+                console.log("Error RoleCtrl: Could not update a metadata");
+            });
+    };
+
+    /**
+     * Fetches the role of the current user if needed (a.k.a, on init)
+     */
+    if(that.role == 'unset'){
+        that.getMetaData(that.email, function(returnData){
+            that.role   = returnData.role;
+            that.admin  = returnData.admin;
+            that.master = returnData.master;
+        });
     }
 
     /**
@@ -110,4 +165,6 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
                 console.log("Error getting user information")
             });
     }
+
+
 }]);

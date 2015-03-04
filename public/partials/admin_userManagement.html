@@ -1,0 +1,68 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+
+    <div id="mainSingleBox" class="panel panel-default">
+        <div class="panel-heading"ng-bind="lc.getTerm('system_user_header')"> </div>
+        <div >
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" ng-submit="uc.updateUser()">
+                    <h4 ng-bind="lc.getTerm('system_user_subheader')"></h4>
+
+                    <!-- select user from list -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <div class="input-group-btn" tooltip-html-unsafe="{{lc.getTerm('tooltip_modify_user')}}"
+                                 tooltip-trigger="mouseenter" tooltip-placement="left">
+                                <button type="button"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{lc.getTerm('system_user_select')}}  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="usr in uc.userList">
+                                        <a ng-click="uc.selectedUser = usr; uc.updateMetadataForSelectedUser()" ng-bind="usr.userid"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" placeholder="" ng-model="uc.selectedUser.userid" disabled>
+                        </div>
+                    </div>
+                    <!-- end of user selection -->
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_roles_role')"></span>
+                            <input type="text" class="form-control" placeholder="" ng-model="uc.selectedUserMetadata.role">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <label>
+                                <input type="checkbox" ng-model="uc.selectedUserMetadata.admin"> Admin
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8 input-group">
+                            <label>
+                                <input type="checkbox" ng-model="uc.selectedUserMetadata.master"> Master
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-6 text-right">
+                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning" ng-bind="lc.getTerm('system_user_cancel')">
+                            </a>
+
+                            <button type="submit" class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('system_user_create')">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

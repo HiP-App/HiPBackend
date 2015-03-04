@@ -1,0 +1,1779 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for javascripts/controller/GroupController.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../prettify.css">
+
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">javascripts/controller/GroupController.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">82.63% <small>(157 / 190)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">59.09% <small>(39 / 66)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">70% <small>(35 / 50)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">82.63% <small>(157 / 190)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">javascripts/controller/</a> &#187; GroupController.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">141</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-yes">47</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">42</span>
+<span class="cline-any cline-yes">42</span>
+<span class="cline-any cline-yes">42</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">44</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * Created by Jörg Amelunxen on 29.10.2014.
+ *
+ * @class angular_module.groupModule.GroupCtrl
+ *
+ * This controller implements the complete group management functionality.
+ * Note that the GroupCtrl needs an Usercontroller as uc within its scope to be used.
+ */
+groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', 'commonTaskService', function($scope,$http,$routeParams, commonTaskService) {
+    var that = this;
+&nbsp;
+    /*
+     * -----------------------------
+     * + CONFIGURATION VARIABLES   +
+     * -----------------------------
+     */
+    this.debug = false;
+&nbsp;
+    /*
+     * -----------------------------
+     * + CONTROLLER VARIABLES   +
+     * -----------------------------
+     */
+    this.groups = ["initMe"];
+    this.groupsCreatedByThisUser = [];
+    this.groupsCreatedByThisUserOrUserIsMemberOfGroup = [];
+    this.groupsThatGrantedReadAccessForThisUser = [];
+&nbsp;
+    this.userInGroupArray = [];
+&nbsp;
+    this.createdByTemp = "dummy";
+    this.currentGroup = {name: "",
+        member: "",
+        createdBy: that.createdByTemp,
+        topic: "",
+        readableBy: []
+    };
+&nbsp;
+    this.aggregatedFilter = undefined;  // contains the current filter for the aggregated notifications
+    this.aggregatedNotifications = [];  // contains the aggregated notifications of a couple of specified groups
+&nbsp;
+    this.currentGroupTopic = {};
+&nbsp;
+    this.bufferedGroup = {uID: "toSet"};
+    this.bufferedTopic = {
+        name: "NaN"
+    };
+&nbsp;
+&nbsp;
+    this.cachedGroupForUIDTranslation = {
+        uID: "-1",
+        name: "-1"
+    };
+&nbsp;
+    /*
+     * ----------------------
+     * + HELPER FUNCTIONS   +
+     * ----------------------
+     */
+&nbsp;
+    /**
+     * The function creates the notifications given by their key and optional values
+     *
+     * @param keyOfTheNotification  e.g., 'system_notification_groupCreated'
+     * @param arrayOfValues         e.g., a username
+     * @returns {string}            the complete notification
+     */
+    var createNotification = function(keyOfTheNotification, arrayOfValues){
+        var now = new Date();
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(keyOfTheNotification == "system_notification_groupCreated"){
+            return "system_notification_groupCreated" + "," + arrayOfValues[0] + " ("+now.toLocaleString()+")"
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if(keyOfTheNotification == "system_notification_groupTopicChanged"){</span>
+<span class="cstat-no" title="statement not covered" >            return "system_notification_groupTopicChanged" + "," + arrayOfValues[0] + " ("+now.toLocaleString()+")"</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if(keyOfTheNotification == "system_notification_groupTopicUpdated"){</span>
+<span class="cstat-no" title="statement not covered" >            return "system_notification_groupTopicUpdated1" + "," + arrayOfValues[0] + "," +</span>
+                "system_notification_groupTopicUpdated2" + "," + arrayOfValues[1]  + " ("+now.toLocaleString()+")"
+        }
+    };
+&nbsp;
+    /*
+     * --------------------------
+     * + CONTROLLER FUNCTIONS   +
+     * --------------------------
+     */
+&nbsp;
+    /**
+     * This function creates an internal representation of the aggregated notifications that
+     * are included within the groups that are specified with the parameter
+     *
+     * @param checkGroupsWithIDs the groups that should be used to aggregate the notifications
+     */
+    this.createAggregatedNotificationList = function(checkGroupsWithIDs){
+        /* clear old array */
+        that.aggregatedNotifications = [];
+&nbsp;
+        /* get all notifications */
+        checkGroupsWithIDs.forEach(function(grp){
+&nbsp;
+            for(var i = 0; i &lt; that.groups.length; i++){
+                if(that.groups[i].uID == grp){
+                    // found the correct group
+                    that.groups[i].notifications.forEach(function(message){
+&nbsp;
+                        var notification = {
+                            groupID:        that.groups[i].uID,
+                            group:          that.groups[i].name,
+                            notification:   message,
+                            date:           Math.floor(new Date(
+                                        message.substring(message.indexOf('(')+1, message.length - 1)).getTime() / 1000)
+                        };
+&nbsp;
+                        that.aggregatedNotifications.push(notification);
+                    });
+                }
+            }
+        });
+&nbsp;
+        /* sort them */
+        var tempArray = [];
+        var minimumPosition = 0;
+        var minimumLocalTime = Number.MAX_VALUE;
+&nbsp;
+        for(var i = 0; i &lt; that.aggregatedNotifications.length; i++){
+            <span class="missing-if-branch" title="else path not taken" >E</span>if(that.aggregatedNotifications[i] != undefined){
+                <span class="missing-if-branch" title="else path not taken" >E</span>if(that.aggregatedNotifications[i].date &lt; minimumLocalTime){
+                    minimumPosition = i;
+                    minimumLocalTime = that.aggregatedNotifications[i].date;
+                }
+&nbsp;
+                tempArray.push(
+                {
+                    groupID:        that.aggregatedNotifications[i].groupID,
+                    group:          that.aggregatedNotifications[i].group,
+                    notification:   that.aggregatedNotifications[i].notification,
+                    date:           minimumLocalTime
+                });
+            }
+&nbsp;
+            // delete
+            that.aggregatedNotifications[i] = undefined;
+&nbsp;
+            // reset
+            minimumPosition = 0;
+            minimumLocalTime = Number.MAX_VALUE;
+        }
+&nbsp;
+        /* restore */
+        that.aggregatedNotifications = tempArray.reverse();
+    };
+&nbsp;
+    /**
+     * Returns true, iff the user is a member of the given grp
+     * @param userID    of the user that should be checked
+     * @param groupID   of the group that should be used for checking the member
+     */
+    this.userIDIsMemberOfGrp = function(userID,groupID){
+        var result = false;
+&nbsp;
+        // get positionOfGroup
+        this.groups.forEach(function(grp) {
+            if (grp.uID == groupID) {
+                /* is the user a member of this grp? */
+                <span class="missing-if-branch" title="else path not taken" >E</span>if(grp.member != undefined)
+                    result = (grp.member.indexOf(userID) != -1);
+            }
+        });
+&nbsp;
+        return result;
+    };
+&nbsp;
+    /**
+     * Returns true, iff the user has read rights of the given group
+     *
+     * @param userID    of the user that should be checked
+     * @param groupID   of the group that should be used for checking the member
+     */
+    this.userIDIsReaderOfGrp = function(userID,groupID){
+        var result = false;
+&nbsp;
+        this.groups.forEach(function(grp){
+            if(grp.uID == groupID){
+                /* check is userID is contained in the list of given rights */
+                var userInReadableList = (jQuery.inArray( userID, grp.readableBy ) != -1);
+                if(userInReadableList){
+                    result = true;
+                }else{
+                    /* cancel if not fully loaded */
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if(grp.readableBy == undefined)
+<span class="cstat-no" title="statement not covered" >                        return;</span>
+                    
+                    /* now check again, assuming that the array of given read rights contains not a userID but a groupID */
+                    grp.readableBy.forEach(function(assumedGroup){
+                        /* get position of grp in cache */
+                        var pos = "-1";
+&nbsp;
+                        for(var i=0; i &lt; that.groups.length; i++){
+                            if(that.groups[i].uID == assumedGroup){
+                                pos = i;
+                            }
+                        }
+&nbsp;
+                        var assumedGroupIsContainedInGroupCache = (pos != -1);
+                        if(assumedGroupIsContainedInGroupCache){
+                            /* is the checked user member of that group? */
+                            var checkedUserIsMemberOfThatGroup = ( that.groups[pos].member.indexOf(userID) != -1 );
+&nbsp;
+                            if(checkedUserIsMemberOfThatGroup){
+                                result = true;
+                            }
+                        }
+                    });
+                }
+            }
+&nbsp;
+            /* stop looking, if result is found */
+            if(result){
+                return true;
+            }
+        });
+&nbsp;
+        return result;
+    };
+&nbsp;
+    /**
+     * This function requests the read right from another group
+     *
+     * @param uID               uID of the group that should be asked for rights
+     * @param emailOfTheSender  email of the sender
+     * @param messagetitle      the title of the message - needs to be injected because this is language specific -
+     * @param messageContent    the content of the message - needs to be injected because this is language specific -
+     * @param buttonContent    the label of the button - needs to be injected because this is language specific -
+     */
+    this.requestReadRightsFromGroup = function(uID, emailOfTheSender, messagetitle, messageContent, buttonContent){
+        var currentGroupUID = that.bufferedGroup.uID;
+        var receiverGrpUID = uID;
+&nbsp;
+        var buttonHTML = '&lt;br&gt;&lt;a href="/#/group/rights/' + currentGroupUID + '" id="btn_send_request" ' +
+            'class="btn btn-info"&gt;' + buttonContent + '&lt;/a&gt;';
+&nbsp;
+        this.groups.forEach(function(grp) {
+            if (grp.uID == receiverGrpUID) {
+                /* found the correct group in groups cache */
+                var member = grp.member.split(',');
+                member.forEach(function(aMember){
+                    /* send every member a message */
+                    var messageData = {
+                        title:      messagetitle + ":" + that.bufferedGroup.name,
+                        receiver:   aMember,
+                        content:    messageContent + buttonHTML
+                    };
+&nbsp;
+                    var uID = commonTaskService.generateUID(messageData.title + messageData.receiver + messageData.content);
+&nbsp;
+                    var tempMessage = commonTaskService.createMessageObject(uID, messageData.receiver, emailOfTheSender,
+                        messageData.title, messageData.content);
+&nbsp;
+                    commonTaskService.sendPrivateMessage($http, tempMessage, that.debug);
+                });
+            }
+        });
+    };
+&nbsp;
+    /**
+     * The function adds the given group to the list of groups that has read rights for the
+     * current group
+     *
+     * @param uIDOfTheGroupThatShouldGetTheReadRight
+     */
+    this.setReadRightWithinCurrentGroupForAnotherGroup = function(uIDOfTheGroupThatShouldGetTheReadRight){
+        var currentGroupUID = that.bufferedGroup.uID;
+&nbsp;
+        $http.post('/admin/readRight/'+currentGroupUID+"/"+uIDOfTheGroupThatShouldGetTheReadRight).
+            success(function() {
+            }).
+            error(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                console.log("Error GroupCtrl: Could not set read rights");</span>
+            });
+    };
+&nbsp;
+    /**
+     * This function sets a new topic at a given group
+     *
+     * @param groupID           the GroupID of the group that should get a new topic
+     * @param currentTopicID    the topicID of the new topic
+     */
+    this.setTopicAtGroup = function(groupID,currentTopicID){
+        // get group that should be changed
+        $http.get('/admin/group/'+groupID).
+            success(function(data) {
+                var changeGroup = data[0];
+                changeGroup.topic = currentTopicID;
+&nbsp;
+                // send data back to the server
+                $http.post('/admin/modify/group', changeGroup).
+                    success(function(data, status, headers, config) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                    }).
+                    error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                        console.log("Error GroupCtrl: Could not set a topic");</span>
+                    });
+            }).
+            error(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                console.log("Error GroupCtrl: Could not fetch the group for changing the topic");</span>
+            });
+    };
+&nbsp;
+    /**
+     * Sets a new notification a the given group
+     *
+     * @param groupid               The GroupID of the group that should get a new topic
+     * @param keyOfTheNotification  The key of the notification. E.g., 'system_notification_groupCreated'
+     * @param arrayOfValues         E.g., a username
+     */
+    this.createNotificationAtGroup = function(groupid, keyOfTheNotification, arrayOfValues){
+        var notification = createNotification(keyOfTheNotification, arrayOfValues);
+&nbsp;
+        var grpNotification = {
+            groupID : groupid,
+            notification : notification
+        };
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug){
+<span class="cstat-no" title="statement not covered" >            console.log("info GrpCtrl: Posting notification with groupID " + grpNotification.groupID + " and notification " +</span>
+                grpNotification.notification);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            console.log(grpNotification);</span>
+        }
+&nbsp;
+        $http.post('/admin/notification', grpNotification).
+            success(function(data, status, headers, config) {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug){
+<span class="cstat-no" title="statement not covered" >                    console.log("info GrpCtrl: Posting completed");</span>
+                }
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                if(that.debug) {</span>
+<span class="cstat-no" title="statement not covered" >                    console.log("error GrpCtrl: Error while posting");</span>
+                }
+            });
+    };
+&nbsp;
+    /**
+     * Function sets the new topic and creates a corresponding notification
+     *
+     * @param groupID
+     * @param currentTopicID
+     * @param notimsg
+     * @param topicname
+     */
+    this.createNotificationAtGroupAndSetTopic = <span class="fstat-no" title="function not covered" >function(groupID, currentTopicID, notimsg, topicname){</span>
+<span class="cstat-no" title="statement not covered" >        var notification = createNotification(notimsg, topicname);</span>
+&nbsp;
+        // get group that should be changed
+<span class="cstat-no" title="statement not covered" >        $http.get('/admin/group/'+groupID).</span>
+            success(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                var changeGroup = data[0];</span>
+<span class="cstat-no" title="statement not covered" >                changeGroup.topic = currentTopicID;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if( !$.inArray( notification, changeGroup.notifications ) ){</span>
+<span class="cstat-no" title="statement not covered" >                    changeGroup.notifications.push(notification);</span>
+                }
+&nbsp;
+                // send data back to the server
+<span class="cstat-no" title="statement not covered" >                $http.post('/admin/modify/group', changeGroup).</span>
+                    success(<span class="fstat-no" title="function not covered" >function() {</span>
+                    }).
+                    error(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                        console.log("Error GroupCtrl: Could not modify the notifications");</span>
+                    });
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                console.log("Error GroupCtrl: Could not fetch the group for modifying the notifications");</span>
+            });
+    };
+&nbsp;
+    /**
+     * Requests the group given by its uID and stores it in that.bufferedTopic as soon as
+     * it is possible.
+     *
+     * @param uID       The uID of the group
+     */
+    this.getGroupByUID = function(uID){
+        $http.get('/admin/group/'+uID).
+            success(function(data, status, headers, config) {
+                that.bufferedGroup = data[0];
+&nbsp;
+                // get more information about the topic
+                $http.get('/admin/topic/'+that.bufferedGroup.topic).
+                    success(function(data, status, headers, config) {
+                        that.bufferedTopic = data[0];
+                    }).
+                    error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                        console.log("error GroupController: Topic cannot get pulled");</span>
+                    });
+&nbsp;
+                // get the users of the group
+                var userIDsOfTheGroup = that.bufferedGroup.member.split(',');
+&nbsp;
+                userIDsOfTheGroup.forEach(function(userid){
+                    $http.get('/admin/users/'+userid).
+                        success(function(data, status, headers, config) {
+                            that.userInGroupArray.push(data[0]);
+                        }).
+                        error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                            console.log("error GroupController: User "+ userid +" cannot get pulled");</span>
+                        });
+                });
+&nbsp;
+                // revert the order of the notifications
+                that.bufferedGroup.revertedNotifications = that.bufferedGroup.notifications.slice().reverse();
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                that.bufferedGroup.name = "Error: Connection error";</span>
+            });
+    };
+&nbsp;
+    /**
+     * Requests the group given by its creator's uID and stores it in that.groupsCreatedByThisUser as soon as
+     * it is possible.
+     *
+     * @param userid        UserID of the creator.
+     */
+    this.getGroups = function(userid){
+        $http.get('/admin/groups').
+            success(function(data, status, headers, config) {
+                that.groups = data;
+&nbsp;
+                // Separate groups that have been created by this user
+                if(userid != undefined){
+                    // clear array
+                    that.groupsCreatedByThisUser = [];
+&nbsp;
+                    // fill array
+                    data.forEach(function(group){
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if(group.createdBy == userid){
+                            that.groupsCreatedByThisUser.push(group);
+                            that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(group);
+                        }else <span class="cstat-no" title="statement not covered" >if(group.member.indexOf($scope.uc.email) &gt; -1){</span>
+<span class="cstat-no" title="statement not covered" >                            that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(group);</span>
+                        }else <span class="cstat-no" title="statement not covered" >if(that.userIDIsReaderOfGrp($scope.uc.email, group.uID)){</span>
+<span class="cstat-no" title="statement not covered" >                            that.groupsThatGrantedReadAccessForThisUser.push(group);</span>
+                        }
+                    });
+                }
+&nbsp;
+                <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug){
+<span class="cstat-no" title="statement not covered" >                    console.log("info GrpCtrl: building aggregated notifications ");</span>
+                }
+&nbsp;
+                /* build aggregated notifications */
+                var requestNotifications = [];
+                that.groupsCreatedByThisUserOrUserIsMemberOfGroup.forEach(function(grp){
+                    requestNotifications.push(grp.uID);
+&nbsp;
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if(that.debug){
+<span class="cstat-no" title="statement not covered" >                        console.log("info GrpCtrl: including  " + grp.name + " in notifications");</span>
+                    }
+                });
+                that.createAggregatedNotificationList(requestNotifications);
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                that.groups = "Error: Connection error";</span>
+            });
+    };
+&nbsp;
+    /**
+     * Creates a new group given its creator's userID and the firstname of the creator
+     *
+     * @param creator       the uID of the creator
+     * @param firstname     the firstname of the creator
+     */
+    this.createGroup = function(creator, firstname){
+        /* add user array to grp */
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(that.userInGroupArray[0] != undefined){
+            that.userInGroupArray.forEach(function(usr){
+               that.currentGroup.member +=  usr.email+",";
+            });
+&nbsp;
+            /* cutoff last ',' */
+            that.currentGroup.member = that.currentGroup.member.substr(0,that.currentGroup.member.length-1);
+        }
+&nbsp;
+        /* generate uID and other communication stuff */
+        that.currentGroup.uID = commonTaskService.generateUID(that.currentGroup.name);
+        that.groups.push(this.currentGroup);
+        that.groupsCreatedByThisUser.push(this.currentGroup);
+        that.groupsCreatedByThisUserOrUserIsMemberOfGroup.push(this.currentGroup);
+&nbsp;
+        // set creator id of this group
+        that.currentGroup.createdBy = creator;
+&nbsp;
+        // create current notification
+        that.currentGroup.notifications = [];
+        that.currentGroup.notifications.push(createNotification("system_notification_groupCreated",[firstname]));
+&nbsp;
+        $http.post('/admin/group', this.currentGroup).
+            success(function(data, status, headers, config) {
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+<span class="cstat-no" title="statement not covered" >                console.log("Error GroupCtrl: Could not create the group");</span>
+            });
+&nbsp;
+        /* create corresponding chat system */
+        commonTaskService.createChat($http, that.currentGroup.uID, that.currentGroup.name + " Chat");
+&nbsp;
+        /* create the fitting topics */
+        commonTaskService.createTopic(that.currentGroupTopic.topic, that.currentGroupTopic.subtopics, that.currentGroup.uID,
+            $scope.gc, $scope.uc.email, $http, that.currentGroupTopic.deadline)
+    };
+&nbsp;
+    /**
+     * Deletes the group with the given uID
+     *
+     * @param uID   of the group that should be deleted
+     */
+    this.deleteGroup = function(uID){
+        $http.delete('/admin/group/'+uID, this.currentGroup).
+            success(function(data, status, headers, config) {
+                // remove from GUI
+                var targetPos = -1;
+                for(var i=0; i &lt; that.groupsCreatedByThisUserOrUserIsMemberOfGroup.length; i++){
+                    if(that.groupsCreatedByThisUserOrUserIsMemberOfGroup[i].uID == uID){
+                        targetPos = i;
+                    }
+                }
+&nbsp;
+                <span class="missing-if-branch" title="else path not taken" >E</span>if(targetPos != -1){
+                    // it has been found =&gt; remove it
+                    that.groupsCreatedByThisUserOrUserIsMemberOfGroup.splice(targetPos,1);
+                }
+            }).
+            error(<span class="fstat-no" title="function not covered" >function(data, status, headers, config) {</span>
+            });
+&nbsp;
+        that.getGroups();
+&nbsp;
+        // remove corresponding chat system
+        commonTaskService.deleteChat($http, uID);
+    };
+&nbsp;
+&nbsp;
+    /**
+     * Translates a group UID to the fitting name
+     *
+     * @param uID           uID of the group that should be translated
+     * @returns {string}    the name if the group
+     */
+    this.nameOfGroup = function(uID){
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(uID != that.cachedGroupForUIDTranslation) {
+            /* find group and store it in cache */
+            for (var i = 0; i &lt; that.groups.length; i++) {
+                if (that.groups[i].uID == uID) {
+                    that.cachedGroupForUIDTranslation.uID = uID;
+                    that.cachedGroupForUIDTranslation.name = that.groups[i].name;
+                }
+            }
+        }
+        return that.cachedGroupForUIDTranslation.name;
+    };
+&nbsp;
+    /* update parameter if needed */
+    <span class="missing-if-branch" title="else path not taken" >E</span>if($routeParams.uID != undefined){
+        that.getGroupByUID($routeParams.uID);
+    }
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(that.groups[0] == "initMe"){
+        that.getGroups($scope.uc.email);
+    }
+}]);</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Mar 04 2015 16:02:50 GMT+0100 (CET)</div>
+</div>
+
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+
+<script src="../../sorter.js"></script>
+</body>
+</html>
