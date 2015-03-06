@@ -358,7 +358,7 @@ groupModule.controller('GroupCtrl', ['$scope','$http', '$routeParams', 'commonTa
 
         // get group that should be changed
         $http.get('/admin/group/'+groupID).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 var changeGroup = data[0];
                 changeGroup.topic = currentTopicID;
 

@@ -156,6 +156,38 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * Creates a copy of the topic with the given uID
+     *
+     * @param uID
+     * @param group optional: if this value is set, the uID of the group is used to select the group that is working on
+     *                          the new topic
+     * @param name  optional: if this value is set, the name is used to set the new name for the main topic
+     */
+    this.copyTopic = function(uID, group, name){
+        $http.get('/admin/topic/'+uID).
+            success(function(mainTopic) {
+                var mTopic = mainTopic[0];
+
+                /* modify topic for copy */
+                if(name == undefined)   mTopic.name += " (copy)";
+                else                    mTopic.name = name;
+
+                mTopic.uID  =  commonTaskService.generateUID(mTopic.name);
+
+                /* get subtopics */
+                $http.get('/admin/topicbyuser/'+uID).success(function(subTopics){
+                    for(var i=0; i < subTopics.length; i++){
+                        subTopics[i].name       += " (copy)";
+                        subTopics[i].uID        = commonTaskService.generateUID(subTopics[i].uID);
+                        subTopics[i].createdBy  = mTopic.uID;
+                    }
+
+                    commonTaskService.copyTopic(mTopic, subTopics, $http, $scope.gc);
+                });
+            });
+    };
+
+    /**
      * This function prepares the creation of a new footnote. I.e., it creates the JSON object containing an UID,
      * the creator and the link to the current topic
      */
@@ -563,6 +595,15 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * This function fetches all topics
+     */
+    this.getAllTopics = function(){
+        $http.get('/admin/topic').success(function(topics) {
+            that.topics = topics;
+        });
+    };
+
+    /**
      * Requests the actual topic with the given uID as JSON object
      * and stores it internally in that.currentTopic
      *
@@ -717,7 +758,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      */
     this.getTopicsByUserID = function(uID){
         $http.get('/admin/topicbyuser/'+uID).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 that.currentUserTopics = data;
 
                 /* fetch all subtopics (the createdBy field contains a uID of another
@@ -729,12 +770,12 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
                             that.currentUserTopics = newTopicArray;
                         }).
-                        error(function(data, status, headers, config) {
+                        error(function() {
                             console.log("error TopicController: Topic cannot get pulled");
                         });
                 });
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("error TopicController: Topic cannot get pulled");
             });
     };
@@ -796,7 +837,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         $http.put('/admin/topic', topic).
             success(function(data, status, headers, config) {
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("error TopicController: Topic cannot get updated");
             });
     };

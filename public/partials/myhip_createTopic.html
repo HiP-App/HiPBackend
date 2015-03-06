@@ -1,71 +1,146 @@
 <div ng-controller="GroupCtrl as gc">
     <group-box></group-box>
 
-    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
-        <div class="panel-heading" ng-bind="lc.getTerm('system_topic_header')"></div>
-        <div >
-            <div class="panel-body">
-                <form id="CreateTopicForm" name="CreateTopicForm" class="form-horizontal" role="form"
-                      ng-submit="tc.createTopic()">
-                    <h4 ng-bind="lc.getTerm('system_topic_information')"></h4>
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <div class="input-group">
-                                <span class="input-group-addon" ng-bind="lc.getTerm('system_topic_form_name')"></span>
-                                <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
-                                       ng-model="tc.currentTopic.name">
-                            </div>
-                        </div>
-
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button type="button"
-                                            ng-class="{ 'btn-warning'       : tc.currentTopicGroupIdIsSet() == false,
-                                                        'btn-success'       : tc.currentTopicGroupIdIsSet() == true}"
-                                            class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        {{lc.getTerm('system_topic_form_group')}}  <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li ng-repeat="grp in gc.groupsCreatedByThisUser">
-                                            <a ng-click="tc.setCurrentTopicGroupID(grp.uID)" ng-bind="grp.name"></a>
-                                        </li>
-
-                                        <li class="divider"></li>
-
-                                        <li><a ng-click='tc.currentTopic.groupID = ""'
-                                               ng-bind="lc.getTerm('system_topic_form_groupNotYet')"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <input type="text" class="form-control" name="groupID" id="groupID" placeholder=""
-                                       ng-model="tc.currentTopic.groupID">
-                            </div>
-                        </div>
-
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <div class="input-group">
-                                <span class="input-group-addon" ng-bind="lc.getTerm('system_topic_form_sub')"></span>
-                                <input type="text" class="form-control" name="subTopics" id="subTopics" placeholder=""
-                                       ng-model="tc.currentTopicSubTopicsAsString">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-3 text-right">
-                            <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning" ng-bind="lc.getTerm('system_topic_form_cancel')"></a>
-                        </div>
-
-                        <div class="col-sm-offset-1 col-sm-6 text-right">
-                            <button type="submit" class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('system_topic_form_create')"></button>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc" ng-init="choice = 1">
+        <div class="panel-heading">
+            <div class="shift-left" ng-click="choice=1"> <a>{{lc.getTerm('system_topic_header')}}</a></div>
+            <div class="pull-right" ng-click="choice=2"> <a>{{lc.getTerm('system_topic_copy')}}</a></div>
+            <div class="float-clear"></div>
         </div>
+
+        <div class="panel-body">
+
+            <!-- create new topic form -->
+            <form class="form-horizontal" role="form" ng-submit="tc.createTopic()" ng-show="choice == 1">
+                <h4 ng-bind="lc.getTerm('system_topic_information')"></h4>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_topic_form_name')"></span>
+                            <input type="text" class="form-control" name="groupName" id="groupName" placeholder=""
+                                   ng-model="tc.currentTopic.name">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button"
+                                        ng-class="{ 'btn-warning'       : tc.currentTopicGroupIdIsSet() == false,
+                                                    'btn-success'       : tc.currentTopicGroupIdIsSet() == true}"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{lc.getTerm('system_topic_form_group')}}  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="grp in gc.groupsCreatedByThisUser">
+                                        <a ng-click="tc.setCurrentTopicGroupID(grp.uID)" ng-bind="grp.name"></a>
+                                    </li>
+
+                                    <li class="divider"></li>
+
+                                    <li><a ng-click='tc.currentTopic.groupID = ""'
+                                           ng-bind="lc.getTerm('system_topic_form_groupNotYet')"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" name="groupID" id="groupID" placeholder=""
+                                   ng-model="tc.currentTopic.groupID">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_topic_form_sub')"></span>
+                            <input type="text" class="form-control" name="subTopics" id="subTopics" placeholder=""
+                                   ng-model="tc.currentTopicSubTopicsAsString">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-3 text-right">
+                        <a ng-href="/#/myhip" id="btn_cancel" class="btn btn-warning" ng-bind="lc.getTerm('system_topic_form_cancel')"></a>
+                    </div>
+
+                    <div class="col-sm-offset-1 col-sm-6 text-right">
+                        <button type="submit" class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('system_topic_form_create')"></button>
+                    </div>
+                </div>
+            </form>
+            <!-- end of: create new topic form -->
+
+            <!-- copy topic form -->
+            <form class="form-horizontal" role="form" ng-submit="tc.copyTopic(tc.currentTopic.uID,tc.currentTopic.groupID,
+                        tc.modifyTopicName)" ng-show="choice == 2">
+
+                <h4 ng-bind="lc.getTerm('system_topic_information_copy')"></h4>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button"
+                                        ng-class="{ 'btn-warning'       : tc.currentTopic.name == '' ||
+                                                                          tc.currentTopic.name == undefined,
+                                                    'btn-success'       : tc.currentTopic.name != ''}"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                                        ng-click="tc.getAllTopics()">
+                                    {{lc.getTerm('system_topic_all')}}  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="topic in tc.topics">
+                                        <a ng-click="tc.currentTopic = topic" ng-bind="topic.name"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" ng-model="tc.currentTopic.name" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_topic_form_copyname')"></span>
+                            <input type="text" class="form-control" ng-model="tc.modifyTopicName">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button"
+                                        ng-class="{ 'btn-warning'       : tc.currentTopicGroupIdIsSet() == false,
+                                                    'btn-success'       : tc.currentTopicGroupIdIsSet() == true}"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{lc.getTerm('system_topic_form_group')}}  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="grp in gc.groupsCreatedByThisUser">
+                                        <a ng-click="tc.setCurrentTopicGroupID(grp.uID)" ng-bind="grp.name"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" placeholder=""
+                                   ng-model="tc.currentTopic.groupID">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-3 text-right">
+                        <a ng-href="/#/myhip" class="btn btn-warning" ng-bind="lc.getTerm('system_topic_form_cancel')"></a>
+                    </div>
+
+                    <div class="col-sm-offset-1 col-sm-6 text-right">
+                        <button type="submit" class="btn btn-success" ng-bind="lc.getTerm('system_topic_form_create')"></button>
+                    </div>
+                </div>
+            </form>
+            <!-- end of: copy topic form -->
+        </div>
+
     </div>
 </div>
 <div class="float-clear"></div>

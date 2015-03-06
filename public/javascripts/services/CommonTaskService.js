@@ -365,7 +365,7 @@ servicesModule.service('commonTaskService', function(){
                 that.createConstraints($http, subTopicJSON);
 
                 $http.post('/admin/topic', subTopicJSON).
-                    success(function (data, status, headers, config) {
+                    success(function () {
                         /* create empty history */
                         var historyObject = that.createHistoryObject(currentSubTopicID);
                         $http.post('/admin/history', historyObject);
@@ -401,8 +401,50 @@ servicesModule.service('commonTaskService', function(){
             }
 
             refToGrpController.createNotificationAtGroupAndSetTopic(groupID,
-                currentTopicID, "system_notification_groupTopicChanged", [topicname])
+                currentTopicID, "system_notification_groupTopicChanged", [topicname]);
         }
-    }
+    };
+
+    /**
+     * Copies the given topic with all given subtopics
+     *
+     * @param topic
+     * @param listOfSubTopics
+     * @param $http
+     * @param refToGrpController
+     */
+    this.copyTopic = function(topic, listOfSubTopics, $http, refToGrpController){
+        /* clear constraints */
+        topic.constraints = [];
+
+        listOfSubTopics.forEach(function(stopic){
+            stopic.constraints = [];
+        });
+
+        /* use creation of constraints function */
+        that.createConstraints($http, topic);
+
+        listOfSubTopics.forEach(function(stopic){
+            that.createConstraints($http, stopic);
+        });
+
+        /*  push stuff   */
+        function pushTopic(pushThisTopic) {
+            $http.post('/admin/topic', pushThisTopic).
+                success(function () {
+                    /* create empty history */
+                    var historyObject = that.createHistoryObject(pushThisTopic.uID);
+                    $http.post('/admin/history', historyObject);
+                });
+        }
+
+        pushTopic(topic);
+        refToGrpController.createNotificationAtGroupAndSetTopic(topic.group,
+            topic.uID, "system_notification_groupTopicChanged", [topic.name]);
+
+        listOfSubTopics.forEach(function(stopic){
+            pushTopic(stopic);
+        });
+    };
 
 });

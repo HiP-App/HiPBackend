@@ -803,4 +803,16 @@ describe('Testsuite for the TopicController:', function () {
         $httpBackend.expect('PUT','/admin/topic').respond(200,{});
         $httpBackend.flush();
     });
+
+    it('is able to create a copy of a given topic', function () {
+        initController();
+
+        controller.copyTopic('1');
+
+        $httpBackend.expect('POST', '/admin/topic').respond(200,{});
+        $httpBackend.expect('POST', '/admin/topic').respond(200,{});
+        $httpBackend.expect('POST', '/admin/history').respond(200,{});
+        $httpBackend.expect('POST', '/admin/history').respond(200,{});
+        $httpBackend.flush();
+    });
 });
