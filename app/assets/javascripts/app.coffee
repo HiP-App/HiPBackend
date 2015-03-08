@@ -24,7 +24,7 @@ angular.module('myApp.routeConfig', ['ngRoute'])
         #$locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                templateUrl: '/assets/partials/index.html'
+                templateUrl: '/assets/partials/basic_myhip.html' #could also be index.html
             })
             .when('/myhip', {
                 templateUrl: '/assets/partials/basic_myhip.html'
