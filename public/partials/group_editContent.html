@@ -182,6 +182,15 @@
                     <hr>
 
                     <tag-cloud topiccontroller="tc" languagecontroller="lc"></tag-cloud>
+
+                    <a ng-click="tc.addTextBlock()">+</a>
+
+                    <br>
+
+                    <ul>
+                        <li ng-repeat="block in tc.currentTopic.nextTextBlock">
+                            <a ng-href="/#/edit/{{ block }}"> {{ block }} </a> <a ng-click="tc.removeTextBlock(block)">DELETE</a></li>
+                    </ul>
                 </div>
 
 

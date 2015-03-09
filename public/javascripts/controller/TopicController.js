@@ -857,45 +857,50 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * This function is internally used for deleting topics
+     *
+     * @param deleteThis    the uID of the topic that should be deleted
+     */
+    function deletingProcedure(deleteThis) {
+        $http.delete('/admin/topic/' + deleteThis).
+            success(function () {
+                // remove corresponding chat system
+                commonTaskService.deleteChat($http, deleteThis);
+
+                // delete from frontend
+                that.currentUserTopics.forEach(function(topic, index){
+                    if(topic.uID == deleteThis){
+                        that.currentUserTopics.splice(index,1);
+                    }
+                });
+
+                // clear buffer
+                that.clearBuffer();
+
+                // remove corresponding history
+                that.deleteHistory(deleteThis);
+            }).
+            error(function () {
+                console.log("error TopicController: Topic cannot get removed");
+            });
+    }
+
+    /**
      * Deletes the current topic AND every attached subtopic (i.e., a topic that is
      * 'createdBy' this uID).
      *
      * Furthermore, the corresponding chat systems are removed.
      */
     this.deleteCurrentTopic = function(){
-        function deletingProcedure(deleteThis) {
-            $http.delete('/admin/topic/' + deleteThis).
-                success(function () {
-                    // remove corresponding chat system
-                    commonTaskService.deleteChat($http, deleteThis);
-
-                    // delete from frontend
-                    that.currentUserTopics.forEach(function(topic, index){
-                        if(topic.uID == deleteThis){
-                            that.currentUserTopics.splice(index,1);
-                        }
-                    });
-
-                    // clear buffer
-                    that.clearBuffer();
-
-                    // remove corresponding history
-                    that.deleteHistory(deleteThis);
-                }).
-                error(function () {
-                    console.log("error TopicController: Topic cannot get removed");
-                });
-        }
-
         /* delete the sub-topics and their chat systems */
         $http.get('/admin/topicbyuser/'+that.modifyTopicID).
-            success(function (data, status, headers, config) {
+            success(function (data) {
                 data.forEach(function(subtopic){
                     if(subtopic.uID != that.modifyTopicID)
                         deletingProcedure(subtopic.uID);
                 });
             }).
-            error(function (data, status, headers, config) {
+            error(function () {
                 console.log("error TopicController: Sub-Topic cannot get removed");
             });
 
@@ -904,15 +909,55 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     };
 
     /**
+     * This function deletes a topic that is given by its uID
+     *
+     * @param uID   the uID of the topic that should be deleted
+     */
+    this.deleteAGivenTopic = function(uID){
+        $http.get('/admin/topic/'+uID).success(function (topic) {
+                if(topic[0] != undefined){
+                    deletingProcedure(topic[0].uID);
+                }else{
+                    console.log("error TopicController: Topic cannot get removed >> maybe it is already gone and you" +
+                        " have discovered a dead link");
+                }
+            }).
+            error(function () {
+                console.log("error TopicController: Topic cannot get removed");
+            });
+    };
+
+    /**
+     * This function removes a text block
+     *
+     * @param block     the uID of the block that should be deleted
+     */
+    this.removeTextBlock = function(block){
+        that.deleteAGivenTopic(block);
+
+        var index = jQuery.inArray(block, that.currentTopic.nextTextBlock);
+
+        if(index != -1){
+            that.currentTopic.nextTextBlock.splice(index,1);
+
+            /* send to backend */
+            that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+                keys: ['nextTextBlock'],
+                nextTextBlock: that.currentTopic.nextTextBlock
+            }, false, false);
+        }
+    };
+
+    /**
      * The function fetches the footnotes for the current topic and stores them internally
      * within this.footnotes
      */
     this.getFootnotesForTopic = function(uID){
         $http.get('/admin/footnotesByTopic/'+uID).
-            success(function (data, status, headers, config) {
+            success(function (data) {
                 that.footnotes = data;
             }).
-            error(function (data, status, headers, config) {
+            error(function () {
                 console.log("error TopicController: Footnotes cannot get fetched");
             });
     };
@@ -1230,6 +1275,22 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             keys: ['tagStore'],
             tagStore: that.currentTopic.tagStore
         }, false, false);
+    };
+
+    /**
+     * This function creates a new text block
+     */
+    this.addTextBlock = function(){
+        var uID = commonTaskService.createBlankTopic(that.currentTopic.uID, that.currentTopic.name+'_', that.currentTopic.group,
+                                                $scope.uc.email, that.currentTopic.deadline, $http);
+
+        that.currentTopic.nextTextBlock.push(uID);
+
+        /* send to backend */
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+            keys: ['nextTextBlock'],
+            nextTextBlock: uID
+        }, true, false);
     };
 
     /* update parameter if needed */

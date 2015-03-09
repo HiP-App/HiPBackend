@@ -121,10 +121,12 @@ servicesModule.service('commonTaskService', function(){
      * @param linkedTopics
      * @param maxCharTreshold
      * @param gps
+     * @param metaStore
+     * @param nextTextBlock
      * @returns {{uID: *, name: *, group: *, createdBy: *, content: *, status: *, constraints: *}}
      */
     this.createTopicObject = function(uID, topicname, groupID, createdBy, content, topicStatus, constraintArray, deadline,
-        tagstore, linkedTopics, maxCharTreshold, gps){
+        tagstore, linkedTopics, maxCharTreshold, gps, metaStore, nextTextBlock){
 
         if(tagstore == undefined){
             tagstore = [];
@@ -142,6 +144,14 @@ servicesModule.service('commonTaskService', function(){
             gps = ["",""];
         }
 
+        if(metaStore == undefined){
+            metaStore = "-1";
+        }
+
+        if(nextTextBlock == undefined){
+            nextTextBlock = [];
+        }
+
         return {
             uID:        uID,
             name:       topicname,
@@ -153,8 +163,10 @@ servicesModule.service('commonTaskService', function(){
             deadline:   deadline,
             tagStore:   tagstore,
             linkedTopics: linkedTopics,
-            maxCharThreshold: maxCharTreshold,
-            gps: gps
+            maxCharThreshold:   maxCharTreshold,
+            gps:        gps,
+            metaStore:  metaStore,
+            nextTextBlock:      nextTextBlock
         };
     };
 
@@ -403,6 +415,39 @@ servicesModule.service('commonTaskService', function(){
             refToGrpController.createNotificationAtGroupAndSetTopic(groupID,
                 currentTopicID, "system_notification_groupTopicChanged", [topicname]);
         }
+    };
+
+    /**
+     * This function creates a blank topic => needed to create new blank text blocks
+     *
+     * @param parent        the parent part of the topic
+     * @param name          the name of the part
+     * @param groupID       the groupId of the group that is working in this topic
+     * @param creatorUsername   Username of the creator
+     * @param deadline          The deadline
+     * @param $http         Reference to the HTTP module
+     *
+     * @return  the uID of the new topic
+     */
+    this.createBlankTopic = function(parent, name, groupID, creatorUsername, deadline, $http){
+        var uID = that.generateUID(parent);
+
+        var topic = that.createTopicObject(uID, name, groupID, creatorUsername, "", "wip", [], deadline);
+
+        that.createConstraints($http, topic);
+
+        // post
+        $http.post('/admin/topic', topic).
+            success(function () {
+                /* create empty history */
+                var historyObject = that.createHistoryObject(uID);
+                $http.post('/admin/history', historyObject);
+            }).
+            error(function (data, status, headers, config) {
+                console.log("Error commonTaskService: Could not create history entry");
+            });
+
+        return uID;
     };
 
     /**

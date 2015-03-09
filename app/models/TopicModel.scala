@@ -14,4 +14,6 @@ case class TopicModel(uID: String,
                       tagStore: Array[String],
                       linkedTopics: Array[String],
                       maxCharThreshold: String,
-                      gps : Array[String])
+                      gps : Array[String],
+                      metaStore: String,
+                      nextTextBlock: Array[String])

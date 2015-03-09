@@ -67,7 +67,9 @@ class TopicController extends Controller with MongoController {
                                         "$set" -> Json.obj("tagStore" -> topic.tagStore),
                                         "$set" -> Json.obj("linkedTopics" -> topic.linkedTopics),
                                         "$set" -> Json.obj("maxCharThreshold" -> topic.maxCharThreshold),
-                                        "$set" -> Json.obj("gps" -> topic.gps))
+                                        "$set" -> Json.obj("gps" -> topic.gps),
+                                        "$set" -> Json.obj("metaStore" -> topic.metaStore),
+                                        "$set" -> Json.obj("nextTextBlock" -> topic.nextTextBlock))
 
           topicCollection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>
