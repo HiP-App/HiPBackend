@@ -1070,11 +1070,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                 });
                 var defaultLayers = platform.createDefaultLayers();
 
-                //Step 2: initialize a map  - not specificing a location will give a whole world view.
-                that.map = new H.Map(document.getElementById('map'),
-                    defaultLayers.normal.map);
+                //  Step 2: initialize a map  - not specifying a location will give a whole world view.
+                that.map = new H.Map(document.getElementById('map'), defaultLayers.normal.map);
 
-                //Step 3: make the map interactive
+                //  Step 3: make the map interactive
                 // MapEvents enables the event system
                 // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
                 var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(that.map));
@@ -1085,15 +1084,23 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                 that.map.setCenter({lat:x, lng:y});
                 that.map.setZoom(15);
 
-                that.map.addObject(new H.map.Marker({lat:x, lng:y}));
+                var marker = new H.map.Marker({lat:x, lng:y});
+                that.map.addObject(marker);
 
                 that.map.addEventListener('tap', function (evt) {
                     var coord = that.map.screenToGeo(evt.currentPointer.viewportX,
                         evt.currentPointer.viewportY);
 
                     /* update coordinates */
-                    that.currentTopic.gps[0] = coord.lat;
-                    that.currentTopic.gps[1] = coord.lng;
+                    that.currentTopic.gps[0] = coord.lat + "";
+                    that.currentTopic.gps[1] = coord.lng + "";
+
+                    /* clear marker */
+                    that.map.removeObject(marker);
+
+                    /* add new marker */
+                    marker = new H.map.Marker({lat:coord.lat, lng:coord.lng});
+                    that.map.addObject(marker);
 
                     /* force update */
                     var element = angular.element($('#lat'));

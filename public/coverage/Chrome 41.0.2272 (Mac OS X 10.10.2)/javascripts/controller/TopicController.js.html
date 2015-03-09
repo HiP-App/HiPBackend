@@ -18,7 +18,7 @@
     <h1>Code coverage report for <span class="entity">javascripts/controller/TopicController.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">71.98% <small>(316 / 439)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">71.33% <small>(316 / 443)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">63.19% <small>(91 / 144)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -27,7 +27,7 @@
         Functions: <span class="metric">62.16% <small>(69 / 111)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">71.92% <small>(315 / 438)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">71.27% <small>(315 / 442)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -1287,7 +1287,14 @@
 1250
 1251
 1252
-1253</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+1253
+1254
+1255
+1256
+1257
+1258
+1259
+1260</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2365,7 +2372,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2375,10 +2381,18 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -3611,11 +3625,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                 });
 <span class="cstat-no" title="statement not covered" >                var defaultLayers = platform.createDefaultLayers();</span>
 &nbsp;
-                //Step 2: initialize a map  - not specificing a location will give a whole world view.
-<span class="cstat-no" title="statement not covered" >                that.map = new H.Map(document.getElementById('map'),</span>
-                    defaultLayers.normal.map);
+                //  Step 2: initialize a map  - not specifying a location will give a whole world view.
+<span class="cstat-no" title="statement not covered" >                that.map = new H.Map(document.getElementById('map'), defaultLayers.normal.map);</span>
 &nbsp;
-                //Step 3: make the map interactive
+                //  Step 3: make the map interactive
                 // MapEvents enables the event system
                 // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
 <span class="cstat-no" title="statement not covered" >                var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(that.map));</span>
@@ -3626,15 +3639,23 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 <span class="cstat-no" title="statement not covered" >                that.map.setCenter({lat:x, lng:y});</span>
 <span class="cstat-no" title="statement not covered" >                that.map.setZoom(15);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                that.map.addObject(new H.map.Marker({lat:x, lng:y}));</span>
+<span class="cstat-no" title="statement not covered" >                var marker = new H.map.Marker({lat:x, lng:y});</span>
+<span class="cstat-no" title="statement not covered" >                that.map.addObject(marker);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                that.map.addEventListener('tap', <span class="fstat-no" title="function not covered" >function (evt) {</span></span>
 <span class="cstat-no" title="statement not covered" >                    var coord = that.map.screenToGeo(evt.currentPointer.viewportX,</span>
                         evt.currentPointer.viewportY);
 &nbsp;
                     /* update coordinates */
-<span class="cstat-no" title="statement not covered" >                    that.currentTopic.gps[0] = coord.lat;</span>
-<span class="cstat-no" title="statement not covered" >                    that.currentTopic.gps[1] = coord.lng;</span>
+<span class="cstat-no" title="statement not covered" >                    that.currentTopic.gps[0] = coord.lat + "";</span>
+<span class="cstat-no" title="statement not covered" >                    that.currentTopic.gps[1] = coord.lng + "";</span>
+&nbsp;
+                    /* clear marker */
+<span class="cstat-no" title="statement not covered" >                    that.map.removeObject(marker);</span>
+&nbsp;
+                    /* add new marker */
+<span class="cstat-no" title="statement not covered" >                    marker = new H.map.Marker({lat:coord.lat, lng:coord.lng});</span>
+<span class="cstat-no" title="statement not covered" >                    that.map.addObject(marker);</span>
 &nbsp;
                     /* force update */
 <span class="cstat-no" title="statement not covered" >                    var element = angular.element($('#lat'));</span>
@@ -3796,7 +3817,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Mar 07 2015 15:08:53 GMT+0100 (CET)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Mar 09 2015 11:05:15 GMT+0100 (CET)</div>
 </div>
 
 <script src="../../prettify.js"></script>
