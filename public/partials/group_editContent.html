@@ -127,7 +127,22 @@
                                         submit="lc.getTerm('system_edit_form_create')">
                         </cancel-submit>
                     </form>
+
                     <div class="float-clear"></div>
+
+                    <br>
+
+                    <!-- Add a new topic block -->
+                    <div>
+                        <div class="btn btn-primary btn-sm pull-right" ng-click="tc.addTextBlock()">+</div>
+
+                        <br>
+
+                        <ul>
+                            <li ng-repeat="block in tc.currentTopic.nextTextBlock">
+                                <a ng-href="/#/edit/{{ block }}"> nächster Textblock: {{block}} </a> <a ng-click="tc.removeTextBlock(block)">DELETE</a></li>
+                        </ul>
+                    </div>
 
                     <hr>
 
@@ -182,15 +197,6 @@
                     <hr>
 
                     <tag-cloud topiccontroller="tc" languagecontroller="lc"></tag-cloud>
-
-                    <a ng-click="tc.addTextBlock()">+</a>
-
-                    <br>
-
-                    <ul>
-                        <li ng-repeat="block in tc.currentTopic.nextTextBlock">
-                            <a ng-href="/#/edit/{{ block }}"> {{ block }} </a> <a ng-click="tc.removeTextBlock(block)">DELETE</a></li>
-                    </ul>
                 </div>
 
 
