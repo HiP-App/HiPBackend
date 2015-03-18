@@ -23,3 +23,7 @@ server.pid
 activator-*.sbt
 4_Code/modern-web-template/conf/application.conf
 4_Code/modern-web-template/public/coverage/Chrome 39.0.2171 (Windows 7)/index.html
+
+
+#ignore the node modules, see here why: https://docs.npmjs.com/misc/faq#should-i-check-my-node_modules-folder-into-git
+node_modules
