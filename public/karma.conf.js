@@ -11,7 +11,8 @@ module.exports = function(config) {
     'karma-jasmine',
     'karma-coverage',
     'karma-phantomjs-launcher',
-    'karma-coffee-preprocessor'
+    'karma-coffee-preprocessor',
+    'karma-junit-reporter'
     ],
 
     // frameworks to use
@@ -75,6 +76,12 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS'],
+
+    reporters: ['dots', 'junit'],
+    junitReporter: {
+      outputFile: 'test-results.xml'
+    },
+
 
 
     // Continuous Integration mode

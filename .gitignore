@@ -29,3 +29,4 @@ activator-*.sbt
 node_modules
 #don't put coverage reports into git!
 coverage
+test-results.xml
