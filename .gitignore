@@ -27,3 +27,5 @@ activator-*.sbt
 
 #ignore the node modules, see here why: https://docs.npmjs.com/misc/faq#should-i-check-my-node_modules-folder-into-git
 node_modules
+#don't put coverage reports into git!
+coverage
