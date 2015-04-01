@@ -14,11 +14,6 @@ import reactivemongo.bson.BSONDocument
 
 import scala.concurrent.Future
 
-/**
- * The Users controllers encapsulates the Rest endpoints and the interaction with the MongoDB, via ReactiveMongo
- * play plugin. This provides a non-blocking driver for mongoDB as well as some useful additions for handling JSon.
- * @see https://github.com/ReactiveMongo/Play-ReactiveMongo
- */
 @Singleton
 class UserController extends Controller with MongoController {
 
@@ -38,18 +33,14 @@ class UserController extends Controller with MongoController {
    * @return
    */
   def getUserByEmail(email: String) = Action.async {
-    // let's do our query
     val cursor: Cursor[UserModel] = collection.find(Json.obj("userid" -> email)).cursor[UserModel]
 
-    // gather all the JsObjects in a list
     val futureUsersList: Future[List[UserModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { users =>
       Json.arr(users)
     }
 
-    // everything's ok! Let's reply with the array
     futurePersonsJsonArray.map {
       users =>
         Ok(users(0))
@@ -63,15 +54,12 @@ class UserController extends Controller with MongoController {
   def getAllUsers = Action.async {
     val cursor: Cursor[UserModel] = collection.find(Json.obj()).cursor[UserModel]
 
-    // gather all the JsObjects in a list
     val futureUsersList: Future[List[UserModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { users =>
       Json.arr(users)
     }
 
-    // everything's ok! Let's reply with the array
     futurePersonsJsonArray.map {
       users =>
         Ok(users(0))

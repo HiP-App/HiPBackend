@@ -31,16 +31,8 @@ class MessageController extends Controller with MongoController {
    */
   def sendMessage = Action.async(parse.json) {
     request =>
-      /*
-       * request.body is a JsValue.
-       * There is an implicit Writes that turns this JsValue as a JsObject,
-       * so you can call insert() with this JsValue.
-       * (insert() takes a JsObject as parameter, or anything that can be
-       * turned into a JsObject using a Writes.)
-       */
       request.body.validate[MessageModel].map {
         message =>
-          // `user` is an instance of the case class `models.User`
           collection.insert(message).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
@@ -55,28 +47,39 @@ class MessageController extends Controller with MongoController {
    * @return a list that contains the messages as a JSON object
    */
   def getMessages(recName : String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[MessageModel] = collection.
-      // find all
-      find(Json.obj("receiver" -> recName)).
-      // perform the query and get a cursor of JsObject
-      cursor[MessageModel]
+    val cursor: Cursor[MessageModel] = collection.find(Json.obj("receiver" -> recName)).cursor[MessageModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[MessageModel]] = cursor.collect[List]()
+    val futureMessageList: Future[List[MessageModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { messages =>
+    val futureMessageJsonArray: Future[JsArray] = futureMessageList.map { messages =>
       Json.arr(messages)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureMessageJsonArray.map {
       messages =>
         Ok(messages(0))
     }
   }
 
+  /**
+   * Returns a list of messages given its sender's name
+   *
+   * @return a list that contains the messages as a JSON object
+   */
+  def getMessagesBySender(sendName : String) = Action.async {
+    val cursor: Cursor[MessageModel] = collection.find(Json.obj("sender" -> sendName)).cursor[MessageModel]
+
+    val futureMessageList: Future[List[MessageModel]] = cursor.collect[List]()
+
+    val futureMessageJsonArray: Future[JsArray] = futureMessageList.map { messages =>
+      Json.arr(messages)
+    }
+
+    futureMessageJsonArray.map {
+      messages =>
+        Ok(messages(0))
+    }
+  }
 
   /**
    * Deletes the message with the given uID
@@ -98,23 +101,15 @@ class MessageController extends Controller with MongoController {
    * @return a list that contains the messages as a JSON object
    */
   def getDetails(recID : String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[MessageModel] = collection.
-      // find all
-      find(Json.obj("uID" -> recID)).
-      // perform the query and get a cursor of JsObject
-      cursor[MessageModel]
+    val cursor: Cursor[MessageModel] = collection.find(Json.obj("uID" -> recID)).cursor[MessageModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[MessageModel]] = cursor.collect[List]()
+    val futureMessageList: Future[List[MessageModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { messages =>
+    val futureMessageJsonArray: Future[JsArray] = futureMessageList.map { messages =>
       Json.arr(messages)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureMessageJsonArray.map {
       messages =>
         Ok(messages(0))
     }

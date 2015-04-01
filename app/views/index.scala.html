@@ -40,19 +40,25 @@
             <nav> <!-- class="upperNavigation" -->
                 <div class="navbar-left">
                     <ul class="nav nav-pills">
-                        <li class="inner-nav"> <a href="#"> Home </a> </li>
                         <li class="inner-nav"> <a ng-href="/#/myhip" ng-bind="lc.getTerm('system_navi_myhip')"> </a> </li>
                         <li class="inner-nav"> <a ng-href="/#/messages/all/{{uc.email}}" ng-bind="lc.getTerm('system_navi_messages')"></a> </li>
                         <li class="inner-nav"> <a ng-href="/#/contact" ng-bind="lc.getTerm('system_navi_contact')"> </a> </li>
                     </ul>
                 </div>
 
-                <div class="navbar-right">
+                <div class="pull-right">
                     <ul class="nav nav-pills">
-                        <li class="inner-nav"> <a href="/logout" ng-bind="lc.getTerm('system_lang_logout')"></a> </li>
-                        <li class="inner-nav"> <a ng-click="lc.getLanguage('eng')">   <img src='assets/images/eng.png' alt="english" width="16"> </a> </li>
-                        <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/de.png' alt="german" width="16"> </a> </li>
-                        <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/help.png' alt="help" width="16"> </a> </li>
+                        <li class="inner-nav"><a ng-click="lc.getLanguage('eng')"> <img class="pull-right" src='assets/images/eng.png' alt="english" width="20"/></a></li>
+                        <li class="inner-nav"><a ng-click="lc.getLanguage('de')"> <img class="pull-right" src='assets/images/de.png' alt="german" width="20"/></a></li>
+
+                        <li class="inner-nav dropdown li-no-dec">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{uc.firstname}} <span class="glyphicon glyphicon-user"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/#/profile"> {{lc.getTerm('system_profile')}} <img class="pull-right" src='assets/images/profile.png' alt="logout" width="20"/></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout"> {{lc.getTerm('system_lang_logout')}} <img class="pull-right" src='assets/images/logout.png' alt="logout" width="20"/></a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -67,13 +73,14 @@
         <!-- Footer -->
         <div id="footer" class="hide-mobile">
             <div id="footer-left">
-                <span>HiP 2014</span>
+                <span>HiP 2015</span> |
+                <a ng-href="/#/impressum" class="font-white"> Impressum </a>
             </div>
             <div id="footer-content">
                 <ul ng-show="uc.isAdmin()">
-                    <li class="inner-nav"> <a href="/#/user/edit"> {{lc.getTerm('system_user_edit')}} </a> </li>
-                    <li class="inner-nav"> <a href="/#/type/edit/undefined"> {{lc.getTerm('system_type_edit')}} </a> </li>
-                    <li class="inner-nav"> <a href="/#/language/create"> {{lc.getTerm('system_lang_edit')}} </a> </li>
+                    <li class="inner-nav"> <a href="/#/user/edit" class="font-white"> {{lc.getTerm('system_user_edit')}} </a> </li>
+                    <li class="inner-nav"> <a href="/#/type/edit/undefined" class="font-white"> {{lc.getTerm('system_type_edit')}} </a> </li>
+                    <li class="inner-nav"> <a href="/#/language/create" class="font-white"> {{lc.getTerm('system_lang_edit')}} </a> </li>
                 </ul>
             </div>
         </div>
@@ -111,7 +118,6 @@
 <script src='@routes.Assets.at("javascripts/directives/AppVersion.js")' type="text/javascript"></script>
 
 <!-- Own AngularJS controllers and directives -->
-<!-- A B C D E F G H I J K L M N O P Q R S T U V W X Y Z -->
 <script src='@routes.Assets.at("directives/aggregatedNotifications.js")' type="text/javascript"></script>
 
 <script src='@routes.Assets.at("javascripts/controller/AlertController.js")' type="text/javascript"></script>
@@ -130,11 +136,7 @@
 
 <script src='@routes.Assets.at("directives/createFootnotes.js")' type="text/javascript"></script>
 
-<script src='@routes.Assets.at("javascripts/controller/DropZoneController.js")' type="text/javascript"></script>
-
 <script src='@routes.Assets.at("directives/collapseTriangle.js")' type="text/javascript"></script>
-
-<script src='@routes.Assets.at("directives/fullscreenOverlay.js")' type="text/javascript"></script>
 
 <script src='@routes.Assets.at("javascripts/controller/GroupController.js")' type="text/javascript"></script>
 <script src='@routes.Assets.at("directives/groupBox.js")' type="text/javascript"></script>
@@ -147,13 +149,12 @@
 
 <script src='@routes.Assets.at("javascripts/services/LinkCreator.js")' type="text/javascript"></script>
 
+<script src='@routes.Assets.at("javascripts/services/LockService.js")' type="text/javascript"></script>
+
 <script src='@routes.Assets.at("javascripts/controller/MediaGalleryController.js")' type="text/javascript"></script>
 <script src='@routes.Assets.at("directives/mediaGallery.js")' type="text/javascript"></script>
 
 <script src='@routes.Assets.at("javascripts/controller/MessageController.js")' type="text/javascript"></script>
-
-<script src='@routes.Assets.at("javascripts/controller/OverlayController.js")' type="text/javascript"></script>
-<script src='@routes.Assets.at("directives/hipOverlay.js")' type="text/javascript"></script>
 
 <script src='@routes.Assets.at("javascripts/controller/ProposeController.js")' type="text/javascript"></script>
 
@@ -175,6 +176,8 @@
 <script src='@routes.Assets.at("directives/topicLinks.js")' type="text/javascript"></script>
 
 <script src='@routes.Assets.at("directives/uploadBox.js")' type="text/javascript"></script>
+
+<script src='@routes.Assets.at("directives/userGallery.js")' type="text/javascript"></script>
 
 <script src='@routes.Assets.at("javascripts/controller/UserController.js")' type="text/javascript"></script>
 

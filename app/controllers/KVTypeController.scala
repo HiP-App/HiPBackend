@@ -34,14 +34,12 @@ class KVTypeController extends Controller with MongoController {
     // let's do our query
     val cursor: Cursor[KVTypeModel] = collection.find(Json.obj("uID" -> uID)).cursor[KVTypeModel]
 
-    // gather all the JsObjects in a list
     val futureTypeList: Future[List[KVTypeModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futureTypeJsonArray: Future[JsArray] = futureTypeList.map { types =>
       Json.arr(types)
     }
-    // everything's ok! Let's reply with the array
+
     futureTypeJsonArray.map {
       types =>
         Ok(types(0))
@@ -57,14 +55,12 @@ class KVTypeController extends Controller with MongoController {
     // let's do our query
     val cursor: Cursor[KVTypeModel] = collection.find(Json.obj("name" -> name)).cursor[KVTypeModel]
 
-    // gather all the JsObjects in a list
     val futureTypeList: Future[List[KVTypeModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futureTypeJsonArray: Future[JsArray] = futureTypeList.map { types =>
       Json.arr(types)
     }
-    // everything's ok! Let's reply with the array
+
     futureTypeJsonArray.map {
       types =>
         Ok(types(0))
@@ -80,14 +76,12 @@ class KVTypeController extends Controller with MongoController {
     // let's do our query
     val cursor: Cursor[KVTypeModel] = collection.find(Json.obj()).cursor[KVTypeModel]
 
-    // gather all the JsObjects in a list
     val futureTypeList: Future[List[KVTypeModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futureTypesJsonArray: Future[JsArray] = futureTypeList.map { types =>
       Json.arr(types)
     }
-    // everything's ok! Let's reply with the array
+
     futureTypesJsonArray.map {
       types =>
         Ok(types(0))
@@ -113,7 +107,7 @@ class KVTypeController extends Controller with MongoController {
           collection.update(Json.obj("uID" -> kvType.uID),modifier,upsert = true).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
-              Created(s"Role updated")
+              Created(s"Type updated")
           }
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }

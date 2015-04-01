@@ -31,24 +31,17 @@ class RoleController extends Controller with MongoController {
    * @return a list that contains every role as a JSON object
    */
   def getRole(userid: String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[UserAddModel] = collection.
-      // find all
-      find(Json.obj("userid" -> userid)).
-      // perform the query and get a cursor of JsObject
-      cursor[UserAddModel]
+    val cursor: Cursor[UserAddModel] = collection.find(Json.obj("userid" -> userid)).cursor[UserAddModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[UserAddModel]] = cursor.collect[List]()
+    val futureRolesList: Future[List[UserAddModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>
-      Json.arr(groups)
+    val futureRolesJsonArray: Future[JsArray] = futureRolesList.map { roles =>
+      Json.arr(roles)
     }
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
-      groups =>
-        Ok(groups(0))
+
+    futureRolesJsonArray.map {
+      roles =>
+        Ok(roles(0))
     }
   }
 
@@ -58,29 +51,22 @@ class RoleController extends Controller with MongoController {
    * @return a list that contains every role as a JSON object
    */
   def getRoles = Action.async {
-    // let's do our query
-    val cursor: Cursor[UserAddModel] = collection.
-      // find all
-      find(Json.obj()).
-      // perform the query and get a cursor of JsObject
-      cursor[UserAddModel]
+    val cursor: Cursor[UserAddModel] = collection.find(Json.obj()).cursor[UserAddModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[UserAddModel]] = cursor.collect[List]()
+    val futureRolesList: Future[List[UserAddModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>
-      Json.arr(groups)
+    val futureRolesJsonArray: Future[JsArray] = futureRolesList.map { roles =>
+      Json.arr(roles)
     }
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
-      groups =>
-        Ok(groups(0))
+
+    futureRolesJsonArray.map {
+      roles =>
+        Ok(roles(0))
     }
   }
 
   /**
-   * Updated the role
+   * Updates the role
    *
    * @return
    */

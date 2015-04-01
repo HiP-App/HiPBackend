@@ -29,11 +29,17 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/myhip', {
                 templateUrl: '/assets/partials/basic_myhip.html'
             })
+            .when('/profile', {
+                templateUrl: '/assets/partials/basic_profile.html'
+            })
             .when('/browse', {
               templateUrl: '/assets/partials/basic_showAllContent.html'
             })
             .when('/contact', {
                 templateUrl: '/assets/partials/basic_contact.html'
+            })
+            .when('/impressum', {
+              templateUrl: '/assets/partials/basic_impressum.html'
             })
             .when('/edit/:topicID', {
               templateUrl: '/assets/partials/group_editContent.html'

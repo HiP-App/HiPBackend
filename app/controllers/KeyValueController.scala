@@ -21,6 +21,10 @@ class KeyValueController extends Controller with MongoController {
   import models.JsonFormats._
   import models._
 
+  /**
+   * Action creates a new key value list/model that is contained in the request body
+   * @return
+   */
   def createKeyValueList = Action.async(parse.json) {
     request =>
       request.body.validate[KeyValueModel].map {
@@ -33,29 +37,33 @@ class KeyValueController extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  /**
+   * Action returns the Key Value list/Store with the given uID
+   * @param uID   the uID of the store that should be returned
+   * @return
+   */
   def getKeyValueList(uID : String) = Action.async {
     // let's do our query
-    val cursor: Cursor[KeyValueModel] = collection.
-      // find all
-      find(Json.obj("uID" -> uID)).
-      // perform the query and get a cursor of JsObject
-      cursor[KeyValueModel]
+    val cursor: Cursor[KeyValueModel] = collection.find(Json.obj("uID" -> uID)).cursor[KeyValueModel]
 
-    // gather all the JsObjects in a list
     val futureKVList: Future[List[KeyValueModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futureKVJsonArray: Future[JsArray] = futureKVList.map { kv =>
       Json.arr(kv)
     }
 
-    // everything's ok! Let's reply with the array
     futureKVJsonArray.map {
       kv =>
         Ok(kv(0))
     }
   }
 
+  /**
+   * Action adds a new key/value pair to the given store
+   * @param uID   uID of the store that should contain the new entry
+   * @param kv    the key/value entry in the format "key#value"
+   * @return
+   */
   def addKV(uID: String, kv: String) = Action.async {
     val modifier    =   Json.obj("$push" -> Json.obj("list" -> kv))
 
@@ -68,6 +76,10 @@ class KeyValueController extends Controller with MongoController {
     }
   }
 
+  /**
+   * Updates a given KVStore. The new store needs to be included in the request body
+   * @return
+   */
   def modifyKVStore = Action.async(parse.json){
     request =>
       request.body.validate[KeyValueModel].map {
@@ -84,6 +96,12 @@ class KeyValueController extends Controller with MongoController {
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  /**
+   * Action deletes a given KVStore
+   *
+   * @param uID uID of the store that should be deleted
+   * @return
+   */
   def deleteKV(uID : String) = Action.async {
     /* delete from DB */
     collection.remove(Json.obj("uID" -> uID)).map {

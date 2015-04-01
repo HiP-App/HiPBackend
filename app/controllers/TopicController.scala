@@ -40,7 +40,6 @@ class TopicController extends Controller with MongoController {
     request =>
       request.body.validate[TopicModel].map {
         topic =>
-          // `user` is an instance of the case class `models.User`
           topicCollection.insert(topic).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
@@ -69,7 +68,8 @@ class TopicController extends Controller with MongoController {
                                         "$set" -> Json.obj("maxCharThreshold" -> topic.maxCharThreshold),
                                         "$set" -> Json.obj("gps" -> topic.gps),
                                         "$set" -> Json.obj("metaStore" -> topic.metaStore),
-                                        "$set" -> Json.obj("nextTextBlock" -> topic.nextTextBlock))
+                                        "$set" -> Json.obj("nextTextBlock" -> topic.nextTextBlock),
+                                        "$set" -> Json.obj("topicPicture" -> topic.topicPicture))
 
           topicCollection.update(Json.obj("uID" -> topic.uID), modifier).map {
             lastError =>
@@ -85,23 +85,15 @@ class TopicController extends Controller with MongoController {
    * @return
    */
   def getTopicByStatus(status : String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[TopicModel] = topicCollection.
-      // find all
-      find(Json.obj("status" -> status)).
-      // perform the query and get a cursor of JsObject
-      cursor[TopicModel]
+    val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj("status" -> status)).cursor[TopicModel]
 
-    // gather all the JsObjects in a list
     val futureTopicList: Future[List[TopicModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
+    val futureTopicsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
       Json.arr(topics)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureTopicsJsonArray.map {
       topics =>
         Ok(topics(0))
     }
@@ -113,20 +105,94 @@ class TopicController extends Controller with MongoController {
    * @return a list that contains every topic as a JSON object
    */
   def getTopics = Action.async {
-    // let's do our query
     val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj()).cursor[TopicModel]
 
-    // gather all the JsObjects in a list
     val futureTopicsList: Future[List[TopicModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureTopicsList.map { topics =>
+    val futureTopicsJsonArray: Future[JsArray] = futureTopicsList.map { topics =>
       Json.arr(topics)
     }
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+
+    futureTopicsJsonArray.map {
       topics =>
         Ok(topics(0))
+    }
+  }
+
+  /**
+   * Returns every topic in the db in the app format
+   *
+   * @return a list that contains every topic as a JSON object in the app format
+   */
+  def getTopicsInAppFormat = Action.async {
+    val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj()).cursor[TopicModel]
+
+    val futureTopicsList: Future[List[TopicModel]] = cursor.collect[List]()
+
+    val futureTopicsJsonArray: Future[JsArray] = futureTopicsList.map { topics =>
+      Json.arr(topics)
+    }
+
+    futureTopicsJsonArray.map {
+      topics =>
+
+        def createNewFormat(uID: JsValue, name: JsValue, content: JsValue, lat: JsValue, lng: JsValue): JsObject = {
+          return Json.obj(
+            "id" -> uID,
+            "name" -> name,
+            "categories" -> new java.util.Date().getTime(),
+            "description" -> content,
+            "lat" -> lat,
+            "lng" -> lng,
+            "tags" -> "")
+        }
+
+        /* Access the needed attributes */
+        val uIDs    = topics(0).\\("uID")
+        val names   = topics(0).\\("name")
+        val content = topics(0).\\("content")
+        val gps     = topics(0).\\("gps")
+
+        var dataArray = new JsArray()
+
+        /* create new Array */
+        for( i <- 0 to uIDs.length-1){
+          dataArray = dataArray.append(createNewFormat(uIDs(i),names(i),content(i),gps(i)(0),gps(i)(1)))
+        }
+
+        /* put this into a new JSObject */
+        var returnThis = Json.obj("data" -> dataArray)
+
+        Ok(returnThis)
+    }
+  }
+
+  /**
+   * Action reroutes to the correct controller for finding the topic picture
+   * Used as a wrapper for the format that Timo has used in his bachelor thesis
+   * @return the topic picture for the given topicID
+   */
+  def getTopicPicture(uIDPlusPost: String) = Action.async {
+    val topicID = uIDPlusPost.substring(0,uIDPlusPost.lastIndexOf('.'))
+
+    val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj("uID"
+      -> topicID)).cursor[TopicModel]
+
+    val futureTopicsList: Future[List[TopicModel]] = cursor.collect[List]()
+
+    val futureTopicsJsonArray: Future[JsArray] = futureTopicsList.map { topics =>
+      Json.arr(topics)
+    }
+
+    futureTopicsJsonArray.map {
+      topics =>
+        val pictureID  = topics(0).\\("topicPicture").toString()
+        val firstDoubleQuote = pictureID.indexOf('"') +1
+        val lastDoubleQuote = pictureID.lastIndexOf('"')
+
+        val cleanedPictureID = pictureID.substring(firstDoubleQuote, lastDoubleQuote)
+
+        Redirect(routes.FileController.getMediaFile(cleanedPictureID))
     }
   }
 
@@ -136,23 +202,15 @@ class TopicController extends Controller with MongoController {
    * @return a list that contains every topic as a JSON object
    */
   def getTopic(uID : String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[TopicModel] = topicCollection.
-      // find all
-      find(Json.obj("uID" -> uID)).
-      // perform the query and get a cursor of JsObject
-      cursor[TopicModel]
+    val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj("uID" -> uID)).cursor[TopicModel]
 
-    // gather all the JsObjects in a list
     val futureTopicList: Future[List[TopicModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
+    val futureTopicsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
       Json.arr(topics)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureTopicsJsonArray.map {
       topics =>
         Ok(topics(0))
     }
@@ -165,23 +223,15 @@ class TopicController extends Controller with MongoController {
    * @return a list that contains every topic as a JSON object
    */
   def getTopicByUser(uID : String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[TopicModel] = topicCollection.
-      // find all
-      find(Json.obj("createdBy" -> uID)).
-      // perform the query and get a cursor of JsObject
-      cursor[TopicModel]
+    val cursor: Cursor[TopicModel] = topicCollection.find(Json.obj("createdBy" -> uID)).cursor[TopicModel]
 
-    // gather all the JsObjects in a list
     val futureTopicList: Future[List[TopicModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
+    val futureTopicsJsonArray: Future[JsArray] = futureTopicList.map { topics =>
       Json.arr(topics)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureTopicsJsonArray.map {
       topics =>
         Ok(topics(0))
     }
@@ -194,23 +244,15 @@ class TopicController extends Controller with MongoController {
    * @return
    */
   def getFootnotesByTopic(uID: String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[FootnoteModel] = footnoteCollection.
-      // find all
-      find(Json.obj("linkedToTopic" -> uID)).
-      // perform the query and get a cursor of JsObject
-      cursor[FootnoteModel]
+    val cursor: Cursor[FootnoteModel] = footnoteCollection.find(Json.obj("linkedToTopic" -> uID)).cursor[FootnoteModel]
 
-    // gather all the JsObjects in a list
-    val futureTopicList: Future[List[FootnoteModel]] = cursor.collect[List]()
+    val futureFootnotesList: Future[List[FootnoteModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { footnotes =>
+    val futureFootnotesJsonArray: Future[JsArray] = futureFootnotesList.map { footnotes =>
       Json.arr(footnotes)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureFootnotesJsonArray.map {
       footnotes =>
         Ok(footnotes(0))
     }
@@ -236,7 +278,7 @@ class TopicController extends Controller with MongoController {
   /**
    * This Action deletes a given footnote from the database
    *
-   * @param uID
+   * @param uID the uId of the footnote that should be removed
    * @return
    */
   def deleteFootnote(uID: String) = Action.async {
@@ -250,7 +292,7 @@ class TopicController extends Controller with MongoController {
   /**
    * This Action deletes a given topic from the database
    *
-   * @param uID
+   * @param uID the uID of the topic that should be removed
    * @return
    */
   def deleteTopic(uID: String) = Action.async {
@@ -263,37 +305,30 @@ class TopicController extends Controller with MongoController {
 
   /**
    * This Action returns the media files for a given topic
-   * @param topicID
+   *
+   * @param topicID topicID of the topic that contains the media files
    * @return
    */
   def getMediaForTopic(topicID: String) = Action.async {
-    // let's do our query
-    val cursor: Cursor[MetadataModel] = metaCollection.
-      // find all
-      find(Json.obj("topic" -> topicID)).
-      // perform the query and get a cursor of JsObject
-      cursor[MetadataModel]
+    val cursor: Cursor[MetadataModel] = metaCollection.find(Json.obj("topic" -> topicID)).cursor[MetadataModel]
 
-    // gather all the JsObjects in a list
-    val futureTopicList: Future[List[MetadataModel]] = cursor.collect[List]()
+    val futureMediaList: Future[List[MetadataModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureTopicList.map { footnotes =>
+    val futureMediaJsonArray: Future[JsArray] = futureMediaList.map { footnotes =>
       Json.arr(footnotes)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureMediaJsonArray.map {
       footnotes =>
         Ok(footnotes(0))
     }
   }
 
   /**
-   * This Action changes the store ID of the used KV-Store
+   * This Action changes the store ID of the used KV-Store for the given media file resp. picture
    *
    * @param uID       of the image/media file
-   * @param storeID
+   * @param storeID   of the new KVStore
    * @return
    */
   def updateKVStore(uID: String, storeID: String) = Action.async {

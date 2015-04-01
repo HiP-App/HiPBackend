@@ -24,22 +24,20 @@ class HistoryController extends Controller with MongoController {
 
   /**
    * Action returns the history of a given topic
-   * @param topicID
+   *
+   * @param topicID the topic ID of the topic that owns this history
    * @return
    */
   def getHistoryForTopic(topicID: String) = Action.async {
     // let's do our query
     val cursor: Cursor[HistoryModel] = collection.find(Json.obj("topicID" -> topicID)).cursor[HistoryModel]
 
-    // gather all the JsObjects in a list
     val futureHistoryList: Future[List[HistoryModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
     val futureHistoryJsonArray: Future[JsArray] = futureHistoryList.map { users =>
       Json.arr(users)
     }
 
-    // everything's ok! Let's reply with the array
     futureHistoryJsonArray.map {
       history =>
         Ok(history(0))

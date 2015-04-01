@@ -24,6 +24,11 @@ class ChatController extends Controller with MongoController {
   import models.JsonFormats._
   import models._
 
+  /**
+   * Adds a new chat message and/or creates a new chat
+   * @param newChat contains "true", if a new chat should be created
+   * @return
+   */
   def postChat(newChat : String) = Action.async(parse.json) {
         if(newChat == "true"){
           request =>

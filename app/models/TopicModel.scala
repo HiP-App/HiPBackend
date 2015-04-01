@@ -16,4 +16,5 @@ case class TopicModel(uID: String,
                       maxCharThreshold: String,
                       gps : Array[String],
                       metaStore: String,
-                      nextTextBlock: Array[String])
+                      nextTextBlock: Array[String],
+                      topicPicture: String)

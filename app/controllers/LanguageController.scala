@@ -26,33 +26,31 @@ class LanguageController extends Controller with MongoController {
   import models.JsonFormats._
   import models._
 
+  /**
+   * Action returns the dictionary for the given language
+   *
+   * @param language  a String that contains the language (e.g., 'de' or 'eng')
+   * @return {JSON}   the dictionary
+   */
   def getLanguageDataForClient(language : String) = Action.async {
     if(debug){
       println("info: Language request found for language " + language)
     }
 
-    // let's do our query
-    val cursor: Cursor[LanguageModel] = collection.
-      // find all
-      find(Json.obj("language" -> language)).
-      // perform the query and get a cursor of JsObject
-      cursor[LanguageModel]
+    val cursor: Cursor[LanguageModel] = collection.find(Json.obj("language" -> language)).cursor[LanguageModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[LanguageModel]] = cursor.collect[List]()
+    val futureDictList: Future[List[LanguageModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { terms =>
+    val futureDictJsonArray: Future[JsArray] = futureDictList.map { terms =>
       Json.arr(terms)
     }
 
     if(debug){
       println("info: found: ")
-      println(futureUsersList.toString)
+      println(futureDictList.toString)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureDictJsonArray.map {
       terms =>
         Ok(terms(0))
     }

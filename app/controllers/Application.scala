@@ -12,7 +12,7 @@ import play.api.mvc._
 import securesocial.core._
 
 @Singleton
-class Application extends Controller  with SecureSocial {
+class Application extends Controller  with SecureSocial{
 
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
 
@@ -21,8 +21,11 @@ class Application extends Controller  with SecureSocial {
     case None => error
   }
 
+  /**
+   * Action returns the index html file respectively send the login page
+   * @return
+   */
   def index = UserAwareAction { implicit  request =>
-
     request.user match {
       case Some(user) => {
         Ok(views.html.index(secureOption(request.user.get.email,"ERROR: No email address specified"),
@@ -35,7 +38,10 @@ class Application extends Controller  with SecureSocial {
 
   }
 
-
+  /**
+   * Action returns a new JWT for the login process at AnnotateIt
+   * @return
+   */
   def getToken = UserAwareAction { implicit  request =>
     request.user match {
       case Some(user) => {

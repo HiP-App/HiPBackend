@@ -94,7 +94,7 @@ controllersModule.controller('LangCtrl', ['$http', function($http) {
             console.log("info LangCtrl: Fetching language")
 
         $http.get('/admin/languages/'+lang).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 if(that.debug){
                     console.log("info LangCtrl: getting response data")
                 }
@@ -112,7 +112,7 @@ controllersModule.controller('LangCtrl', ['$http', function($http) {
                     console.log(that.language)
                 }
             }).
-            error(function(data, status, headers, config) {
+            error(function(data, status) {
                 if(that.debug){
                     console.log("error LangCtrl: Could not fetch the data >> Server response " + status)
                 }

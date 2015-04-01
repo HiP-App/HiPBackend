@@ -30,6 +30,7 @@ class FileController extends Controller with MongoController{
 
   def mediaCollection:  JSONCollection = db.collection[JSONCollection]("media.files")
   def metaCollection:   JSONCollection = db.collection[JSONCollection]("media.meta")
+  def topicCollection:  JSONCollection = db.collection[JSONCollection]("topics")
 
   /**
    * This Action is able to store a new picture in the database (it also generates a fitting thumbnail)
@@ -93,14 +94,16 @@ class FileController extends Controller with MongoController{
         val cleanedID = fileToSave.id.toString.split('"')(1)
         val cleanedIDThumb = fileToSaveThumb.id.toString.split('"')(1)
 
-        metaCollection.insert(Json.obj(
+        val returnObj = Json.obj(
           "uID"   ->  cleanedID,
           "topic" ->  topicID,
           "thumbnailID" -> cleanedIDThumb,
           "kvStore" -> "-1"
-        ))
+        )
 
-        Ok("File uploaded")
+        metaCollection.insert(returnObj)
+
+        Ok(returnObj)
       case None => BadRequest("no media file")
     }
   }
@@ -112,7 +115,18 @@ class FileController extends Controller with MongoController{
    */
   def getMediaFile(uID: String) = Action.async {
       val gridFS = new GridFS(db, "media")
-      val file = gridFS.find(BSONDocument("_id" -> new BSONObjectID(uID)))
+      var searchString = ""
+
+      val uIDcontainsASuffix = (uID.lastIndexOf('.') != -1)
+      if(uIDcontainsASuffix){
+        /* format used by Timo in the current version of the frontend */
+        searchString = uID.substring(0,uID.lastIndexOf('.'))
+      }else{
+        /* format internally used by the backend */
+        searchString = uID
+      }
+
+      val file = gridFS.find(BSONDocument("_id" -> new BSONObjectID(searchString)))
       serve(gridFS, file)
   }
 

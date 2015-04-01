@@ -114,7 +114,7 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
      */
     this.getChatByGroupUID = function(uID){
         $http.get('/admin/chat/'+uID).
-            success(function(data, status, headers, config) {
+            success(function(data) {
                 /* store fetched chat data in internal variable */
                 that.chat = data[0];
 
@@ -127,7 +127,7 @@ chatModule.controller('ChatCtrl', ['$scope','$http', '$routeParams', function($s
                 that.prepareChatMessages();
 
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
 
                 that.chat.sender[0]     = "System";
                 that.chat.message[0]    = "Error: Connection error";

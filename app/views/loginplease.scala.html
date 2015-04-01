@@ -12,7 +12,7 @@
     <link rel="stylesheet" media='screen and (min-width: 480px) and (max-width: 900px)' href='@routes.Assets.at("stylesheets/medium.css")'>
 </head>
 <body>
-<div class="container-fluid col-md-10 col-md-offset-1" ng-controller="LangCtrl as lc" >
+<div class="container-fluid col-md-10 col-md-offset-1" ng-controller="LangCtrl as lc" ng-init="tab = 1">
     <div>
         <!-- Header -->
         <div id="header">
@@ -21,16 +21,11 @@
             </div>
 
             <nav> <!-- class="upperNavigation" -->
-                <div class="navbar-left">
-                    <ul class="nav nav-pills">
-                        <li class="inner-nav"> <a href="/login"> Login </a> </li>
-                    </ul>
-                </div>
-
                 <div class="navbar-right">
                     <ul class="nav nav-pills">
-                        <li class="inner-nav"> <a ng-click="lc.getLanguage('eng')">   <img src='assets/images/eng.png' alt="english" width="16"> </a> </li>
-                        <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/de.png' alt="german" width="16"> </a> </li>
+                        <li class="inner-nav"> <a ng-click="lc.getLanguage('eng')">   <img src='assets/images/eng.png'  alt="english" width="20"> </a> </li>
+                        <li class="inner-nav"> <a ng-click="lc.getLanguage('de')">    <img src='assets/images/de.png'   alt="german" width="20"> </a> </li>
+                        <li class="inner-nav"> <a href="/login" ng-bind="lc.getTerm('system_login')"></a> </li>
                     </ul>
                 </div>
             </nav>
@@ -40,24 +35,51 @@
 
         <div>
             <div>
-                <div id="groups" class="panel panel-default">
+                <div id="groups" class="panel panel-default" ng-show="tab == 1">
 
                     <div class="panel-heading" ng-bind="lc.getTerm('system_start_whatis')"></div>
 
-                    <div class="panel-body" ng-bind="lc.getTerm('system_start_whatistext')"></div>
+                    <div class="panel-body" ng-bind="lc.getTerm('system_start_whatistext')"
+                         style="text-align: justify"></div>
 
                     <div class="float-clear"></div>
                 </div>
 
-                <div id="mainSingleBox" class="panel panel-default">
+                <!-- Infotext -->
+                <div id="mainSingleBox" class="panel panel-default" ng-show="tab == 1">
                     <div class="panel-heading" ng-bind="lc.getTerm('system_start_head')"></div>
                     <div>
                         <div class="panel-body">
-                            <h4 ng-bind="lc.getTerm('system_start_subheader')"></h4>
+                            <a href="/login"><h4 ng-bind="lc.getTerm('system_start_subheader')"></h4></a>
+                            {{lc.getTerm('system_start_infotext')}}
+
+                            <br><br><br>
+
+                            <h5 ng-bind="lc.getTerm('system_start_problems')"></h5>
+                            {{lc.getTerm('system_contact_infotext')}}
+
+                            <div class="float-clear"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impressum -->
+                <div id="mainSingleBoxBig" class="panel panel-default" ng-show="tab == 2">
+                    <div class="panel-heading">
+                        <a ng-click="tab = 1" ng-href="#" alt="back"><back-arrow></back-arrow></a>
+                        Impressum
+                    </div>
+                    <div>
+                        <div class="panel-body">
+                            <h4 ng-bind="lc.getTerm('system_responsible_for_site')"></h4>
 
                             <br>
 
-                            {{lc.getTerm('system_start_infotext')}}
+                            Jörg Amelunxen <br>
+                            jamelunx (at) mail.upb.de <br>
+                            Paulinenstraße 9 <br>
+                            33098 Paderborn <br>
 
                             <div class="float-clear"></div>
 
@@ -71,7 +93,8 @@
         <!-- Footer -->
         <div id="footer">
             <div id="footer-left">
-                <span>HiP 2014</span>
+                <span>HiP 2015</span> |
+                <a ng-click="tab = 2" class="font-white" href="#" alt="Impressum"> Impressum </a>
             </div>
         </div>
     </div>
@@ -94,6 +117,7 @@
 <script src='@routes.Assets.at("javascripts/directives/AppVersion.js")' type="text/javascript"></script>
 
 <!-- Own js scripts-->
+<script src='@routes.Assets.at("directives/backArrow.js")' type="text/javascript"></script>
 <script src='@routes.Assets.at("javascripts/controller/LanguageController.js")' type="text/javascript"></script>
 
 

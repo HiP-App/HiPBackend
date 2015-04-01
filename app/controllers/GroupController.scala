@@ -30,7 +30,6 @@ class GroupController extends Controller with MongoController {
     request =>
       request.body.validate[GroupModel].map {
         group =>
-          // `user` is an instance of the case class `models.User`
           collection.insert(group).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
@@ -87,22 +86,15 @@ class GroupController extends Controller with MongoController {
    */
   def getGroup(uID : String) = Action.async {
     // let's do our query
-    val cursor: Cursor[GroupModel] = collection.
-      // find all
-      find(Json.obj("uID" -> uID)).
-      // perform the query and get a cursor of JsObject
-      cursor[GroupModel]
+    val cursor: Cursor[GroupModel] = collection.find(Json.obj("uID" -> uID)).cursor[GroupModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[GroupModel]] = cursor.collect[List]()
+    val futureGroupList: Future[List[GroupModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>
+    val futureGroupsJsonArray: Future[JsArray] = futureGroupList.map { groups =>
       Json.arr(groups)
     }
 
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+    futureGroupsJsonArray.map {
       groups =>
         Ok(groups(0))
     }
@@ -115,21 +107,15 @@ class GroupController extends Controller with MongoController {
    */
   def getGroups = Action.async {
     // let's do our query
-    val cursor: Cursor[GroupModel] = collection.
-      // find all
-      find(Json.obj()).
-      // perform the query and get a cursor of JsObject
-      cursor[GroupModel]
+    val cursor: Cursor[GroupModel] = collection.find(Json.obj()).cursor[GroupModel]
 
-    // gather all the JsObjects in a list
-    val futureUsersList: Future[List[GroupModel]] = cursor.collect[List]()
+    val futureGroupsList: Future[List[GroupModel]] = cursor.collect[List]()
 
-    // transform the list into a JsArray
-    val futurePersonsJsonArray: Future[JsArray] = futureUsersList.map { groups =>
+    val futureGroupsJsonArray: Future[JsArray] = futureGroupsList.map { groups =>
       Json.arr(groups)
     }
-    // everything's ok! Let's reply with the array
-    futurePersonsJsonArray.map {
+
+    futureGroupsJsonArray.map {
       groups =>
         Ok(groups(0))
     }
@@ -154,7 +140,7 @@ class GroupController extends Controller with MongoController {
           collection.update(Json.obj("uID" -> grp.uID), modifier).map {
             lastError =>
               logger.debug(s"Successfully inserted with LastError: $lastError")
-              Created(s"Group has been added")
+              Created(s"Group has been modified")
           }
       }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
