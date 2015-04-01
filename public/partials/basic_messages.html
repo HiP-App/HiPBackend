@@ -1,10 +1,51 @@
 <div ng-controller="GroupCtrl as gc">
     <group-box></group-box>
 
-    <div id="mainSingleBox" class="panel panel-default" ng-controller="MessageCtrl as mc">
+    <div id="mainSingleBox" class="panel panel-default" ng-controller="MessageCtrl as mc" ng-init="choice = 1">
+        <!-- Modal -->
+        <div class="modal fade" id="deleteMailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>
+                            {{lc.getTerm('dialog_mail_delete_header')}}
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div style="text-align: center;">
+                            <span ng-bind="lc.getTerm('dialog_mail_delete_infotext')"></span>
+                        </div>
+
+                        <br>
+
+                        <div class="shift-left">
+                            <a ng-href="/#/myhip" class="btn btn-warning" ng-bind="lc.getTerm('dialog_mail_delete_cancel')"
+                               data-dismiss="modal"></a>
+                        </div>
+
+                        <div class="shift-right">
+                            <a ng-href="/#/myhip" class="btn btn-success" ng-bind="lc.getTerm('dialog_mail_delete_create')"
+                               data-dismiss="modal" ng-click="mc.deleteMessage(mc.deleteCandidate)"></a>
+                        </div>
+                        <div class="float-clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END OF MODAL -->
+
         <div class="panel-heading" ng-bind="lc.getTerm('system_messages_head')"> </div>
         <div>
             <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" ng-class="{active : choice == 1}" ng-click="choice=1"><a href ng-bind="lc.getTerm('system_mail_inbox')"></a></li>
+                    <li role="presentation" ng-class="{active : choice == 2}" ng-click="choice=2"><a href ng-bind="lc.getTerm('system_mail_outbox')"></a></li>
+                </ul>
+
+                <!-- inbox -->
+                <div ng-show="choice == 1">
                     <h4>{{lc.getTerm('system_messages_yourMessages')}} {{uc.email}}</h4>
 
                     <br>
@@ -13,8 +54,8 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th ng-bind="lc.getTerm('system_messages_sender')"></th>
-                                    <th ng-bind="lc.getTerm('system_messages_messageName')"></th>
+                                    <th style="padding-right:200px" ng-bind="lc.getTerm('system_messages_sender')"></th>
+                                    <th style="padding-right:300px" ng-bind="lc.getTerm('system_messages_messageName')"></th>
                                     <th ng-bind="lc.getTerm('system_messages_options')"></th>
                                 </tr>
                             </thead>
@@ -24,9 +65,9 @@
                                     <a ng-href="/#/messages/view/{{m.uID}}" ng-bind="m.title"> </a>
                                 </td>
                                 <td class="td-big">
-                                    [<span ng-click="mc.deleteMessage(m.uID)" class="glyphicon glyphicon-trash">]
-                                    FIXME: More Options
-                                    </span>
+                                    <a href ng-click="mc.deleteCandidate = m.uID" data-toggle="modal" data-target="#deleteMailModal">
+                                        [<span class="glyphicon glyphicon-trash"></span>]
+                                    </a>
                                 </td>
                             </tr>
                         </table>
@@ -36,10 +77,40 @@
 
                     <div class="col-sm-offset-3 col-sm-6 text-right">
                         <a href="/#/messages/send">
-                            <button ng-href="" type="submit" class="btn btn-success" id="btn_create" ng-bind="lc.getTerm('system_messages_write')"></button>
+                            <button ng-href="" type="submit" class="btn btn-success"  ng-bind="lc.getTerm('system_messages_write')"></button>
                         </a>
                     </div>
+                </div>
+                <!-- End of inbox -->
 
+                <!-- outbox -->
+                <div ng-show="choice == 2">
+                    <h4>{{lc.getTerm('system_messages_yourOutMessages')}} {{uc.email}}</h4>
+
+                    <br>
+
+                    <div class="form-group col-sm-3">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th ng-bind="lc.getTerm('system_messages_sender')"></th>
+                                <th ng-bind="lc.getTerm('system_messages_receiver')"></th>
+                                <th ng-bind="lc.getTerm('system_messages_messageName')"></th>
+                            </tr>
+                            </thead>
+                            <tr ng-repeat="m in mc.outMessages">
+                                <td style="padding-right:50px" class="td-small" ng-bind="m.sender"> </td>
+                                <td style="padding-right:50px" class="td-small" ng-bind="m.receiver"> </td>
+                                <td class="td-big">
+                                    <a ng-href="/#/messages/view/{{m.uID}}" ng-bind="m.title"> </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="float-clear"></div>
+                </div>
+                <!-- End of outbox -->
             </div>
         </div>
     </div>

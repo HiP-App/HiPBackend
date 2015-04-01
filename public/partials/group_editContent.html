@@ -1,32 +1,44 @@
 <div ng-controller="GroupCtrl as gc" ng-init="showDiv = 1">
     <div id="mainSingleBoxBig" class="panel panel-default" ng-controller="TopicCtrl as tc">
-        <div class="panel-heading" ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)">
-            <div class="shift-left">
-                <a ng-href="/#/group/view/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
-                <a ng-click="showDiv = 1">{{lc.getTerm('system_edit_header')}}:
-                    {{ tc.currentTopic.name }} (V. {{ tc.topicVersion }})</a>
-            </div>
-
-            <div class="shift-right">
-                <a ng-click="showDiv = 3" ng-bind="lc.getTerm('system_open_topicHistory')"> </a> |
-                <a ng-click="showDiv = 2" ng-bind="lc.getTerm('system_open_chat')"> </a>
-            </div>
-
-            <div class="float-clear"></div>
+        <div class="panel-heading" ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)"
+                ng-bind-template="{{lc.getTerm('system_edit_header')}}: {{ tc.currentTopic.name }} (V. {{ tc.topicVersion }})">
         </div>
 
         <!--
         GROUP MEMBER VIEW
         -->
         <div ng-show="gc.userIDIsMemberOfGrp(uc.email,tc.currentTopic.group)" ng-init="status = false; picUpload = false; footnotes = true;
-            lTopics = true; gps = true">
-            <div class="panel-body shift-left" ng-controller="OverlayCtrl as oc" ng-show="showDiv == 1">
+            lTopics = true; gps = true; metaStore = true">
 
-                <fullscreen-overlay>
-                    <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
-                    'overflow': 'scroll', 'max-height':'550px'}"></div>
-                </fullscreen-overlay>
+            <ul class="nav nav-tabs">
+                <li role="presentation" ng-class="{active : showDiv == 1}" ng-click="showDiv=1"><a href ng-bind="lc.getTerm('system_edit_header')"></a></li>
+                <li role="presentation" ng-class="{active : showDiv == 3}" ng-click="showDiv=3"><a href ng-bind="lc.getTerm('system_open_topicHistory')"></a></li>
+                <li role="presentation" ng-class="{active : showDiv == 2}" ng-click="showDiv=2"><a href ng-bind="lc.getTerm('system_open_chat')"></a></li>
+                <li role="presentation" class="pull-right" ng-class="{active : showDiv == 2}" ng-click="showDiv=2">
+                    <a ng-href="/#/messages/send/{{ tc.supervisor }}/{{lc.getTerm('mail_supervisor_request')}}{{tc.currentTopic.name}}"
+                       ng-bind="lc.getTerm('system_edit_inform')"></a>
+                </li>
+            </ul>
 
+            <div class="panel-body shift-left" ng-show="showDiv == 1">
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog custom-width-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <br>
+                            </div>
+
+                            <div class="modal-body">
+                                <div text-angular ng-model="tc.currentTopic.content" ng-style="{'min-height': '500px',
+                                    'overflow': 'scroll', 'max-height':'550px'}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END OF MODAL -->
                 <h4 ng-click="status = !status">
                     <collapse-triangle condition="status"></collapse-triangle> {{lc.getTerm('system_edit_status')}}
                     <span class="pull-right label" ng-class="{'label-success':tc.evaluateMaxCharConstraint(tc.maxcharThreshold) == 'green',
@@ -38,10 +50,6 @@
 
                 <div collapse="status">
                     <div class="well well-lg">
-                        <a ng-href="/#/messages/send/{{ tc.supervisor }}/{{lc.getTerm('mail_supervisor_request')}}{{tc.currentTopic.name}}">
-                            <button type="button" class="btn btn-primary btn-sm pull-right" ng-bind="lc.getTerm('system_edit_inform')"></button>
-                        </a>
-
                         <span ng-bind-template="Deadline: {{ tc.getDateAsString() }}"></span>
 
                         <alert-box ac="ac"></alert-box>
@@ -88,9 +96,6 @@
                                                updatetype="lc.getTerm('update_type')"
                                                languagecontroller="lc"></media-gallery>
                             </div>
-                            <div class="shift-right">
-                                <upload-box label="lc.getTerm('system_upload')" tc="tc"></upload-box>
-                            </div>
                             <div class="float-clear"></div>
                     </div>
                     <!-- END: Picture upload -->
@@ -102,19 +107,22 @@
                         <h5 ng-bind="lc.getTerm('system_edit_information')"></h5>
                     </div>
                     <div class="shift-right">
-                        <span class="glyphicon glyphicon-resize-full" ng-click="oc.toggleOverlay()"></span>
+                        <a href>
+                            <img data-toggle="modal" data-target="#myModal"
+                                src='assets/images/fullscreen.png' alt="fullscreen" width="16"/>
+                        </a>
                     </div>
                     <div class="float-clear"></div>
                     <!-- END: Headline -->
 
-                    <form ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')">
+                    <form ng-submit="tc.updateStatus(ac,lc,'notification_alert_save')" ng-init="tc.buffer0 = 0">
                         <div class="shift-left" ng-style="{'max-width':'75%'}">
-                            <div text-angular ng-model="tc.currentTopic.content" ng-style="{'max-height': '300px',
-                                'overflow': 'scroll'}"></div>
+                            <div id="editor" text-angular ng-model="tc.currentTopic.content"
+                                 ng-style="{'max-height': '300px','overflow': 'scroll'}"
+                                 ng-change="tc.buffer0 = 1; tc.locked()"></div>
                         </div>
                         <div class="shift-right">
-                            <templates-box
-                                            languagecontroller="lc"
+                            <templates-box  languagecontroller="lc"
                                             usercontroller="uc"
                                             groupcontroller="gc"
                                             showcondition="uc.isStudent()"
@@ -123,9 +131,19 @@
 
                         <div class="float-clear"></div>
 
-                        <cancel-submit  cancel="lc.getTerm('system_edit_form_cancel')"
-                                        submit="lc.getTerm('system_edit_form_create')">
-                        </cancel-submit>
+
+
+                        <div class="shift-right">
+                            <button ng-hide="tc.buffer0 == -1" class="btn"  ng-class="{
+                                                             'btn-default' : tc.buffer0 == 0,
+                                                             'btn-success' : tc.buffer0 == 1 }"
+                                    type="submit" ng-click="addAlert(alertmsg,'info')"
+                                    ng-bind="lc.getTerm('system_edit_form_create')"></button>
+
+                            <a href ng-show="tc.buffer0 == -1" class="btn btn-danger"
+                                    ng-click="ac.addAlert(lc.getTerm('alert_topic_locked'),'danger')"
+                                    ng-bind="lc.getTerm('system_edit_form_locked')"></a>
+                        </div>
                     </form>
 
                     <div class="float-clear"></div>
@@ -140,63 +158,94 @@
 
                         <ul>
                             <li ng-repeat="block in tc.currentTopic.nextTextBlock">
-                                <a ng-href="/#/edit/{{ block }}"> nächster Textblock: {{block}} </a> <a ng-click="tc.removeTextBlock(block)">DELETE</a></li>
+                                <a ng-href="/#/edit/{{ block }}"> {{lc.getTerm('nextText')}}</a> [<span ng-click="tc.removeTextBlock(block)" class="glyphicon glyphicon-trash">]</span></li>
                         </ul>
                     </div>
 
                     <hr>
 
-                    <h5 ng-click="gps = !gps; tc.initMap(tc.currentTopic.gps[0], tc.currentTopic.gps[1])">
-                        <collapse-triangle condition="gps"></collapse-triangle> {{lc.getTerm('system_edit_gps')}}
-                    </h5>
+                    <!-- GPS -->
+                    <div class="shift-left">
+                        <h5 ng-click="gps = !gps; tc.initMap(tc.currentTopic.gps[0], tc.currentTopic.gps[1])">
+                            <collapse-triangle condition="gps"></collapse-triangle> {{lc.getTerm('system_edit_gps')}}
+                        </h5>
 
-                    <div collapse="gps">
-                        <!-- GPS -->
-                        <input type="text" id="lat" ng-model="tc.currentTopic.gps[0]"> <input type="text" ng-model="tc.currentTopic.gps[1]">
-                        <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_edit_gps')" ng-click="tc.updateGPS(); gps = !gps"></button>
+                        <div collapse="gps" class="well">
+                            <input type="text" id="lat" ng-model="tc.currentTopic.gps[0]"> <input type="text" ng-model="tc.currentTopic.gps[1]">
+                            <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_edit_gps')" ng-click="tc.updateGPS(); gps = !gps"></button>
 
-                        <br>
+                            <br>
 
-                        <input type="text" ng-model="location" size="47">
-                        <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_update_gpsByAddress')" ng-click="tc.setGeoCodeByAddress(location)"></button>
+                            <input type="text" ng-model="location" size="47">
+                            <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_update_gpsByAddress')" ng-click="tc.setGeoCodeByAddress(location)"></button>
 
-                        <br>
+                            <br>
 
-                        <div id="map" style="width: 600px; height: 300px"></div>
-                        <!-- END OF: GPS -->
+                            <div id="map" style="width: 600px; height: 300px"></div>
+                        </div>
                     </div>
+                    <!-- END OF: GPS -->
 
-                    <h5 ng-click="footnotes = !footnotes">
-                        <collapse-triangle condition="footnotes"></collapse-triangle> {{lc.getTerm('system_edit_footnotes')}}
-                    </h5>
+                    <!-- Footnotes -->
+                    <div class="shift-right" style="min-width: 40%">
+                        <h5 ng-click="footnotes = !footnotes">
+                            <collapse-triangle condition="footnotes"></collapse-triangle> {{lc.getTerm('system_edit_footnotes')}}
+                        </h5>
 
-                    <div collapse="footnotes">
+                        <div collapse="footnotes" class="well">
                             <!-- show footnotes -->
                             <show-footnotes uc="uc" tc="tc" gc="gc"></show-footnotes>
 
                             <!-- Footnote creation -->
                             <create-footnotes></create-footnotes>
+                        </div>
                     </div>
+                    <!-- END OF: Footnotes -->
 
-                    <h5 ng-click="lTopics = !lTopics">
-                        <collapse-triangle condition="lTopics"></collapse-triangle> {{lc.getTerm('system_edit_linked_topics')}}
-                    </h5>
+                    <div class="float-clear"></div>
 
-                    <div collapse="lTopics">
-                        <!-- show linked topics -->
-                        <show-topic-links usercontroller="uc" topiccontroller="tc" groupcontroller="gc"></show-topic-links>
+                    <!-- Linked Topics -->
+                    <div class="shift-left">
+                        <h5 ng-click="lTopics = !lTopics">
+                            <collapse-triangle condition="lTopics"></collapse-triangle> {{lc.getTerm('system_edit_linked_topics')}}
+                        </h5>
+                        <div collapse="lTopics">
+                            <!-- show linked topics -->
+                            <show-topic-links usercontroller="uc" topiccontroller="tc" groupcontroller="gc"></show-topic-links>
 
-                        <!-- Link creation -->
-                        <create-topic-links
-                                languagecontroller="lc"
-                                usercontroller="uc"
-                                groupcontroller="gc"
-                                topiccontroller="tc"></create-topic-links>
+                            <!-- Link creation -->
+                            <create-topic-links
+                                    languagecontroller="lc"
+                                    usercontroller="uc"
+                                    groupcontroller="gc"
+                                    topiccontroller="tc"></create-topic-links>
+                        </div>
                     </div>
+                    <!-- End of: linked topics -->
+
+                    <!-- Meta-data -->
+                    <div class="shift-right" style="min-width: 40%">
+                        <h5 ng-click="metaStore = !metaStore">
+                            <collapse-triangle condition="metaStore"></collapse-triangle> {{lc.getTerm('system_edit_topic_metadata')}}
+                        </h5>
+                        <div class="well well-lg" collapse="metaStore">
+                            <div ng-repeat="key in tc.topicMetaData.keys">
+                                <small ng-bind="lc.getTypeKeyName(key, tc.topicMetaData.type)"></small>
+                                <input type="text" class="form-control" placeholder="key" ng-model="tc.topicMetaData[key]">
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm" ng-bind="lc.getTerm('system_topic_metadata')"
+                                    ng-click="tc.saveMetaData(metaStore)"></button>
+                        </div>
+                    </div>
+                    <!-- End of: meta-data -->
+                    <div class="float-clear"></div>
 
                     <hr>
 
+                    <b>Tags:</b>
                     <tag-cloud topiccontroller="tc" languagecontroller="lc"></tag-cloud>
+
                 </div>
 
 

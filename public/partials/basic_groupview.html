@@ -2,17 +2,30 @@
 <div ng-controller="GroupCtrl as gc">
     <group-box></group-box>
 
-    <div ng-controller="OverlayCtrl as oc">
+    <div>
         <div ng-controller="TopicCtrl as tc">
 
-            <hip-overlay>
-                <topic-list></topic-list>
-            </hip-overlay>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <br>
+                        </div>
+
+                        <div class="modal-body">
+                            <topic-list></topic-list>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END OF MODAL -->
 
             <div id="mainBox">
                 <div class="float-clear"></div>
 
-                <div id="welcomePanel" class="panel panel-success">
+                <div id="welcomePanel" class="panel panel-default">
                     <div id="welcomeBox" class="panel-heading">
                         <div class="shift-left">
                             <span>
@@ -22,22 +35,15 @@
                         <div class="shift-right" >
                             {{lc.getTerm('system_group_topic_header')}}
                             <a ng-href="/#/edit/{{gc.bufferedGroup.topic}}" ng-bind="gc.bufferedTopic.name"></a>
-                            <a ng-click="   tc.getSubTopicByTopicID(gc.bufferedGroup.topic);
-                                            oc.toggleOverlay()"
-                               ng-bind="lc.getTerm('system_group_topic_header_ext')"></a>
+
+                            <a href ng-click="tc.getSubTopicByTopicID(gc.bufferedGroup.topic)" data-toggle="modal" data-target="#myModal">
+                                {{lc.getTerm('system_group_topic_header_ext')}}</a>
                         </div>
                         <div class="float-clear"></div>
                     </div>
                     <div class="panel-footer">
-                        <div class="shift-left" ng-bind="lc.getTerm('system_group_member')">
-                        </div>
-
-                        <div class="shift-left">
-                            <img class="userAvatars" ng-repeat="usr in gc.userInGroupArray" ng-src="{{usr.avatar}}"
-                                 tooltip-html-unsafe="{{usr.firstname}} {{usr.lastname}}"
-                                 tooltip-trigger="mouseenter" tooltip-placement="top">
-                        </div>
-
+                        <user-gallery modus="student" groupcontroller="gc" languagecontroller="lc"
+                                      usercontroller="uc"></user-gallery>
                         <div class="float-clear"></div>
                     </div>
                 </div>

@@ -35,13 +35,7 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
      * @returns {boolean}
      */
     this.isStudent = function(){
-        if(that.role == 'student'){
-            if(that.debug)
-                console.log("info UserCtrl: user is student");
-            return true;
-        }else{
-            return false;
-        }
+        return that.role == 'student';
     };
 
     /**
@@ -50,13 +44,7 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
      * @returns {boolean}
      */
     this.isSupervisor = function(){
-        if(that.role == 'supervisor'){
-            if(that.debug)
-                console.log("info UserCtrl: user is supervisor");
-            return true;
-        }else{
-            return false;
-        }
+        return that.role == 'supervisor';
     };
 
     /**
@@ -65,11 +53,7 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
      * @returns {boolean}
      */
     this.isAdmin = function(){
-        if(that.admin == 'true'){
-            return true;
-        }else{
-            return false;
-        }
+        return that.admin == 'true';
     };
 
     /**
@@ -78,18 +62,14 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
      * @returns {boolean}
      */
     this.isMaster = function(){
-        if(that.master == 'true'){
-            return true;
-        }else{
-            return false;
-        }
+        return that.master == 'true';
     };
 
     /**
      * Fetches the meta data for the given user
      *
      * @param userID        userID of the searched user
-     * @param callback      callback function that contains the dataobject as a first parameter
+     * @param callback      callback function that contains the data object as a first parameter
      */
     this.getMetaData = function(userID, callback){
         $http.get('/admin/role/'+userID).
@@ -133,11 +113,11 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
 
         // post
         $http.put('/admin/roles', metadata).
-            success(function(data, status, headers, config) {
+            success(function() {
                 // this callback will be called asynchronously
                 // when the response is available
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("Error RoleCtrl: Could not update a metadata");
             });
     };
@@ -160,11 +140,29 @@ controllersModule.controller('UserCtrl', ['$scope','$http', '$attrs', function($
         $http.get('/admin/users').
             success(function(data) {
                 that.userList = data;
+
+                /* use the data to update the lastname value */
+                that.userList.forEach(function(u){
+                    if(u.email == that.email){
+                        that.lastname = u.lastname;
+                    }
+                });
+
+                /* drop doubles */
+                var found = [];
+                var newUserList = [];
+                that.userList.forEach(function(u){
+                    if(jQuery.inArray(u.email, found) == -1){
+                        /* not yet included in cleaned user list */
+                        found.push(u.email);
+                        newUserList.push(u);
+                    }
+                });
+
+                that.userList = newUserList;
             }).
             error(function() {
                 console.log("Error getting user information")
             });
     }
-
-
 }]);

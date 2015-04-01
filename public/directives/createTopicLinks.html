@@ -9,7 +9,7 @@
     <div ng-show="open">
         <div class="input-group-btn" ng-init="grpName = 'blabla'">
             <button type="button"
-                    ng-class="{     'btn-warning'       : tc.newLink == undefined,
+                    ng-class="{     'btn-info'          : tc.newLink == undefined,
                                     'btn-success'       : tc.newLink != undefined}"
                     class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 {{lc.getTerm('system_link_to_topic')}}
@@ -24,7 +24,7 @@
         </div>
 
         <div class="shift-left">
-            <a class="btn btn-danger"
+            <a class="btn btn-warning"
                ng-click="open = !open"
                ng-bind="lc.getTerm('button_footnote_cancel')"></a>
         </div>

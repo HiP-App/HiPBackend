@@ -1,6 +1,46 @@
 <div class="shift-left" ng-controller="GalleryCtrl as gallery">
-    <div ng-repeat="img in files" class="shift-left" ng-style="{'margin-left': '10px'}" ng-init="collapse[img.uID] = true">
+    <!-- Modal -->
+    <div class="modal fade" id="deletePictureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>
+                        {{lc.getTerm('dialog_picture_delete_header')}}
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </h4>
+                </div>
 
+                <div class="modal-body">
+                    <div style="text-align: center;">
+                        <span ng-bind="lc.getTerm('dialog_picture_delete_infotext')"></span>
+                    </div>
+
+                    <br>
+
+                    <img class="center" ng-if="gallery.candidateThumbnailID != '-1'" ng-src="/admin/picture/{{gallery.candidateThumbnailID}}">
+
+                    <br>
+
+                    <div class="shift-left">
+                        <a ng-href="/#/myhip" class="btn btn-warning" ng-bind="lc.getTerm('dialog_picture_delete_cancel')"
+                           data-dismiss="modal"></a>
+                    </div>
+
+                    <div class="shift-right">
+                        <a ng-href="/#/myhip" class="btn btn-success" ng-bind="lc.getTerm('dialog_picture_delete_create')"
+                           data-dismiss="modal"
+                           ng-click="gallery.deletePicture(gallery.candidateUID); gallery.deletePicture(gallery.candidateThumbnailID);
+                        gallery.deleteKVStore(gallery.candidateKvStore)"></a>
+                    </div>
+
+                    <div class="float-clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END OF MODAL -->
+
+    <div ng-repeat="img in files" class="shift-left" ng-style="{'margin-left': '10px'}" ng-init="collapse[img.uID] = true">
 
         <img class="imgPreview"  ng-src="/admin/picture/{{img.thumbnailID}}"
              tooltip-html-unsafe="{{picturetooltip}}"
@@ -9,11 +49,26 @@
 
         <br>
 
-        <span ng-bind="deletetext"  ng-click="gallery.deletePicture(img.uID); gallery.deletePicture(img.thumbnailID); gallery.deleteKVStore(img.kvStore)"></span>
+        <a href>
+            <span ng-bind="deletetext"  data-toggle="modal" data-target="#deletePictureModal"
+                  ng-click="gallery.candidateUID = img.uID; gallery.candidateThumbnailID = img.thumbnailID;
+                        gallery.candidateKvStore = img.kvStore"></span>
+        </a>
 
         <br>
 
-        <span ng-bind="opentext"    ng-click="gallery.refreshTypes(); gallery.openMetaData(img.uID, img.kvStore)"></span>
+        <!-- set new topic picture block -->
+        <span ng-show="copyto.currentTopic.topicPicture == img.uID" ng-bind="lc.getTerm('system_setted_topic_picture')"></span>
+        <a href ng-show="copyto.currentTopic.topicPicture != img.uID">
+            <span ng-bind="lc.getTerm('system_set_topic_picture')"  ng-click="copyto.setNewTopicPicture(img.uID)"></span>
+        </a>
+        <!-- END OF: set new topic picture block -->
+
+        <br>
+
+        <a href>
+            <span ng-bind="opentext"    ng-click="gallery.refreshTypes(); gallery.openMetaData(img.uID, img.kvStore)"></span>
+        </a>
 
         <!--
             Collapsed view for meta-data
@@ -41,5 +96,9 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="shift-right">
+        <button class="btn btn-success" dropzone="dropzoneConfig" ng-bind="lc.getTerm('system_upload')"></button>
     </div>
 </div>

@@ -1,0 +1,50 @@
+<div ng-controller="GroupCtrl as gc">
+    <group-box></group-box>
+    <div id="mainSingleBox" class="panel panel-default">
+        <div class="panel-heading" ng-bind="lc.getTerm('system_profile_head')"> </div>
+        <div>
+            <div class="panel-body">
+                <h4 ng-bind="lc.getTerm('system_profile_subhead')"></h4>
+
+                <br>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_firstname')"></span>
+                                <input type="text" class="form-control" ng-value="uc.firstname" disabled>
+                            </div>
+
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_lastname')"></span>
+                            <input type="text" class="form-control" ng-value="uc.lastname" disabled>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="input-group-addon">E-Mail</span>
+                            <input type="text" class="form-control" ng-value="uc.email" disabled>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_role')"></span>
+                            <input type="text" class="form-control" ng-value="uc.role" disabled>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_right_master')"></span>
+                            <input type="text" class="form-control" ng-value="uc.master" disabled>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-bind="lc.getTerm('system_right_admin')"></span>
+                            <input type="text" class="form-control" ng-value="uc.admin" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="float-clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-clear"></div>

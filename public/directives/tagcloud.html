@@ -1,15 +1,29 @@
 <!-- tag cloud -->
-<div ng-init="tagModus = false">
+<div ng-init="tagModus = false; deleteModus = false">
+                   <span class="label label-default" ng-style="{'margin': '2.5px'}" ng-click="deleteModus = !deleteModus">
+                       <b ng-hide="deleteModus" ng-bind="lc.getTerm('system_tags_delete')"></b>
+                       <b ng-show="deleteModus" ng-bind="lc.getTerm('system_tags_deleteEnd')"></b>
+                    </span>
+
+                    <!-- read only tags -->
                     <span class="label label-info" ng-repeat="tag in tc.currentTopic.tagStore" ng-bind="tag"
+                          ng-show="!deleteModus"
+                          ng-style="{'margin': '2.5px'}"></span>
+
+                    <!-- deleteable tags -->
+                    <span class="label label-danger" ng-repeat="tag in tc.currentTopic.tagStore" ng-bind="tag"
+                          ng-show="deleteModus"
                           ng-style="{'margin': '2.5px'}"
                           ng-click="tc.removeTag($index)"
                           tooltip="{{lc.getTerm('tooltip_deleteTag')}}"
                           tooltip-trigger="mouseenter" tooltip-placement="top"></span>
 
                     <span class="label label-default" ng-style="{'margin': '2.5px'}" ng-click="tagModus = !tagModus">
-                        <b ng-hide="tagModus">+</b>
+                        <b ng-hide="tagModus" ng-bind="lc.getTerm('system_tags_create')"></b>
                         <b ng-show="tagModus" ng-bind="tc.tagValue"></b>
                     </span>
+
+    <!-- creation fields -->
     <input type="text" ng-show="tagModus" ng-model="tc.tagValue"/>
     <button type="button" ng-show="tagModus" class="btn btn-primary btn-sm"
             ng-bind="lc.getTerm('system_send_tag')"

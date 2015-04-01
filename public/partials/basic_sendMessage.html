@@ -12,30 +12,24 @@
                       ng-submit="mc.sendMessage(uc.email)">
                     <h4 ng-bind="lc.getTerm('system_sendMessage_information')"></h4>
 
+                    <alert-box></alert-box>
+
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-10">
                             <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-th-list"></span>
-                                        {{lc.getTerm('system_sendMessage_reciever')}}
-                                    </span>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li ng-repeat="user in uc.userList">
-                                            <a ng-click="mc.messageThatGetsCurrentlyCreated.receiver = user.email" ng-bind="user.email"></a>
-                                        </li>
-                                    </ul>
-                                </span>
+                                <span class="input-group-addon" ng-bind="lc.getTerm('system_sendMessage_reciever')"></span>
 
-                                <input type="text" class="form-control" name="rec" id="rec" placeholder=""
-                                       ng-model="mc.messageThatGetsCurrentlyCreated.receiver">
-
+                                <input type="text" class="form-control" ng-model="mc.messageThatGetsCurrentlyCreated.receiver"
+                                       placeholder="Name"
+                                       tooltip-html-unsafe="{{lc.getTerm('tooltip_send_mail')}}"
+                                       typeahead="user.email as user.firstname + ' ' + user.lastname for user in uc.userList | filter:$viewValue | limitTo:8"
+                                       typeahead-editable="false"
+                                       tooltip-trigger="focus" tooltip-placement="right">
                             </div>
 
                             <div class="input-group">
                                 <span class="input-group-addon" ng-bind="lc.getTerm('system_sendMessage_title')"></span>
-                                <input type="text" class="form-control" name="messageTitle" id="messageTitle" placeholder=""
-                                       ng-model="mc.messageThatGetsCurrentlyCreated.title">
+                                <input type="text" class="form-control" ng-model="mc.messageThatGetsCurrentlyCreated.title">
                             </div>
 
                             <br>
@@ -43,7 +37,9 @@
                             <div text-angular ng-model="mc.messageThatGetsCurrentlyCreated.content"></div>
 
                             <cancel-submit  cancel="lc.getTerm('system_sendMessage_cancel')"
-                                            submit="lc.getTerm('system_sendMessage_create')">
+                                            submit="lc.getTerm('system_sendMessage_create')"
+                                            alertcontroller="ac" languagecontroller="lc"
+                                            alertmsg="notification_mail_send">
                             </cancel-submit>
 
                         </div>

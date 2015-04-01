@@ -10,6 +10,10 @@
                       ng-submit="pc.proposeTopic('j.amelunxen@googlemail.com',uc.email, lc.getTerm('system_propose'))">
                     <h4 ng-bind="lc.getTerm('system_propose_information')"></h4>
 
+                    <alert-box></alert-box>
+
+                    <span ng-bind="lc.getTerm('system_propose_infotext')"></span>
+
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-10 ">
                             <div class="input-group">
@@ -28,8 +32,12 @@
                                        tooltip-trigger="focus" tooltip-placement="right">
                             </div>
 
-                            <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
-                                            submit="lc.getTerm('system_groups_form_create')">
+                            <br>
+
+                            <cancel-submit  cancel="lc.getTerm('system_propose_form_cancel')"
+                                            submit="lc.getTerm('system_propose_form_create')"
+                                            alertcontroller="ac" languagecontroller="lc"
+                                            alertmsg="notification_propose_created">
                             </cancel-submit>
                         </div>
                     </div>

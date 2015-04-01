@@ -51,7 +51,8 @@ describe('Testsuite for the TopicController:', function () {
             constraints: ["constraintA"],
             deadline : "2015-01-14T23:00:00.000Z",
             tagStore: "-1",
-            linkedTopics: []
+            linkedTopics: [],
+            metaStore: "uID554"
         };
 
         var demoConstraint = {
@@ -108,12 +109,34 @@ describe('Testsuite for the TopicController:', function () {
             versionNumber: "2"
         };
 
+        var lock1 = {
+            topicUID: "1",
+            lastChange: new Date().getTime()+""
+        };
+
+        var typeObject = {
+            uID: "uID_new",
+            name: 'newName',
+            extendsType: 'root',
+            system: false,
+            keys: ['ownAttr'],
+            values: ['myValue']
+        };
+
+        var storageObject = {
+            uID: "uID_store",
+            list: ["type#test"]
+        };
+
         return {demoTopic1: demoTopic1, demoTopic2: demoTopic2,
             demoSubTopic: demoSubTopic, demoConstraint: demoConstraint,
             footnote1: footnote1, footnote2: footnote2,
             media1: media1, historyObject: historyObject,
             demoConstraint2: demoConstraint2,
-            demoConstraint3: demoConstraint3};
+            demoConstraint3: demoConstraint3,
+            lock1: lock1,
+            type: typeObject,
+            store: storageObject};
     }
 
     var __ret           = initTestVariables();
@@ -130,6 +153,12 @@ describe('Testsuite for the TopicController:', function () {
     var media1          = __ret.media1;
     var historyObject   = __ret.historyObject;
 
+    var lock1           = __ret.lock1;
+
+    var type            = __ret.type;
+
+    var store           = __ret.store;
+
     beforeEach(function () {
         module('myApp.controllers');
     });
@@ -137,8 +166,17 @@ describe('Testsuite for the TopicController:', function () {
     beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
         $httpBackend = _$httpBackend_;
 
+        $httpBackend.when('GET', '/admin/types')
+            .respond([type]);
+
+        $httpBackend.when('GET', '/admin/kv/undefined')
+            .respond([store]);
+
         $httpBackend.when('GET', '/admin/topic')
             .respond(demoTopicList);
+
+        $httpBackend.when('GET', '/admin/lock/1')
+            .respond([lock1]);
 
         $httpBackend.when('GET', '/admin/topicbyuser/anUser')
             .respond(demoTopicList);
@@ -206,6 +244,10 @@ describe('Testsuite for the TopicController:', function () {
         demoFootnote2       = __ret.footnote2;
 
         media1              = __ret.media1;
+
+        type                = __ret.type;
+
+        store               = __ret.store;
     }));
 
     afterEach(function () {
@@ -285,7 +327,7 @@ describe('Testsuite for the TopicController:', function () {
         expect(mockLC.getTerm).toHaveBeenCalled();
     });
 
-    it('deletes the current topic with the deleteCurrentTopic function and includes sub-topics' +
+    it('deletes the current topic with the deleteCurrentTopic function and includes sub-topics ' +
         'within this process', function () {
         initController();
 
@@ -297,6 +339,10 @@ describe('Testsuite for the TopicController:', function () {
         controller.deleteCurrentTopic();
 
         $httpBackend.expectDELETE('/admin/topic/'+demoTopic1.uID)
+            .respond(200,{});
+
+        /* expect deletion of the kv of the main topic */
+        $httpBackend.expectDELETE('/admin/kv/')
             .respond(200,{});
 
         /* expect deletion of subtopic and the chat system */
@@ -313,6 +359,10 @@ describe('Testsuite for the TopicController:', function () {
 
         /* expect deletion of chat system */
         $httpBackend.expectDELETE('/admin/chat/'+demoSubTopic.uID)
+            .respond(200,{});
+
+        /* expect deletion of the kv of the sub topic */
+        $httpBackend.expectDELETE('/admin/kv/uID554')
             .respond(200,{});
 
         /* expect deletion of history */
@@ -341,14 +391,7 @@ describe('Testsuite for the TopicController:', function () {
 
 
         /* expect the creation of the chat */
-        var expectedChat = {
-            uID     : demoTopic1.uID,
-            name    : demoTopic1.name + " Chat",
-            message : [""],
-            sender  : [""]
-        };
-
-        $httpBackend.expectPOST('/admin/chat/true',expectedChat).respond(200,{});
+        $httpBackend.expectPOST('/admin/chat/true').respond(200,{});
 
         /* expect creation of both history objects */
         $httpBackend.expectPOST('/admin/history').respond(200,{});

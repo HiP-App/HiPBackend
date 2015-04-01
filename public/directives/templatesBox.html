@@ -1,5 +1,5 @@
 <div class="panel panel-default" ng-show="showcondition" ng-controller="TemplateCtrl as templateC">
-    <div class="panel-heading"  ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
+    <div class="panel-heading"   ng-bind="lc.getTerm('system_supervisor_templates')"> </div>
     <div class="panel-body">
         <div ng-repeat="template in templateC.templates.keys">
             <div class="shift-left">
@@ -23,8 +23,7 @@
 
             <!-- collapsed menu for the entry -->
             <div collapse="templateC.frontendMenuForTemplate[template]">
-                <div class="well well-lg"
-                     ng-click="templateC.frontendMenuForTemplate[template] = !templateC.frontendMenuForTemplate[template]">
+                <div class="well well-lg">
 
                     <div class="menuEntry" ng-show="uc.isStudent()">
                         <a ng-click="templateC.appendTemplateTo(template, tc)">
@@ -62,6 +61,10 @@
                         </a>
                     </div>
 
+                    <hr>
+
+                    <a class="pull-right" ng-click="templateC.frontendMenuForTemplate[template] = !templateC.frontendMenuForTemplate[template]">
+                        <collapse-triangle condition="templateC.frontendMenuForTemplate[template]"></collapse-triangle></a>
                 </div>
             </div>
         </div>

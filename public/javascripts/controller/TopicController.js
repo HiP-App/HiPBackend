@@ -6,7 +6,8 @@
  * This is the major controller of the backend. It handles the change of topics, media entries, footnotes, etc.
  * Note that it needs the existence of an user controller (uc) in the current scope to work properly.
  */
-controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService','LinkCreator','$timeout', function($scope,$http,$routeParams,commonTaskService, LinkCreator, $timeout) {
+controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','commonTaskService','LinkCreator','$timeout','LockService', 'keyValueService',
+        function($scope,$http,$routeParams,commonTaskService, LinkCreator, $timeout, LockService, keyValueService) {
     var that = this;
 
     this.debug = false;
@@ -59,6 +60,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
     this.modifyTopicCreatedBy   = "";
     this.modifyTopicContraints  = [];
     this.modifyTopicDeadline    = [];
+    this.modifyTopicMeta        = "";
     this.tagstore               = "";
     this.linkedTopic            = "";
     this.maxCharTreshold        = "";
@@ -72,6 +74,8 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         name: "-1"
     };
 
+    this.imageSearchPrefix  = "<img";
+
     /**
      * Clears the ModifyTopic buffer
      */
@@ -83,11 +87,14 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         that.modifyTopicStatus  = "";
         that.modifyTopicCreatedBy = "";
         that.modifyTopicDeadline  = "";
+        that.modifyTopicMeta      = "";
         that.tagstore               = "";
         that.linkedTopic            = "";
         that.maxCharTreshold        = "";
         that.gps                    = [];
     };
+
+    this.buffer0 = "";  // simple buffer slot - use it for calculations as you want
 
     /**
      * WORKAROUNG FOR BUG IN ANGULAR.JS
@@ -104,7 +111,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      * @param topicCreatedBy
      */
     this.doSomethingWithTopic = function(topicID, topicName, topicContent, topicGroup, topicStatus, topicConstraints,
-        topicCreatedBy, deadline, tagstore, linkedTopic, maxCharTreshold, gps){
+        topicCreatedBy, deadline, tagstore, linkedTopic, maxCharTreshold, gps, metaStore){
         that.modifyTopicID      = topicID;
         that.modifyTopicName    = topicName;
         that.modifyTopicContent = topicContent;
@@ -116,6 +123,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         that.linkedTopic          = linkedTopic;
         that.maxCharTreshold      = maxCharTreshold;
         that.gps                  = gps;
+        that.modifyTopicMeta      = metaStore;
 
         var constraintsAreInitialized = topicConstraints[0] != "" || topicConstraints != undefined;
         if(constraintsAreInitialized){
@@ -148,11 +156,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      * Creates a new topic with the internally stored information and sends it to the server
      */
     this.createTopic = function(){
-        commonTaskService.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.groupID,
-            $scope.gc, $scope.uc.email, $http);
+        var uid = commonTaskService.createTopic(that.currentTopic.name, that.currentTopicSubTopicsAsString, that.currentTopic.group,
+            $scope.gc, $scope.uc.email, $http, that.currentTopic.deadline);
 
         /* create corresponding chat system */
-        commonTaskService.createChat($http, that.currentTopic.uID, that.currentTopic.name + " Chat");
+        commonTaskService.createChat($http, uid, that.currentTopic.name + " Chat");
     };
 
     /**
@@ -173,6 +181,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                 else                    mTopic.name = name;
 
                 mTopic.uID  =  commonTaskService.generateUID(mTopic.name);
+
+                if(group != undefined){
+                    mTopic.group = group;
+                }
 
                 /* get subtopics */
                 $http.get('/admin/topicbyuser/'+uID).success(function(subTopics){
@@ -431,7 +443,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                 constraintJSON.valueInTopic = ""+that.currentTopic.content.length;
                 checkConstraint();
             }else if (constraintJSON.name == 'img_limitation') {
-                constraintJSON.valueInTopic = ""+(that.currentTopic.content.split('<img').length-1);
+                constraintJSON.valueInTopic = ""+(that.currentTopic.content.split(that.imageSearchPrefix).length-1);
                 checkConstraint();
             }else if (constraintJSON.name == 'max_character_limitation') {
                 constraintJSON.valueInTopic = ""+that.currentTopic.content.length;
@@ -467,9 +479,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         }
 
         $http.put('/admin/topic', topic).
-            success(function(data, status, headers, config) {
+            success(function() {
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("error TopicController: Topic cannot get updated");
             });
 
@@ -614,11 +626,36 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
         $http.get('/admin/topic').success(function(topics){
             that.topics = topics;
 
+            /* get the lock status of the topic */
+            LockService.getLock(uIDOfTheTopic);
+
             /* fetch the concrete topic */
             $http.get('/admin/topic/'+uIDOfTheTopic).
                 success(function(data) {
                     that.currentTopic = data[0];
 
+                    /* get or create the data of the meta-store */
+                    if (that.currentTopic.metaStore != "-1") {
+                        keyValueService.getKVStore(that.currentTopic.metaStore, function(store){
+                           that.topicMetaData = store;
+                        });
+                    }else{
+                        that.topicMetaData = keyValueService.createEmptyStoreAccordingToType('topicMeta');
+
+                        var uIDOfTheNewStore = that.topicMetaData.uID;
+                        that.currentTopic.metaStore = uIDOfTheNewStore;
+
+                        /* send info backend */
+                        that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+                            keys: ['metaStore'],
+                            metaStore: uIDOfTheNewStore
+                        }, false, false);
+
+                        console.log("Warning: No existing Meta-store for topic "+uIDOfTheTopic+"! " +
+                            "It has been created with id "+uIDOfTheNewStore);
+                    }
+
+                    /* extract information about the maximal treshold for the lightsign */
                     that.maxcharThreshold = that.currentTopic.maxCharThreshold;
 
                     /* create the list of pictures of the topic */
@@ -676,7 +713,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                             console.log("error TopicController: Cannot fetch history entries");
                         });
                 }).
-                error(function(data, status, headers, config) {
+                error(function() {
                     console.log("error TopicController: Topic cannot get pulled");
                 });
         });
@@ -693,7 +730,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             success(function(data) {
                 that.topicsByStatus = data;
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("error TopicController: Topics with status "+statusOfTheTopic+" cannot get pulled");
             });
     };
@@ -746,7 +783,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                     }
                 }
             }).
-            error(function(data, status, headers, config) {
+            error(function() {
                 console.log("error TopicController: Constraints cannot get pulled");
             });
     };
@@ -835,7 +872,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             that.maxCharTreshold, that.gps);
 
         $http.put('/admin/topic', topic).
-            success(function(data, status, headers, config) {
+            success(function() {
             }).
             error(function() {
                 console.log("error TopicController: Topic cannot get updated");
@@ -860,8 +897,10 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
      * This function is internally used for deleting topics
      *
      * @param deleteThis    the uID of the topic that should be deleted
+     * @param metaStore     optional: The uID of the meta-store. If the value is included,
+     *                      the kv store gets also deleted.
      */
-    function deletingProcedure(deleteThis) {
+    function deletingProcedure(deleteThis, metaStore) {
         $http.delete('/admin/topic/' + deleteThis).
             success(function () {
                 // remove corresponding chat system
@@ -873,6 +912,11 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                         that.currentUserTopics.splice(index,1);
                     }
                 });
+
+                // delete meta-store
+                if(metaStore != undefined){
+                    keyValueService.deleteKVStore(metaStore);
+                }
 
                 // clear buffer
                 that.clearBuffer();
@@ -897,7 +941,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             success(function (data) {
                 data.forEach(function(subtopic){
                     if(subtopic.uID != that.modifyTopicID)
-                        deletingProcedure(subtopic.uID);
+                        deletingProcedure(subtopic.uID, subtopic.metaStore);
                 });
             }).
             error(function () {
@@ -906,6 +950,9 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
 
         /* delete the main topic and the main chat */
         deletingProcedure(that.modifyTopicID);
+
+        /* delete the KV-meta-store */
+        keyValueService.deleteKVStore(that.modifyTopicMeta);
     };
 
     /**
@@ -1150,8 +1197,6 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                     /* force update */
                     var element = angular.element($('#lat'));
                     element.scope().$apply();
-
-                    that.map.setCenter({lat:that.currentTopic.gps[0], lng:that.currentTopic.gps[1]});
                 });
             }
 
@@ -1193,7 +1238,7 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
                     return constraint.value;
                 }
             }
-        };
+        }
 
         var min =  getValueOfConstraint('character_limitation');
         var max =  getValueOfConstraint('max_character_limitation');
@@ -1291,6 +1336,69 @@ controllersModule.controller('TopicCtrl', ['$scope','$http', '$routeParams','com
             keys: ['nextTextBlock'],
             nextTextBlock: uID
         }, true, false);
+    };
+
+    /**
+     * Function adds a new subtopic for the parent topic
+     * @param name      name (or names - separated by ',') of the topic/-s
+     * @param topicUID  uID of the parent topic
+     */
+    this.addNewSubtopic = function(name, topicUID){
+        $http.get('/admin/topic/'+topicUID).success(function(topic){
+            var parentTopic = topic[0];
+
+            var topics = commonTaskService.createSubTopic(name, parentTopic.group, topicUID, parentTopic.deadline, $http);
+
+            topics.forEach(function(t){
+                that.subtopics.push(t);
+            });
+        });
+    };
+
+    /**
+     * This function sets a new pictureID to the topic
+     * @param pictureID
+     */
+    this.setNewTopicPicture = function(pictureID){
+        that.currentTopic.topicPicture = pictureID;
+
+        /* send to backend */
+        that.updateTopicAndBypassHistory(that.currentTopic.uID, {
+            keys: ['topicPicture'],
+            topicPicture: pictureID
+        }, false, false);
+    };
+
+    /**
+     * Finds the fitting id and sets the internal value for that.currentTopic.group
+     * @param buffergroup
+     */
+    this.setIDForGroupInCurrentTopic = function(buffergroup, offlineData){
+        console.log(buffergroup);
+        console.log(offlineData);
+    };
+
+    /**
+     * Handles locking of the input field
+     */
+    this.locked = function(){
+        var lock = LockService.doIOwnLock(that.currentTopic.uID);
+
+        if(!lock){
+            that.buffer0 = -1;
+        }if(lock){
+            that.buffer0 = 1;
+        }
+    };
+
+    /**
+     * This function saves the current meta-store in the backend.
+     */
+    this.saveMetaData = function(triggerWell){
+        keyValueService.updateKVStore(that.topicMetaData);
+
+        /* trigger view */
+        $scope.collapse[triggerWell] = !$scope.collapse[triggerWell];
     };
 
     /* update parameter if needed */

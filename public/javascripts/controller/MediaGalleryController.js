@@ -6,7 +6,7 @@
  * This controller is used within the mediaGallery directive. It implements the function for deleting images in the
  * backend.
  */
-controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService' ,function($scope,$http, keyValueService) {
+controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService','$routeParams' ,function($scope,$http, keyValueService, $routeParams) {
     var that = this;
 
     $scope.collapse = [];
@@ -16,6 +16,36 @@ controllersModule.controller('GalleryCtrl', ['$scope','$http','keyValueService' 
     this.knownImageTypes = [];  // contains all image types that are available
 
     this.newType = [];          // stores the newly selected type
+
+    this.candidateKvStore       = "-1";     // needed for the deletion-modal
+    this.candidateUID           = "-1";     // needed for the deletion-modal
+    this.candidateThumbnailID   = "-1";     // needed for the deletion-modal
+
+    /* BLOCK OF DROPZONE STUFF */
+    var targetTopic = "";   // stores the topic that is used to store/link the picture
+    if($scope.topic != undefined){
+        // use scope variable
+        targetTopic = $scope.topic;
+    }else{
+        // fallback: Use routeParams for topicID
+        targetTopic = $routeParams.topicID;
+    }
+
+    $scope.dropzoneConfig = {
+
+        'options': {
+            'url': '/admin/picture/'+targetTopic
+        },
+        'eventHandlers': {
+            'sending': function (file, xhr, formData) {
+            },
+            'success': function (file, response) {
+                $scope.files.push(response);
+                $scope.$apply();
+            }
+        }
+    };
+    /* --------------------- */
 
     /**
      * This functions opens the meta-data panel for the given picture

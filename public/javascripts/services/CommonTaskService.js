@@ -115,18 +115,19 @@ servicesModule.service('commonTaskService', function(){
      * @param createdBy     creator of this topic. This may also be another topic.
      * @param content       content of the topic
      * @param topicStatus   status of the topic. I.e., 'wip', 'ir' or 'done'
-     * @param constraintArray   An array containing all constraints for this topic
+     * @param constraintArray       An array containing all constraints for this topic
      * @param deadline              the deadline for the given topic
-     * @param tagstore
-     * @param linkedTopics
-     * @param maxCharTreshold
-     * @param gps
-     * @param metaStore
-     * @param nextTextBlock
+     * @param tagstore              An array containing all the tags of the topic
+     * @param linkedTopics          An array containing UIDs of all linked topics
+     * @param maxCharTreshold       The treshold for the light sign
+     * @param gps                   An array containing the GPS data (lat., and long.)
+     * @param metaStore             UID of the key/value-store that is used to store the meta-data
+     * @param nextTextBlock         An array containing all child text blocks
+     * @param topicPicture          The uID of the picture that represents the topic
      * @returns {{uID: *, name: *, group: *, createdBy: *, content: *, status: *, constraints: *}}
      */
     this.createTopicObject = function(uID, topicname, groupID, createdBy, content, topicStatus, constraintArray, deadline,
-        tagstore, linkedTopics, maxCharTreshold, gps, metaStore, nextTextBlock){
+        tagstore, linkedTopics, maxCharTreshold, gps, metaStore, nextTextBlock, topicPicture){
 
         if(tagstore == undefined){
             tagstore = [];
@@ -152,6 +153,10 @@ servicesModule.service('commonTaskService', function(){
             nextTextBlock = [];
         }
 
+        if(topicPicture == undefined){
+            topicPicture = "-1";
+        }
+
         return {
             uID:        uID,
             name:       topicname,
@@ -166,7 +171,8 @@ servicesModule.service('commonTaskService', function(){
             maxCharThreshold:   maxCharTreshold,
             gps:        gps,
             metaStore:  metaStore,
-            nextTextBlock:      nextTextBlock
+            nextTextBlock:  nextTextBlock,
+            topicPicture:   topicPicture
         };
     };
 
@@ -335,17 +341,63 @@ servicesModule.service('commonTaskService', function(){
      * @param debugFlag     debug true/false
      */
     this.sendPrivateMessage = function ($http, tempMessage, debugFlag) {
+        if(tempMessage.content == undefined){
+            tempMessage.content = "";
+        }
+
+        if(tempMessage.title == undefined){
+            tempMessage.title = "-";
+        }
+
         $http.post('/admin/messages', tempMessage).
-            success(function (data, status, headers, config) {
+            success(function () {
                 if (debugFlag) {
                     console.log("info MessageCtrl: Message sending completed");
                 }
             }).
-            error(function (data, status, headers, config) {
+            error(function () {
                 if (debugFlag) {
                     console.log("error MessageCtrl: Error while sending message");
                 }
             });
+    };
+
+    /**
+     * Creates the given sub topics with the given parent topic
+     *
+     * @param subTopicsAsString     The subtopic names with separation by ','
+     * @param groupID               The uID of the group that works on the topic
+     * @param currentTopicID        The uID of the parent topic
+     * @param deadline              The deadline of the parent topic
+     * @param $http                 Reference to the $http object
+     * @return Array{JSON}          Returns the complete list of created subtopics
+     */
+    this.createSubTopic = function (subTopicsAsString, groupID, currentTopicID, deadline, $http) {
+        var subtopics = subTopicsAsString.split(',');
+
+        var returnArray = [];
+
+        subtopics.forEach(function (subTopic) {
+            var currentSubTopicID = that.generateUID(subTopic);
+
+            var subTopicJSON = that.createTopicObject(currentSubTopicID, subTopic, groupID, currentTopicID, "",
+                "wip", [], deadline);
+
+            that.createConstraints($http, subTopicJSON);
+
+            returnArray.push(subTopicJSON);
+
+            $http.post('/admin/topic', subTopicJSON).
+                success(function () {
+                    /* create empty history */
+                    var historyObject = that.createHistoryObject(currentSubTopicID);
+                    $http.post('/admin/history', historyObject);
+                }).
+                error(function (data, status, headers, config) {
+                });
+        });
+
+        return returnArray;
     };
 
     /**
@@ -358,6 +410,7 @@ servicesModule.service('commonTaskService', function(){
      * @param mainTopicCreatedBy    creator of the main topic
      * @param $http                 reference to the http interface
      * @param deadline              the deadline for the given topic
+     * @return {String} uID         the uID of the new topic
      */
     this.createTopic = function (topicname, subTopicsAsString, groupID, refToGrpController, mainTopicCreatedBy, $http,
                                       deadline) {
@@ -367,24 +420,7 @@ servicesModule.service('commonTaskService', function(){
         if (subTopicsAsString == undefined)
             subTopicsAsString = "";
         else {
-            var subtopics = subTopicsAsString.split(',');
-            subtopics.forEach(function (subTopic) {
-                var currentSubTopicID = that.generateUID(subTopic);
-
-                var subTopicJSON = that.createTopicObject(currentSubTopicID, subTopic, groupID, currentTopicID, "",
-                    "wip", [], deadline);
-
-                that.createConstraints($http, subTopicJSON);
-
-                $http.post('/admin/topic', subTopicJSON).
-                    success(function () {
-                        /* create empty history */
-                        var historyObject = that.createHistoryObject(currentSubTopicID);
-                        $http.post('/admin/history', historyObject);
-                    }).
-                    error(function (data, status, headers, config) {
-                    });
-            });
+            this.createSubTopic(subTopicsAsString, groupID, currentTopicID, deadline, $http);
         }
 
         /* create actual main topic */
@@ -415,6 +451,8 @@ servicesModule.service('commonTaskService', function(){
             refToGrpController.createNotificationAtGroupAndSetTopic(groupID,
                 currentTopicID, "system_notification_groupTopicChanged", [topicname]);
         }
+
+        return currentTopicID;
     };
 
     /**

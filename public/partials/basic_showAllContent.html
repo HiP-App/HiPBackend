@@ -5,8 +5,8 @@
         <div class="panel-heading" ng-bind="lc.getTerm('system_content')"></div>
         <div>
             <div class="panel-body">
-                <h4 ng-click="tc.getTopicsByStatus('done'); hideContent=false" ng-init="hideContent=true">
-                    <collapse-triangle condition="hideContent"></collapse-triangle> {{lc.getTerm('system_content')}}
+                <h4 ng-click="tc.getTopicsByStatus('done')">
+                    {{lc.getTerm('system_content')}}
                 </h4>
 
                 <ul>

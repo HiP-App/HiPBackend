@@ -1,12 +1,10 @@
 /**
  * Created by Jörg Amelunxen on 08.02.15.
  */
-
 servicesModule.service('typeService', ['$http', function($http) {
 
     /* Helper function */
     function createJSObjectInterfaceForOneObject(returnJSON) {
-
         for (var i = 0; i < returnJSON.keys.length; i++) {
             returnJSON[returnJSON.keys[i]] = returnJSON.values[i];
         }
@@ -20,7 +18,6 @@ servicesModule.service('typeService', ['$http', function($http) {
      */
     this.getTypes = function(callback){
         $http.get('/admin/types').success(function(data){
-
             /* for each entry => construct JS Object interface */
             for(var i = 0; i < data.length; i++){
                 data[i] = createJSObjectInterfaceForOneObject(data[i]);

@@ -1,10 +1,42 @@
+<!-- Modal -->
+<div class="modal fade" id="deleteGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>
+                    {{lc.getTerm('dialog_group_delete_header')}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <span ng-bind="lc.getTerm('dialog_group_delete_infotext')"></span>
+                </div>
+
+                <br>
+
+                <div class="shift-left">
+                    <a ng-href="/#/myhip" class="btn btn-warning" ng-bind="lc.getTerm('dialog_group_delete_cancel')"
+                       data-dismiss="modal"></a>
+                </div>
+
+                <div class="shift-right">
+                    <a ng-href="/#/myhip" class="btn btn-success" ng-bind="lc.getTerm('dialog_group_delete_create')"
+                       data-dismiss="modal" ng-click="gc.deleteGroup(gc.deleteCandiate)"></a>
+                </div>
+
+                <div class="float-clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END OF MODAL -->
+
 <div id="groups" class="panel panel-default">
 
     <div class="panel-heading">
-        <div class="shift-left">{{lc.getTerm('system_groups')}}</div>
-        <div class="shift-right"> <a ng-init="gc.getGroups()" ng-click="gc.getGroups()">
-            <span class='glyphicon  glyphicon-refresh'></span> </a>
-        </div>
+        <div class="shift-left" ng-bind="lc.getTerm('system_groups')"></div>
         <div class="float-clear"></div>
     </div>
 
@@ -16,7 +48,13 @@
             </div>
 
             <div class="shift-right" ng-show="uc.isSupervisor()">
-                [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span>
+                <a href data-toggle="modal" data-target="#deleteGroupModal" ng-click="gc.deleteCandiate = grp.uID">
+                    <span
+                      class="glyphicon glyphicon-remove-circle"
+                      tooltip-html-unsafe="{{lc.getTerm('tooltip_delete_group')}}"
+                      tooltip-trigger="mouseenter" tooltip-placement="right">
+                    </span>
+                </a>
             </div>
 
             <div class="float-clear"></div>
@@ -32,7 +70,13 @@
             </div>
 
             <div class="shift-right">
-                [<span ng-click="gc.deleteGroup(grp.uID)" class="glyphicon glyphicon-trash">]</span>
+                <a href data-toggle="modal" data-target="#deleteGroupModal" ng-click="gc.deleteCandiate = grp.uID">
+                    <span
+                            class="glyphicon glyphicon-remove-circle"
+                            tooltip-html-unsafe="{{lc.getTerm('tooltip_delete_group')}}"
+                            tooltip-trigger="mouseenter" tooltip-placement="right">
+                    </span>
+                </a>
             </div>
 
             <div class="float-clear"></div>

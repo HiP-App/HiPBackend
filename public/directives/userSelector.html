@@ -2,24 +2,47 @@
     <div class="input-group">
         <div class="input-group-btn">
             <button type="button"
-                    ng-class="{     'btn-warning'       : gc.userInGroupArray[0] == undefined,
-                                    'btn-success'       : gc.userInGroupArray[0] != undefined}"
+                    ng-class="{'btn-warning'       : gc.userInGroupArray[0] == undefined,
+                               'btn-success'       : gc.userInGroupArray[0] != undefined}"
                     class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 {{lc.getTerm('system_groups_form_addmember')}}
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li ng-repeat="user in uc.userList">
-                    <a ng-click="gc.userInGroupArray.push(user)">{{user.email}}</a>
+                    <!-- only push to array -->
+                    <a ng-show="directsave == 'false'" ng-click="gc.userInGroupArray.push(user)">
+                        <img class="userAvatars"  ng-src="{{user.avatar}}" width="32px" height="32px">
+                        {{user.firstname}} {{user.lastname}}</a>
+
+                    <!-- save values directly -->
+                    <a ng-show="directsave == 'true'"
+                       ng-click="gc.userInGroupArray.push(user); gc.updateUserData(gc.userInGroupArray)">
+                        <img class="userAvatars"  ng-src="{{user.avatar}}" width="32px" height="32px">
+                        {{user.firstname}} {{user.lastname}}</a>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div ng-repeat="userInGroup in gc.userInGroupArray" class="input-group">
-        <span class="input-group-addon">{{lc.getTerm('system_member')}}</span>
-        <input type="text" class="form-control" name="groupID" placeholder=""
-               ng-model="gc.userInGroupArray[$index].email">
-        <div class="float-clear"></div>
-    </div>
+    <div ng-repeat="userInGroup in gc.userInGroupArray" >
+        <div class="row">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <span class="input-group-addon">{{lc.getTerm('system_member')}}</span>
+                    <input type="text" class="form-control" ng-model="gc.userInGroupArray[$index].email" disabled>
+                    <div class="float-clear"></div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <span ng-show="directsave == 'true'"
+                      ng-click="gc.userInGroupArray.splice($index,1); gc.updateUserData(gc.userInGroupArray)">
 
+                    <span class="glyphicon glyphicon-remove-circle icon-red"
+                          tooltip-html-unsafe="{{lc.getTerm('tooltip_delete_user')}}"
+                          tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
+                </span>
+            </div>
+        </div>
+
+    </div>
 </div>

@@ -4,8 +4,6 @@
     <div id="mainSingleBox" class="panel panel-default" ng-controller="TopicCtrl as tc">
         <div class="panel-heading" ng-bind="lc.getTerm('system_groups_header')"></div>
         <div >
-
-
             <div class="panel-body">
                 <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
                       ng-submit="gc.createGroup(uc.email,uc.firstname)">
@@ -38,7 +36,7 @@
 
                     <div class="form-group" >
                         <div class="col-sm-offset-1 col-sm-10">
-                            <user-selector></user-selector>
+                            <user-selector directsave="false" groupcontroller="gc" languagecontroller="lc" usercontroller="uc"></user-selector>
                         </div>
                     </div>
 

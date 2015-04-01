@@ -1,3 +1,47 @@
+<!-- Modal -->
+<div class="modal fade" id="addSubTopicModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>
+                    {{lc.getTerm('dialog_subtopic_add_header')}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <span ng-bind="lc.getTerm('dialog_subtopic_add_infotext')"></span>
+                </div>
+
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon" ng-bind="lc.getTerm('dialog_subtopic_add_addon')"></span>
+                    <input type="text" class="form-control" ng-model="tc.buffer0"
+                           tooltip-html-unsafe="{{lc.getTerm('dialog_tooltip_subtopic_name')}}"
+                           tooltip-trigger="focus" tooltip-placement="right">
+                </div>
+
+                <br>
+
+                <div class="shift-left">
+                    <a ng-href="/#/myhip" class="btn btn-warning" ng-bind="lc.getTerm('dialog_subtopic_add_cancel')"
+                       data-dismiss="modal"></a>
+                </div>
+
+                <div class="shift-right">
+                    <a ng-href="/#/myhip" class="btn btn-success" ng-bind="lc.getTerm('dialog_subtopic_add_create')"
+                       data-dismiss="modal" ng-click="tc.addNewSubtopic(tc.buffer0,gc.bufferedGroup.topic); tc.buffer0 = ''"></a>
+                </div>
+
+                <div class="float-clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END OF MODAL -->
+
 <h3>
     {{lc.getTerm('system_main_topic')}}
 </h3>
@@ -6,40 +50,50 @@
         <a ng-href="/#/edit/{{ gc.bufferedGroup.topic }}" ng-show="uc.isStudent()">{{gc.bufferedTopic.name}}</a>
         <a ng-href="/#/viewExternalSupervisor/{{ gc.bufferedGroup.topic }}" ng-show="uc.isSupervisor()">{{gc.bufferedTopic.name}}</a>
 
-                               <span class="glyphicon glyphicon-remove-circle icon-red"
-                                     ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'done'}"
-                                     tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
-                                     tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
-                              <span class="glyphicon glyphicon-eye-open icon-yellow"
-                                    ng-class="{'ng-hide': gc.bufferedTopic.status == 'wip' || gc.bufferedTopic.status == 'done'}"
-                                    tooltip-html-unsafe="{{lc.getTerm('tooltip_ir')}}"
-                                    tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
-                              <span class="glyphicon glyphicon-ok-circle icon-green"
-                                    ng-class="{'ng-hide': gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'wip'}"
-                                    tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
-                                    tooltip-trigger="mouseenter" tooltip-placement="right"> </span>
+        <img ng-hide="gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'done'"
+             src='assets/images/stop-light-red.png'      alt="Work in Progress" height="16" width="40"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="right"/>
+        <img ng-hide="gc.bufferedTopic.status == 'wip'|| gc.bufferedTopic.status == 'done'"
+             src='assets/images/stop-light-yellow.png'   alt="In review" height="16" width="40"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_ir')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="right"/>
+        <img ng-hide="gc.bufferedTopic.status == 'ir' || gc.bufferedTopic.status == 'wip'"
+             src='assets/images/stop-light-green.png'    alt="Done" height="16" width="40"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="right"/>
     </li>
 </ul>
 
 <div ng-click="tc.getSubTopicByTopicID(gc.bufferedGroup.topic)">
     <h4 ng-bind="lc.getTerm('system_sub_topics')"></h4>
-<div>
+</div>
 
 <ul>
     <li ng-repeat="topic in tc.subtopics">
         <a ng-href="/#/edit/{{ topic.uID }}" ng-show="uc.isStudent()">{{topic.name}}</a>
         <a ng-href="/#/viewExternalSupervisor/{{topic.uID }}" ng-show="uc.isSupervisor()">{{topic.name}}</a>
-                            <span class="glyphicon glyphicon-remove-circle icon-red" ng-show="{{ topic.status == 'wip' }}"
-                                  tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
-                                  tooltip-trigger="mouseenter" tooltip-placement="right">
-                            </span>
-                            <span class="glyphicon glyphicon-eye-open icon-yellow"      ng-show="{{ topic.status == 'ir' }}"
-                                  tooltip-html-unsafe="{{lc.getTerm('tooltip_ir')}}"
-                                  tooltip-trigger="mouseenter" tooltip-placement="right">
-                            </span>
-                            <span class="glyphicon glyphicon-ok-circle icon-green"     ng-show="{{ topic.status == 'done' }}"
-                                  tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
-                                  tooltip-trigger="mouseenter" tooltip-placement="right">
-                            </span>
+        <img ng-hide="topic.status == 'ir' || topic.status == 'done'"
+             src='assets/images/stop-light-red.png'      alt="Work in Progress" height="16" width="40"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_wip')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="right"/>
+        <img ng-hide="topic.status == 'wip'|| topic.status == 'done'"
+             src='assets/images/stop-light-yellow.png'   alt="In review" height="16" width="40"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_ir')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="right"/>
+        <img ng-hide="topic.status == 'ir' || topic.status == 'wip'"
+             src='assets/images/stop-light-green.png'    alt="Done" height="16" width="40"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_done')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="right"/>
     </li>
 </ul>
+
+<br>
+
+<!-- add new subtopic -->
+<a href data-toggle="modal" data-target="#addSubTopicModal">
+    <img ng-show="uc.isSupervisor()" src='assets/images/document.png'
+         width="60" height="60" class="userAvatars"
+         tooltip-html-unsafe="{{lc.getTerm('tooltip_add_subtopic')}}"
+         tooltip-trigger="mouseenter" tooltip-placement="top">
+</a>

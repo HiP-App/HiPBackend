@@ -1,0 +1,44 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>
+                    {{lc.getTerm('tooltip_add_user')}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <user-selector directsave="true" groupcontroller="gc" languagecontroller="lc" usercontroller="uc"></user-selector>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END OF MODAL -->
+
+<div class="shift-left">
+    <!-- add new user -->
+    <a href data-toggle="modal" data-target="#myModal">
+        <img ng-show="modus=='supervisor'" src='assets/images/addUser.png'
+             width="80" height="80" class="userAvatars"
+             tooltip-html-unsafe="{{lc.getTerm('tooltip_add_user')}}"
+             tooltip-trigger="mouseenter" tooltip-placement="top">
+    </a>
+</div>
+
+<div class="shift-left">
+    <div ng-repeat="usr in gc.userInGroupArray" class="shift-left">
+        <!-- Generate user images -->
+        <a ng-href="/#/messages/send/{{ usr.userid }}/Title">
+            <img class="userAvatars"  ng-src="{{usr.avatar}}"
+                 tooltip-html-unsafe="{{usr.firstname}} {{usr.lastname}}"
+                 tooltip-trigger="mouseenter" tooltip-placement="top">
+        </a>
+
+        <!-- Supervisor name help -->
+        <div ng-show="modus=='supervisor'" class="well no-margin shift-right">
+            {{usr.firstname}} <br> {{usr.lastname}}
+        </div>
+    </div>
+</div>

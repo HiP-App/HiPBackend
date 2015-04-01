@@ -4,7 +4,7 @@
 
 describe('Testsuite for the MediaGalleryController:', function () {
     var controller = null, $scope = null, $httpBackend = null;
-
+    var routeParams = {};
     var storageObject = "";
 
     beforeEach(function () {
@@ -20,7 +20,8 @@ describe('Testsuite for the MediaGalleryController:', function () {
         $httpBackend = _$httpBackend_;
         $scope = $rootScope.$new();
         controller = $controller('GalleryCtrl', {
-            $scope: $scope
+            $scope: $scope,
+            $routeParams: routeParams
         });
     }));
 

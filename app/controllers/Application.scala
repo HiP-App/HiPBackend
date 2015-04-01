@@ -12,7 +12,7 @@ import play.api.mvc._
 import securesocial.core._
 
 @Singleton
-class Application extends Controller  with SecureSocial{
+class Application extends Controller  with SecureSocial {
 
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
 

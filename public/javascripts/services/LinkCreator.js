@@ -1,8 +1,7 @@
 /**
  * Created by Jörg Amelunxen on 31.01.15.
  */
-
-servicesModule.service('LinkCreator', ['$http', 'commonTaskService', function($http, commonTaskService) {
+servicesModule.service('LinkCreator', ['$http', 'commonTaskService', function() {
     var that = this;
 
     this.config = {

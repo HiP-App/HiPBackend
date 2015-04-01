@@ -27,6 +27,7 @@ var formMessage = {
 
 function initMessageData($scope, $httpBackend){
     $httpBackend.expectGET('/admin/messages/all/dummy');
+    $httpBackend.expectGET('/admin/messages/sendBy/dummy').respond(200,{});
     $httpBackend.expectGET('/admin/messages/view/1');
     $httpBackend.flush();
 }

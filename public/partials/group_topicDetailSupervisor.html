@@ -5,27 +5,25 @@
         <div class="panel-heading">
             <div class="shift-left">
                 <a ng-href="/#/group/viewexternal/{{ tc.currentTopic.group }}"><back-arrow></back-arrow></a>
-                <a ng-click="showDiv = 1" ng-bind="lc.getTerm('system_topic_detail_head')"></a>
-                <a ng-click="showDiv = 3" ng-bind="lc.getTerm('system_topic_detail_pictures')"></a>
+                <span ng-bind-template="{{lc.getTerm('system_topic_detail_head')}}: {{tc.currentTopic.name}}"></span>
             </div>
-
-            <div class="shift-right">
-                <a ng-click="showDiv = 2" ng-bind="lc.getTerm('system_open_chat')"> </a>
-            </div>
-
             <div class="float-clear"></div>
         </div>
         <div>
             <div class="panel-body" ng-controller="AnnotationCtrl as annoCtrl">
+                <alert-box></alert-box>
+
+                <ul class="nav nav-tabs">
+                    <li role="presentation" ng-class="{active : showDiv == 1}" ng-click="showDiv=1"><a href ng-bind="lc.getTerm('system_topic_detail_head')"></a></li>
+                    <li role="presentation" ng-class="{active : showDiv == 3}" ng-click="showDiv=3"><a href ng-bind="lc.getTerm('system_topic_detail_pictures')"></a></li>
+                    <li role="presentation" ng-class="{active : showDiv == 2}" ng-click="showDiv=2"><a href ng-bind="lc.getTerm('system_open_chat')"></a></li>
+                </ul>
 
                 <!--
                 Show this box iff status of the topic is 'done', 'ir' OR iff the deadline has past by
                         => show the content of the topic
                 -->
-                <div id="concreteContent"
-                     ng-show="(tc.currentTopic.status == 'done' || tc.currentTopic.status == 'ir' || tc.deadlineReached()) && showDiv == 1">
-
-                    <h4 ng-bind="tc.currentTopic.name"></h4>
+                <div id="concreteContent" ng-show="(tc.currentTopic.status == 'done' || tc.currentTopic.status == 'ir' || tc.deadlineReached()) && showDiv == 1">
 
                     <br>
 
@@ -48,51 +46,69 @@
                 Show this box iff status of the topic is not 'done' or 'ir'
                 -->
                 <div id="briefContent" ng-show="(tc.currentTopic.status != 'done' && tc.currentTopic.status != 'ir') && showDiv == 1">
-                    <h4 ng-bind="tc.currentTopic.name"></h4>
 
                     <br>
 
-                    <form id="CreateUserForm" name="CreateUserForm" class="form-horizontal" role="form"
-                          ng-submit="tc.updateConstraints()">
-
+                    <form class="form-horizontal" role="form" ng-submit="tc.updateConstraints()">
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-10">
-                                <p ng-bind-template="{{lc.getTerm('threshold_light')}}: {{tc.maxcharThreshold}}"></p>
+                                <div class="pull-left">
+                                    <span class="label label-warning" ng-bind="lc.getTerm('character_limitation')"></span>
+                                    <span ng-bind-template="{{lc.getTerm('threshold_light')}}: {{tc.maxcharThreshold}}%"></span></div>
+                                <div class="pull-right">
+                                    <span class="label label-success" ng-bind="lc.getTerm('max_character_limitation')"></span>
+                                </div>
                                 <slider floor="0" ceiling="100" step="1" precision="1" ng-model="tc.maxcharThreshold"></slider>
                             </div>
                         </div>
 
+                        <!-- Quick status of the topic -->
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-10">
-                                <div ng-repeat="constraint in tc.constraintsForThisTopic">
-                                    <div class="form-group">
-                                        <span ng-class="{   'hip-button-red'        : constraint.fulfilled == false,
-                                                            'hip-button-green'      : constraint.fulfilled == true}">
-                                            {{ lc.getTerm(constraint.languageTerm) }}
-                                        </span>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" ng-bind="lc.getTerm(constraint.languageTerm)"></span>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" ng-bind="lc.getTerm('system_amount_pics')"></span>
 
-                                            <input type="text" class="form-control" placeholder=""
-                                                   ng-model="constraint.valueInTopic" tooltip="{{lc.getTerm('tooltip_constraint')}}"
-                                                   tooltip-trigger="focus" tooltip-placement="right" disabled>
-                                        </div>
+                                        <input type="text" class="form-control" ng-value="tc.currentTopic.content.split(tc.imageSearchPrefix).length - 1"
+                                               tooltip="{{lc.getTerm('tooltip_constraint')}}"
+                                               tooltip-trigger="focus" tooltip-placement="right" disabled>
+                                    </div>
 
+                                    <div class="input-group">
+                                        <span class="input-group-addon" ng-bind="lc.getTerm('system_amount_maxchars')"></span>
+
+                                        <input type="text" class="form-control" ng-model="tc.currentTopic.content.length"
+                                               tooltip="{{lc.getTerm('tooltip_constraint')}}"
+                                               tooltip-trigger="focus" tooltip-placement="right" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Change input fields -->
+                        <div class="form-group" ng-init="tc.buffer0 = 0">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <div class="form-group">
+                                    <div ng-repeat="constraint in tc.constraintsForThisTopic">
                                         <div class="input-group">
                                             <span class="input-group-addon" ng-bind="lc.getTerm(constraint.name)"></span>
 
                                             <input type="text" class="form-control"
-                                                   ng-change="tc.updateLightSign()"
+                                                   ng-change="tc.updateLightSign(); tc.buffer0 = 1"
                                                    ng-model="constraint.value" tooltip="{{lc.getTerm('tooltip_constraint')}}"
                                                    tooltip-trigger="focus" tooltip-placement="right">
                                         </div>
                                     </div>
                                 </div>
 
-
-                                <cancel-submit  cancel="lc.getTerm('system_groups_form_cancel')"
-                                                submit="lc.getTerm('system_topic_detail_changeConstraint')">
-                                </cancel-submit>
+                                <div class="shift-right">
+                                    <button id="sendContraints"
+                                            type="submit" class="btn"
+                                            ng-class="{ 'btn-default' : tc.buffer0 == 0,
+                                                        'btn-success' : tc.buffer0 == 1 }"
+                                            ng-click="ac.addAlert(lc.getTerm('notification_update_constraints'),'info')"
+                                            ng-bind="lc.getTerm('system_topic_detail_changeConstraint')"></button>
+                                </div>
                             </div>
                         </div>
                     </form>
